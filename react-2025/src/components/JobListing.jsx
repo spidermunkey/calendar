@@ -20,7 +20,10 @@ const JobListing = ({job}) => {
       </div>
       <div className="mb-5">
         {trunc}
-        <button onClick={() => setShowFullDescription(prevState => !prevState) } className="cursor-pointer block text-indigo-500 mb-5 hover:text-indigo-600">{ showFullDescription ? 'show less': 'show more'}</button>
+        <button onClick={() => {
+          setShowFullDescription(prevState => !prevState) 
+        }
+          } className="cursor-pointer block text-indigo-500 mb-5 hover:text-indigo-600">{ showFullDescription ? 'show less': 'show more'}</button>
       </div>
 
       <h3 className="text-indigo-500 mb-2">{salary} / Year</h3>
