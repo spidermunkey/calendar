@@ -1,9 +1,9 @@
 import './App.css'
-import { ReducerExample } from './hooks/use-reducer'
+import { Stopwatch } from './exercises/timer/timer'
 function App() {
   return (
     <>
-      <ReducerExample/>
+      <Stopwatch/>
     </>
   )
 }

@@ -5,7 +5,8 @@ export const EffectExample = () => {
   const [showName,setShowName] = useState(false);
 
   useEffect(() => {
-    // execute on state
+    // execute on state change
+    // execute on render
     console.log('Page Rendered')
     fetch('https://jsonplaceholder.typicode.com/posts')
     .then(response => response.json())

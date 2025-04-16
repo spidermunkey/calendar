@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 html,body {
   margin: 0;
   padding: 0;
@@ -13,4 +15,17 @@ html,body {
   width: 100%;
   align-items: center;
   justify-content: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.button {
+  padding: 8px;
 }
