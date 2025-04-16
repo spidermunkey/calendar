@@ -1,9 +1,9 @@
 import './App.css'
-import { EffectExample } from './hooks/use-effect'
+import { ContextExample } from './hooks/use-context'
 function App() {
   return (
     <>
-      <EffectExample/>
+      <ContextExample/>
     </>
   )
 }

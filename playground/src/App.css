@@ -1,0 +1,16 @@
+html,body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+#root {
+  display: flex;
+  background:#333;
+  color: white;
+  font-family: Roboto, Helvetica, sans-serif;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
