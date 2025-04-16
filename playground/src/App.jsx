@@ -1,9 +1,9 @@
 import './App.css'
-import { ContextExample } from './hooks/use-context'
+import { ReducerExample } from './hooks/use-reducer'
 function App() {
   return (
     <>
-      <ContextExample/>
+      <ReducerExample/>
     </>
   )
 }
