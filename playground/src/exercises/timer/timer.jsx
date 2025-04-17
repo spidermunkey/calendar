@@ -1,54 +1,78 @@
-import { useState } from "react"
+import React, { useEffect, useRef, useState } from 'react'
+import Clock from './components/clock';
+import Controller from './components/Controller';
+
+let interval;
 
 const secondsInHour = 3600;
-const minutesInHour = 60;
 const secondsInMinutes = 60;
+const minutesInHour = 60;
 
-const initial = 0;
-let timeInSeconds = 0;
-let interval = null;
-
-
-export const Stopwatch = () => {
-  const [time,setTime] = useState(timeInSeconds)
-  const converter = {
-    get hours(){
-      return Math.floor(time / secondsInHour)
-    },
-    get minutes(){
-      return Math.floor((time / (secondsInHour / secondsInMinutes)) % minutesInHour)
-    },
-    get seconds(){
-      return time % 60
-    },
+const converted = (seconds) => {
+  return {
+    hours:Math.floor(seconds / secondsInHour),
+    minutes:Math.floor((seconds / (secondsInHour / secondsInMinutes)) % minutesInHour),
+    seconds: seconds % 60,
   }
+}
+
+const toSeconds = (time) => {
+  const {hours,minutes,seconds} = time;
+  const hoursToSeconds = Math.floor(hours * secondsInHour)
+  const minutesToSeconds = Math.floor(minutes * secondsInMinutes);
+  return hoursToSeconds + minutesToSeconds + seconds;
+}
+
+const Timer = ( {props} ) => {
+  const ref = useRef(props.time);
+  const element = useRef(null)
+  const { hours,minutes,seconds } = ref.current;
+  const {title} = props.info;
+
+  const total = toSeconds(props.time);
+  const [current,setTime] = useState(total);
+  const current_time = converted(current);
+  const notifyEnd = () => {
+    alert('timer end')
+  }
+
   const start = () => {
     interval = setInterval(() => {
-      setTime(seconds => seconds + 1)
-    }, 1000)
+
+      setTime(prev => prev - 1)
+    },1000)
   }
   const stop = () => {
-    console.log('clearing interval',interval)
     interval = clearInterval(interval)
   }
   const reset = () => {
     stop();
-    setTime(() => initial)
+    setTime(toSeconds(ref.current));
   }
+  const delegate = (event) => {
+    console.log('triggered')
+    const startTimer = event.target.closest('[btn="play"]')
+    const pauseTimer = event.target.closest('[btn="pause"]')
+    const resetTimer = event.target.closest('[btn="reset"]')
+    if (startTimer) start()
+    else if (pauseTimer) stop()
+    else if (resetTimer) reset()
+}
+  useEffect(() => {
+    console.log(total,current)
+    if (current <= 0){
+      stop();
+      notifyEnd();
+      return;
+    }
+  })
   return (
-     <>
-        <div className="stopwatch">
-          <div className="current-time row p-12 border rounded-md">
-            <div className="hours mr-4">hours: {converter.hours}</div>
-            <div className="minutes mr-4">minutes: {converter.minutes}</div>
-            <div className="seconds">seconds: {converter.seconds}</div>
-          </div>
-          <div className="stopwatch-controls row pt-6 pl-16">
-            <div className="play"><button className="button mr-4 border rounded-sm cursor-pointer" onClick={start}>Play</button></div>
-            <div className="pause"><button className="button mr-4 border rounded-sm cursor-pointer" onClick={stop}>Pause</button></div>
-            <div className="reset"><button className="button border rounded-sm cursor-pointer" onClick={reset}>Reset</button></div>
-          </div>
-        </div>
-    </>
+    <div className="timer">
+      <div className="timer-title">{title}</div>
+      <Clock hours={current_time.hours} minutes={current_time.minutes} seconds={current_time.seconds} />
+      <Controller handler={delegate}/>
+    </div>
   )
 }
+
+export default Timer
