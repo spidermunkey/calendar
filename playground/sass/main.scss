@@ -1,0 +1,25 @@
+body {
+  // background-color: yellow;
+
+}
+.app {
+  display: flex;
+  justify-content: center;
+}
+.tabber-modals {
+  border: 1px solid #ccc;
+}
+
+.month {
+  width: 50%;
+  min-width: calc(80*8px);
+  padding: 20px;
+  .days {
+    width: 100%;
+    justify-content: center;
+  }
+  .day {
+    height: 80px;
+    width: 80px;
+  }
+}

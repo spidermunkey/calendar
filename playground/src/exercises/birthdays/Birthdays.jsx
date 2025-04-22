@@ -4,7 +4,7 @@ const getBirthdays = async () => {
   try {
     const enpoint = '/api/birthdays'
     const birthdays = await (await fetch(enpoint)).json()
-    return birthdays
+    return birthdays;
   }catch (error){
     console.log('errrrr',error)
     return []

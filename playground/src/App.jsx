@@ -1,14 +1,15 @@
 import './App.css'
-import { Timers } from './exercises/timer/Timers'
-import { Birthdays } from './exercises/birthdays/Birthdays'
-import { Calendar } from './exercises/calendar/Calendar'
+import '../sass/main.scss'
+import { Tabber } from './exercises/tabs/Tabs'
+import { CalendarTabs } from './exercises/tabs/tab_data'
 import { Month } from './exercises/calendar/Month'
 function App() {
   return (
     <>
-      <Birthdays/>
-      <Month/>
-      <Timers/>
+      <div className="app">
+        <Month/>
+        <Tabber tabs ={CalendarTabs}/>
+      </div>
     </>
   )
 }
