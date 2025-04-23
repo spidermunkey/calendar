@@ -1,25 +1,7 @@
-body {
-  // background-color: yellow;
+@forward './reset.scss';
+@forward './calendar/calendar.scss';
 
-}
-.app {
-  display: flex;
-  justify-content: center;
-}
-.tabber-modals {
-  border: 1px solid #ccc;
-}
-
-.month {
-  width: 50%;
-  min-width: calc(80*8px);
-  padding: 20px;
-  .days {
-    width: 100%;
-    justify-content: center;
-  }
-  .day {
-    height: 80px;
-    width: 80px;
-  }
+.app,#root {
+  height: 100%;
+  width: 100%;
 }

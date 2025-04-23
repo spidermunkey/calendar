@@ -1,0 +1,33 @@
+
+.calendar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  .month {
+    // flex: 1;
+    // min-width: calc(80*8px);
+    // flex-basis: 0;
+    min-height: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    .days {
+      width: 100%;
+      justify-content: center;
+      display:flex;
+      flex-wrap: wrap;
+      justify-items: start;
+      flex: 1 1 auto;
+      border: 1px solid #ccc;
+    }
+    .day {
+      // max-height: 80px;
+      // max-width: 80px;
+      flex:0 0 calc(100%/7);
+      aspect-ratio: 1/ 1;
+    }
+  }
+}
