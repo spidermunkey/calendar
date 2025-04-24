@@ -49,7 +49,7 @@ export const Month = ({
   const current = () => thisMonth
   return (
     <>
-      <div className="month border">
+      <div className="cal-month border">
         <div className="this-month flex">
         <div className="prev-month px-4 cursor-pointer" onClick={() => setMonth(prev)}>{'<'}</div>
           <div className="month-name border px-4" onClick={() => setMonth(current)}>{DateTime.month(currentMonth)}</div>
