@@ -4,7 +4,7 @@ export const Tabber = ({tabs}) => {
   return (
   <div className="tabber">
     <div className="tabber-labels">
-      { tabs.map((tab,index) => <button className="tabber-tab text-[18px]" key={index} onClick={() => setActiveTab(index)}> {tab.label} </button>)}
+      { tabs.map((tab,index) => <button className={`tabber-tab text-[18px] ${tab.element == tabs[activeTab]?.element ? 'active': ""}`} key={index} onClick={() => setActiveTab(index)}> {tab.label} </button>)}
     </div>
     <div className="tabber-modals">
       { tabs[activeTab].element }

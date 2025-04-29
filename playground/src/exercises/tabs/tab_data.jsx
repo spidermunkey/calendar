@@ -1,5 +1,7 @@
 import { Birthdays } from "../birthdays/Birthdays"
 import { Timers } from "../timer/Timers"
+import { Todo } from "../todo/Todo"
+
 export const CalendarTabs = [
   {
     label:'birthdays',
@@ -8,5 +10,9 @@ export const CalendarTabs = [
   {
     label: 'timers',
     element: <Timers/>
+  },
+  {
+    label: 'todo',
+    element: <Todo/>
   }
 ]
