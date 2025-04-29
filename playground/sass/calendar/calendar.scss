@@ -1,14 +1,19 @@
+    $border: 1px solid #8484841a;
+    $color: #494949;
+    $font: 'Quicksand';
 
 .calendar {
+  margin-left: 24px;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ccc;
+  // border: 1px solid #ccc;
 
 
 }
+
 
 .cal-month {
   // flex: 1;
@@ -21,6 +26,20 @@
   display: flex;
   flex-direction: column;
   border-radius: 8px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  border: $border;
+  .this-month {
+    margin: 8px 0px;
+  }
+  .month-name {
+    color: $color;
+    font-family: $font;
+    font-weight: 600;
+    letter-spacing: 0.035em;
+    min-width: 14ch;
+    text-align: center;
+  }
   .days {
     width: 100%;
     justify-content: center;
@@ -28,23 +47,60 @@
     flex-wrap: wrap;
     justify-items: start;
     flex: 1 1 auto;
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
   }
   .day {
     // max-height: 80px;
     // max-width: 80px;
-    flex:0 0 calc(100%/7);
+    position: relative;
+    margin: 8px;
+    border: 1px solid #8484841a;
+    flex:0 0 calc(100%/9);
+    border-radius: 8px;
     aspect-ratio: 1/ 1;
+    box-shadow: 0 0 7px -4px #1b1f2303, 0 0 #1b1f2306, inset -2px 0 1px 1px #ababab03, inset -1px 0 2px #bdbdbd03, 0 1px 4px #1b1f2303;
+    cursor: pointer;
+    &:hover::after{
+      opacity: 1;
+      .daynum {
+        opacity: 1;
+      }
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: 200ms ease;
+      border-radius: inherit;
+      box-shadow: 0 3px 6px #0000001f, 0 1px 3px #00000020;
+    }
+    &.null-day {
+      background: #f5f5f586;
+      .daynum {
+        color: #ccc;
+      }
+    }
+    .daynum {
+      color: #444;
+      font-size: 12px;
+      margin-top: 6px;
+      margin-left: 12px;
+      opacity: .75;
+    }
   }
 }
 
 .cal-header {
   display: flex;
   flex-direction: column;
-  border: 1px solid #ccc;
+  border: $border;
+  border-bottom: 1px solid transparent;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
   width: var(--cal-width);
   height: fit-content;
-  color: #241d1d;
+  color: #494949;
   .header-module-container {
     display: flex;
     padding-top: 12px;

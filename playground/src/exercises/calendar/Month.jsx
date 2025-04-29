@@ -1,5 +1,7 @@
 import { DateTime } from "mojo";
 import { useState,useRef } from "react";
+import { cursorLeft } from "../../assets/icons/cursor-left";
+import { cursorRight } from "../../assets/icons/cursor-right";
 
 const days = (month,year) => {
   // last month
@@ -24,36 +26,39 @@ const days = (month,year) => {
     const lastDays = [];
     for (let i = 1; i < daysFromSunday; i++){
       let dateNum = lastDayOfLastMonth - (i - 1)
-      previousDays.push(<div key={`prev-${dateNum}`} day={dateNum} className="day bg-grey-100">{dateNum}</div>)
+      previousDays.push(<div key={`prev-${dateNum}`} day={dateNum} className="day null-day"><div className="daynum">{dateNum}</div></div>)
     }
     for (let i = 0; i < daysInMonth; i++){
       let dateNum = i + 1
-      currentDays.push(<div key={i} day={dateNum} className="day border">{dateNum}</div>)
+      currentDays.push(<div key={i} day={dateNum} className="day"><div className="daynum">{dateNum}</div></div>)
     }
     for (let i = 0; i < daysFromSaturday; i++){
-      let dateNum = daysInMonth - i
-      lastDays.push(<div key={`next-${dateNum}`} day={dateNum} className="day bg-grey-100">{dateNum}</div>)
+      let dateNum = i + 1
+      lastDays.push(<div key={`next-${dateNum}`} day={dateNum} className="day null-day"><div className="daynum">{dateNum}</div></div>)
     }
     return [...previousDays.reverse(),...currentDays,...lastDays];
 }
 
 export const Month = ({
   month = new Date().getMonth(),
-  year = new Date().getFullYear()}
+  year = new Date().getFullYear(),
+}
 ) => {
   const [currentMonth,setMonth] = useState(month);
   const thisMonth = useRef(month).current;
   const thisYear = useRef(year).current;
   const next = () => currentMonth + 1;
   const prev = () => currentMonth - 1;
-  const current = () => thisMonth
+  const current = () => thisMonth;
   return (
     <>
-      <div className="cal-month border">
+      <div className="cal-month">
         <div className="this-month flex">
-        <div className="prev-month px-4 cursor-pointer" onClick={() => setMonth(prev)}>{'<'}</div>
-          <div className="month-name border px-4" onClick={() => setMonth(current)}>{DateTime.month(currentMonth)}</div>
-        <div className="next-month px-4 cursor-pointer" onClick={() => setMonth(next)}>{'>'}</div>
+          <div className="prev-month px-4 cursor-pointer" onClick={() => setMonth(prev)}>
+            {cursorLeft}
+            </div>
+            <div className="month-name px-4" onClick={() => setMonth(current)}>{DateTime.month(currentMonth)}</div>
+          <div className="next-month px-4 cursor-pointer" onClick={() => setMonth(next)}>{cursorRight}</div>
         </div>
         <div className="days">
           {days(currentMonth,year)}

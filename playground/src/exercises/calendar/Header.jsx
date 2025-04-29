@@ -4,7 +4,8 @@ import { useEffect, useState } from "react"
 export const Header = () => {
   const [t,setTime] = useState(time());
   const {dow,month,date,hour,second,context} = t
-  const minute = t.time.minute
+  const minute = t.time.minute;
+  
   useEffect(() => {
     const nextMinute = (60 - second) * 1000;
     const getTime = () => time();
@@ -22,6 +23,7 @@ export const Header = () => {
       clearInterval(intervalId)
     }
   },[])
+
   return (
     <div className="cal-header">
       <div className="header-toolbar"></div>
