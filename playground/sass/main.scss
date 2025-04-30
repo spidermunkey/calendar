@@ -1,6 +1,7 @@
 @forward './dims.scss';
 @forward './reset.scss';
 @forward './calendar/calendar.scss';
+@forward './flashcards/flashcards.scss';
 
 .app,#root {
   height: 100%;
@@ -8,6 +9,7 @@
 }
 
 .app {
+  font-family: 'Quicksand';
   display: flex;
   justify-content: flex-start;
 }
