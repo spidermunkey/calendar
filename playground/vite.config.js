@@ -9,8 +9,13 @@ export default defineConfig({
   ],
   server: {
     proxy: {
+      '/birthdays': {
+        target: 'http://localhost:1280/birthdays',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/birthdays/, ''),
+      },
       '/api': {
-        target: 'http://localhost:1280',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       }

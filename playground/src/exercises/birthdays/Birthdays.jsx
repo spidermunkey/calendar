@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 
 const getBirthdays = async () => {
   try {
-    const enpoint = '/api/birthdays'
+    const enpoint = '/birthdays'
     const birthdays = await (await fetch(enpoint)).json()
     return birthdays;
   }catch (error){
     console.log('errrrr',error)
     return []
   }
-
 }
 export const Birthdays = () => {
   const [birthdays,setData] = useState([]);
@@ -33,7 +32,7 @@ export const Birthdays = () => {
             console.log(`${name}s birthday is this month! ${month}/${day}/${year}`, data)
           }
           return (
-            <div key={index} className={` birthday ${ isThisMonth ? 'border border-lime-400 ml-20' : 'border'}`}>
+            <div key={index} className={` birthday ${ isThisMonth ? 'active' : ''}`}>
               {name}
             </div>
           )

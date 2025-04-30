@@ -63,7 +63,6 @@ export class DateTime {
   static get clock() {
     const curDate = new Date();
     const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    console.log(zone)
       // Format date/time in the provided time zone
     const options = {
       timeZone: 'America/Denver',
@@ -81,7 +80,6 @@ export class DateTime {
 
     // Extract relevant pieces from the formatted parts
     const dateParts = Object.fromEntries(parts.map(p => [p.type, p.value]));
-    console.log(dateParts)
     const hour = parseInt(dateParts.hour);
     const minute = parseInt(dateParts.minute);
     const second = parseInt(dateParts.second);

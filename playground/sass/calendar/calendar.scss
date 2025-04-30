@@ -10,10 +10,14 @@
   justify-content: center;
   align-items: center;
   // border: 1px solid #ccc;
-
-
 }
 
+.birthdays {
+  width: fit-content;
+  .birthday.active {
+    border: 1px solid lime;
+  }
+}
 
 .cal-month {
   // flex: 1;
