@@ -1,4 +1,4 @@
-import { DateTime } from "mojo";
+import { DateTime } from "../../utils/DateTime";
 import { useState,useRef } from "react";
 import { cursorLeft } from "../../assets/icons/cursor-left";
 import { cursorRight } from "../../assets/icons/cursor-right";

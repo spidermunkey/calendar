@@ -1,6 +1,6 @@
-import { Birthdays } from "../birthdays/Birthdays"
-import { Timers } from "../timer/Timers"
-import { Todo } from "../todo/Todo"
+import { Birthdays } from "../../birthdays/Birthdays"
+import { Timers } from "../../timer/Timers"
+import { Todo } from "../../todo/Todo"
 
 export const CalendarTabs = [
   {

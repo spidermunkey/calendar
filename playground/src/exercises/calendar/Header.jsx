@@ -1,14 +1,14 @@
-import { time } from "./js/getTime"
+import { DateTime } from "../../utils/DateTime";
 import { useEffect, useState } from "react"
 
 export const Header = () => {
-  const [t,setTime] = useState(time());
+  const [t,setTime] = useState(DateTime.clock);
   const {dow,month,date,hour,second,context} = t
   const minute = t.time.minute;
-  
+
   useEffect(() => {
     const nextMinute = (60 - second) * 1000;
-    const getTime = () => time();
+    const getTime = () => DateTime.clock;
     let intervalId;
     let timeoutId;
     const alignTime = () => {
