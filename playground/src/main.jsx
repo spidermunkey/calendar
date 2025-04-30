@@ -5,8 +5,7 @@ import { createRoot } from 'react-dom/client'
 
 import { BrowserRouter, Routes, Route } from 'react-router'
 
-
-import Navbar from './exercises/Navbar'
+import Navbar from './Navbar'
 import Home from './pages/Home'
 import Calendar from './exercises/calendar/_Page'
 import Flashcards from './exercises/flashcards/_Page'

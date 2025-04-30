@@ -1,5 +1,5 @@
 export const HelpMenu = (props) => (
-  <div className='help-menu' {...props}>
+<div className='help-menu' {...props}>
     <div className="keymap" key="á">
       <span className="key">á</span>
       <span className="cmd">' + a</span>
