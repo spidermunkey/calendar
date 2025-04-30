@@ -74,3 +74,17 @@
   height: fit-content;
   border-radius: 12px;
 }
+
+.card-list {
+
+  .card {
+    .info {
+      .answer {
+        display: none;
+      }
+      &.active .answer {
+        display: block;
+      }
+    }
+  }
+}

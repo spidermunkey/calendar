@@ -12,7 +12,7 @@ export const CardForm = () => {
       description
     }
     const submit = async () => {
-      await fetch('/api/flashcards',{
+      return fetch('/api/flashcards',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -20,8 +20,8 @@ export const CardForm = () => {
         body: JSON.stringify(data)
       })
     }
-    await submit()
-    console.log('DAT',data, submit)
+    const res = await submit()
+    console.log('DAT',data, res)
     setAnswer('')
     setTitle('')
     setDescription('')
