@@ -76,7 +76,11 @@
 }
 
 .card-list {
-
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 24px;
   .card {
     .info {
       .answer {
