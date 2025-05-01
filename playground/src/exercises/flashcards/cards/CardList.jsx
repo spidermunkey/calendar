@@ -13,7 +13,7 @@ const answer = (answer) => {
     <div className="answer">{answer}</div>
   </div>)
 }
-export const CardList = () => {
+export const CardList = ({hasChanged}) => {
   const [cards,setCards] = useState([])
   useEffect(() => {
       const getData = async() => {
@@ -21,7 +21,7 @@ export const CardList = () => {
         setCards(data)
      }
      getData();
-  },[])
+  },[hasChanged])
   const toggle = (id) => {
     const element = document.querySelector(`[id="${id}"]`);
     const btnShow = element.querySelector('.btn-show');
