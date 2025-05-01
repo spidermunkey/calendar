@@ -88,3 +88,11 @@
     }
   }
 }
+
+.card-form {
+  .btn-add-option,.btn-remove-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+}
