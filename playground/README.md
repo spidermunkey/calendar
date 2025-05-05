@@ -1,3 +1,5 @@
+** MOCK DB STRUCTURE ** 
+
 /db
   database.json
   

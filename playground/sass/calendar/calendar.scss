@@ -1,4 +1,5 @@
-    $border: 1px solid #8484841a;
+
+$border: 1px solid #8484841a;
     $color: #494949;
     $font: 'Quicksand';
 
@@ -35,6 +36,7 @@
   border: $border;
   .this-month {
     margin: 8px 0px;
+    display: flex;
   }
   .month-name {
     color: $color;
