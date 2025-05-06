@@ -85,6 +85,7 @@ const CreateForm = ({onUpdate}) => {
   </>
   )
 }
+
 const NamedList = ({birthdays}) => (
   <div className="list column">
     {birthdays.map((data,index)=>{
@@ -106,15 +107,17 @@ const NamedList = ({birthdays}) => (
 
 export const Birthdays = () => {
   const state = useAppState();
-  console.log(state)
-  
+  const bdays = state.birthdays;
+
   const [birthdays,setData] = useState([]);
   const update = () => {
     const getData = async () => {
-      const data = await getBirthdays();
-      state.birthdays = data;
+      const data = await bdays.data
+      const isToday = await bdays.isToday();
+      const isThisMonth = await bdays.isThisMonth();
+      console.log(isToday.length + ' birthdays today');
+      console.log(isThisMonth.length + ' birthdays this month')
       setData(data)
-
     }
     getData()
   }
