@@ -1,5 +1,5 @@
-import { useEffect, useState, createContext } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { useAppState } from "context";
 const getBirthdays = async () => {
   try {
     const enpoint = 'api/birthdays'
@@ -37,6 +37,7 @@ const addBirthday = async ({
 }
 
 const CreateForm = ({onUpdate}) => {
+  const state = useAppState();
   const [name,setName] = useState('');
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
@@ -48,7 +49,8 @@ const CreateForm = ({onUpdate}) => {
     console.log('submiting form')
     console.log(name)
     console.log(`${day}-${month}${year ? '-' + year : ''}`)
-    addBirthday({name,day,month,year}).then(res => onUpdate ? onUpdate(res) : console.log('RESY',res))
+    // addBirthday({name,day,month,year}).then(res => onUpdate ? onUpdate(res) : console.log('RESY',res))
+    // console.log(state)
   } 
 
   return ( 
@@ -103,11 +105,16 @@ const NamedList = ({birthdays}) => (
 )
 
 export const Birthdays = () => {
+  const state = useAppState();
+  console.log(state)
+  
   const [birthdays,setData] = useState([]);
   const update = () => {
     const getData = async () => {
       const data = await getBirthdays();
+      state.birthdays = data;
       setData(data)
+
     }
     getData()
   }

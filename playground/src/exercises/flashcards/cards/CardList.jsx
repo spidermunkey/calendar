@@ -1,7 +1,8 @@
 import { useEffect,useState } from "react";
 
+import { useAppState } from "context";
 const getCards = async () => {
-  const cards = await fetch('/api/flashcards');
+  const cards = await fetch('local/flashcards');
   const data = await cards.json();
   return data;
 }
@@ -15,6 +16,8 @@ const answer = (answer) => {
 }
 export const CardList = ({hasChanged}) => {
   const [cards,setCards] = useState([])
+  const state = useAppState();
+  console.log(state)
   useEffect(() => {
       const getData = async() => {
         const data = await getCards();

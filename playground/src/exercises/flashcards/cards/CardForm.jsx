@@ -36,7 +36,7 @@ export const CardForm = ({notifier}) => {
       options: [...options]
     }
     const submit = async () => {
-      return fetch('/api/flashcards',{
+      return fetch('/local/flashcards',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

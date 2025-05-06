@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -13,7 +14,19 @@ export default defineConfig({
         target: 'http://localhost:1280',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/local': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/local/, ''),
       }
+    }
+  },
+  resolve: {
+    alias: {
+      context: path.resolve(__dirname, './src/context'),
+      model: path.resolve(__dirname, './src/model'),
+      // components: path.resolve(__dirname, './src/components'),
     }
   }
 })

@@ -10,15 +10,22 @@ import Home from './pages/Home'
 import Calendar from './exercises/calendar/_Page'
 import Flashcards from './exercises/flashcards/_Page'
 
+import { AppProvider } from 'context';
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <Navbar/>
-      <Routes>
-        <Route index element={<Home/>}/>
-        <Route path='/calendar' element={<Calendar/>}/>
-        <Route path='/flashcards' element={<Flashcards/>}/>
-      </Routes>
-    </BrowserRouter>
+    <AppProvider>
+
+      <BrowserRouter>
+        <Navbar/>
+        <Routes>
+          <Route index element={<Home/>}/>
+          <Route path='/calendar' element={<Calendar/>}/>
+          <Route path='/flashcards' element={<Flashcards/>}/>
+        </Routes>
+      </BrowserRouter>
+
+    </AppProvider>
+
   </StrictMode>,
 )
