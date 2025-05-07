@@ -28,30 +28,3 @@
   }
 
 }
-.tabber {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  .tabber-labels {
-    display: flex;
-    justify-content: space-evenly;
-    // box-shadow: 0px 1px 12px 4px rgba(90, 90, 90, 0.185);
-    border: 1px solid #ccc;
-    padding: 24px;
-    margin-top: 18px;
-    margin-bottom: 12px;
-    margin-left: 12px;
-    margin-right: 12px;
-    border-radius: 20px;
-    color: #222;
-  }
-
-  .tabber-tab {
-    &.active {
-      border-bottom: 1px solid #ddd;
-    }
-  }
-
-
-}
-

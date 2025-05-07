@@ -2,7 +2,27 @@
 $border: 1px solid #8484841a;
     $color: #494949;
     $font: 'Quicksand';
-
+    .cal-month-header {
+      display: flex;
+      justify-content: space-between;
+    }
+    .tabber-labels {
+      display: flex;
+      color: #222;
+    }
+    .tabber-modals {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      margin: auto;
+      margin-left: 60px;
+      .tabber-tab {
+        &.active {
+          border-bottom: 1px solid #ddd;
+        }
+      }
+    
+    }    
 .calendar {
   margin-left: 24px;
   position: relative;

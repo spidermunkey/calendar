@@ -1,22 +1,17 @@
 import { DateTime } from "../../utils/DateTime";
 import { useState,useRef, useEffect } from "react";
 
+import { CalendarTabs } from "./Tabs";
 import { CalendarCursor } from "./CalendarCursor";
 import { Days } from "./Days";
 
 import { useAppState } from "context";
 
-const date = new Date();
-const today = {
-    month: date.getMonth(), 
-    year: date.getFullYear(),
-    day: date.getDate(),
-}
-
 export const Month = () => {
-  
-  const { birthdays, today } = useAppState()
+
+  const { birthdays, today } = useAppState();
   const { month, year } = today;
+
   const [currentMonth,setMonth] = useState(month)
   const [activeBirthdays,setActiveBirthdays] = useState([])
 
@@ -32,9 +27,12 @@ export const Month = () => {
   }
 
   useEffect(updateBirthdaysThisMonth,[currentMonth])
+
   return (
       <div className="cal-month">
+        <div className="cal-month-header">
           <CalendarCursor currentMonth={ DateTime.month(currentMonth) } next={toggleNext} prev={togglePrev} reset={toggleCurrent}/>
+        </div>
           <Days activeBirthdays={activeBirthdays} month={month} year={year} />
       </div>
   )
