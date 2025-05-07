@@ -20,10 +20,8 @@ export const birthdayModel = {
   },
 
   async isToday(){
-
     const data = await this.getData();
     const today = new Date();
-
     const month = today.getMonth() + 1;
     const day = today.getDate();
     const found = data.filter(bday => bday.month === month && bday.day === day);
@@ -37,19 +35,28 @@ export const birthdayModel = {
   
   async getByDate({ month, day }){
     const data = await this.getData();
-    const found = data.filter(bday => bday.month === month + 1 && bday.day === day);
+    const found = data.filter(bday => bday.month == month + 1 && bday.day == day);
     return found;
   },
 
   async getByMonth(monthIndex){
     const data = await this.getData();
-    const isThisMonth = data.filter(bday => bday.month === monthIndex + 1);
+    const isThisMonth = data.filter(bday => bday.month == monthIndex + 1);
     return isThisMonth;
   },
 
 
   async add(date) {
+    console.log('adding date')
     const response = await this.POST(date);
+    this.stale = true;
+    console.log('returning')
+    return response;
+  },
+
+  async remove(date){
+    const {_id} = date;
+    const response = await this.DELETE(_id);
     this.stale = true;
     return response;
   },
@@ -68,12 +75,22 @@ export const birthdayModel = {
 
   },
   async POST(data, endpoint = this.endpoint){
-    const response = await fetch(endpoint,{
+    console.log('logs')
+    const response = fetch(endpoint,{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-    const result = await response.json();
-    return result;
+    console.log('its posted foo')
+    return response;
   },
+  async DELETE(id, enpoint = this.endpoint){
+    console.log(id)
+    const response = fetch(enpoint,{
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({id:id})
+    })
+    return response;
+  }
 }

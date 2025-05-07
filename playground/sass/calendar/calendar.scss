@@ -16,6 +16,7 @@ $border: 1px solid #8484841a;
       flex: 1;
       margin: auto;
       margin-left: 60px;
+      overflow-y: scroll;
       .tabber-tab {
         &.active {
           border-bottom: 1px solid #ddd;

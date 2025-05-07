@@ -43,14 +43,26 @@ const CreateForm = ({onUpdate}) => {
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
 
-
   const onFormSubmit = (event) => {
+    console.log('yooooo')
     event.preventDefault();
     console.log('submiting form')
     console.log(name)
     console.log(`${day}-${month}${year ? '-' + year : ''}`)
-    // addBirthday({name,day,month,year}).then(res => onUpdate ? onUpdate(res) : console.log('RESY',res))
-    // console.log(state)
+    try {
+      state.birthdays.add({name,day,month,year}).then(res => {
+        console.log('posted',onUpdate)
+          //   if (onUpdate) 
+          //     onUpdate(res)
+          //   console.log('RESY',res)
+          // console.log(state)
+      })
+    } catch(error){
+      console.log('error foo!')
+    }
+    setTimeout(() => {
+      console.log("Still alive after submit");
+    }, 500);
   } 
 
   return ( 
@@ -58,7 +70,11 @@ const CreateForm = ({onUpdate}) => {
     <div className="create-birthday">
       <div className="label">Add Birthday</div>
       <div className="create-form">
-        <form onSubmit={onFormSubmit}>
+        <form onSubmit={(event) => {
+          setTimeout(() => console.log('is anyone home?'),2000)
+          event.preventDefault()
+          onFormSubmit(event)
+          }}>
           <div className="name-field">
             <div className="label">name</div>
             <div className="input">
@@ -86,7 +102,7 @@ const CreateForm = ({onUpdate}) => {
   )
 }
 
-const NamedList = ({birthdays}) => (
+const NamedList = ({birthdays,onDelete}) => (
   <div className="list column">
     {birthdays.map((data,index)=>{
       const {name,day,month,year} = data;
@@ -96,7 +112,11 @@ const NamedList = ({birthdays}) => (
       if (name) {
         return (
           <div key={index} className={` birthday ${ isThisMonth ? 'active' : ''}`}>
-            {name}
+            <span className="name">{name}  {day}/{month} </span><span className="del" onClick={() => {
+              console.log('deleting: ',data)
+              onDelete(data)
+            }
+              }> delete </span> 
           </div>
         )
       }
@@ -108,9 +128,9 @@ const NamedList = ({birthdays}) => (
 export const Birthdays = () => {
   const state = useAppState();
   const bdays = state.birthdays;
-
   const [birthdays,setData] = useState([]);
   const update = () => {
+    console.log('here foo')
     const getData = async () => {
       const data = await bdays.data
       const isToday = await bdays.isToday();
@@ -121,11 +141,19 @@ export const Birthdays = () => {
     }
     getData()
   }
-  useEffect(update,[])
+  const onDelete = (data) => {
+    const remove = async () => {
+      await state.birthdays.remove(data);
+      const updated = await state.birthdays.getData();
+      setData(updated)
+    }
+    remove()
+  }
+  useEffect(update,[birthdays])
   return (
     <div className='birthdays flex-col p-12'>
       <CreateForm onUpdate={update}/>
-      <NamedList birthdays={birthdays}/>
+      <NamedList birthdays={birthdays} onDelete={onDelete}/>
     </div>
   )
 }
