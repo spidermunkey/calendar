@@ -1,4 +1,3 @@
-import React from 'react'
 
 import { CalendarTabs } from './tabs/tab_data'
 import { Header } from './Header'
@@ -10,7 +9,6 @@ import { CalendarCursor } from "./CalendarCursor";
 import { Days } from "./Days";
 import { useAppState } from "context";
 
-
 const Calendar = () => {
   const state = useAppState();
 
@@ -20,9 +18,37 @@ const Calendar = () => {
 
   const [currentMonth,setMonth] = useState(month)
   const [activeBirthdays,setActiveBirthdays] = useState([])
+  const [bdays,setBdays] = useState([]);
+
   const updateCurrentMonth = (month) => {
     setMonth(month);
     state.currentMonth = month;
+  }
+  const refreshBirthdays = () => {
+    const getData = async () => {
+      const data = await birthdays.data
+      const isToday = await birthdays.isToday();
+      const isThisMonth = await birthdays.isThisMonth();
+      console.log(isToday.length + ' birthdays today');
+      console.log(isThisMonth.length + ' birthdays this month')
+      setBdays(data)
+      updateBirthdaysThisMonth()
+    }
+    getData()
+  }
+  const removeBirthday = (data) => {
+    const remove = async () => {
+      await state.birthdays.remove(data);
+      const updated = await state.birthdays.getData();
+      setBdays(updated)
+    }
+    remove()
+  }
+  const addBirthday = ({name,day,month,year}) => {
+    birthdays.add({name,day,month,year}).then(res => {
+      refreshBirthdays();
+  })
+
   }
   const thisMonth = useRef(today.month).current
   const tabs = CalendarTabs;
@@ -45,6 +71,7 @@ const Calendar = () => {
   }
 
   useEffect(updateBirthdaysThisMonth,[currentMonth])
+
   return (
         <>
           <div className="app">
@@ -64,7 +91,7 @@ const Calendar = () => {
                   <Days activeBirthdays={activeBirthdays} month={month} year={year} />
               </div>
             </div>
-              <TabModal> { tabs[activeTab].element } </TabModal>
+              <TabModal> { tabs[activeTab].element({currentMonth:currentMonth,birthdays:bdays,update:refreshBirthdays,remove:removeBirthday,add:addBirthday}) } </TabModal>
           </div>
         </>
   )

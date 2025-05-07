@@ -47,10 +47,8 @@ export const birthdayModel = {
 
 
   async add(date) {
-    console.log('adding date')
     const response = await this.POST(date);
     this.stale = true;
-    console.log('returning')
     return response;
   },
 
@@ -64,9 +62,7 @@ export const birthdayModel = {
   async GET(enpoint = this.endpoint) {
     try {
       const response = await fetch(enpoint);
-      console.log(response)
       const data = await response.json();
-
       return data;
     } catch(error){
         console.log('error fetching birthdays',error)
@@ -75,17 +71,14 @@ export const birthdayModel = {
 
   },
   async POST(data, endpoint = this.endpoint){
-    console.log('logs')
     const response = fetch(endpoint,{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-    console.log('its posted foo')
     return response;
   },
   async DELETE(id, enpoint = this.endpoint){
-    console.log(id)
     const response = fetch(enpoint,{
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json'},
