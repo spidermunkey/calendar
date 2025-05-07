@@ -5,6 +5,7 @@ import { Header } from './Header'
 import { DateTime } from "../../utils/DateTime";
 import { useState,useRef, useEffect } from "react";
 
+import { TabModal } from './TabModal';
 import { CalendarCursor } from "./CalendarCursor";
 import { Days } from "./Days";
 
@@ -46,9 +47,7 @@ const Calendar = () => {
                   <Days activeBirthdays={activeBirthdays} month={month} year={year} />
               </div>
             </div>
-            <div className="tabber-modals">
-              { tabs[activeTab].element }
-            </div>
+              <TabModal> { tabs[activeTab].element } </TabModal>
           </div>
         </>
   )

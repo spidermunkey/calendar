@@ -1,29 +1,9 @@
 import { DateTime } from "../../utils/DateTime";
 import { useEffect, useState } from "react"
-
+import { useClock } from "../../hooks/useClock";
 export const Header = () => {
-  const [t,setTime] = useState(DateTime.clock);
-  const {dow,month,date,hour,second,context} = t
-  const minute = t.time.minute;
-
-  useEffect(() => {
-    const nextMinute = (60 - second) * 1000;
-    const getTime = () => DateTime.clock;
-    let intervalId;
-    let timeoutId;
-    const alignTime = () => {
-      setTime(getTime)
-      intervalId = setInterval(() => setTime(getTime),30000)
-      return 
-    }
-    timeoutId = setTimeout(() => alignTime(),nextMinute)
-    return () => {
-      console.log('timout cleared', typeof String(minute),minute)
-      clearTimeout(timeoutId)
-      clearInterval(intervalId)
-    }
-  },[])
-
+  const time = useClock()
+  const {dow,month,date,hour,second,context,minute} = time;
   return (
     <div className="cal-header">
       <div className="header-toolbar"></div>
