@@ -1,6 +1,6 @@
 
-import { CalendarTabs } from './tabs/tab_data'
-import { Header } from './Header'
+import { CalendarTabs } from './tabs/tab_data';
+import { Header } from './Header';
 import { DateTime } from "../../utils/DateTime";
 import { useState,useRef, useEffect, createContext , useContext } from "react";
 
@@ -16,8 +16,8 @@ const Calendar = () => {
   const { birthdays, today } = state;
   const { month, year } = today;
 
-  const [currentMonth,setMonth] = useState(month)
-  const [activeBirthdays,setActiveBirthdays] = useState([])
+  const [currentMonth,setMonth] = useState(month);
+  const [activeBirthdays,setActiveBirthdays] = useState([]);
   const [bdays,setBdays] = useState([]);
 
   const updateCurrentMonth = (month) => {
@@ -83,7 +83,14 @@ const Calendar = () => {
                   <div className="tabber-labels">
                     { tabs.map((tab,index) => {
                       if (tab.buttonType === 'inline'){
-                        return (<button className={`tabber-tab text-[18px] ${tab.element == tabs[activeTab]?.element ? 'active': ""}`} key={index} onClick={() => setActiveTab(index)}> {tab.label} </button>)
+                        return ( 
+                        <div 
+                          className={`tabber-tab text-[18px] ${tab.element == tabs[activeTab]?.element ? 'active': ""}`} 
+                          key={index} 
+                          onClick={() => setActiveTab(index)}> 
+                            <div className="icon">{tab.icon}</div>
+                            <div className="tool-tip">{tab.label}</div> 
+                          </div>)
                       }})
                     }
                   </div>

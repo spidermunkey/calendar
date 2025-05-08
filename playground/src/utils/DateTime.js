@@ -95,9 +95,9 @@ export class DateTime {
       dow: days[curDate.getDay()],
       month: months[curDate.getMonth()],
       date: curDate.getDate(),
-      hour,
-      minute,
-      second,
+      hour: hours24 <= 12 ? hours24.toString() : (hours24 - 12).toString(),
+      minute: minutes >= 10 ? minutes.toString() : minutes.toString().padStart(2, '0'),
+      second: seconds >= 10 ? seconds.toString() : seconds.toString().padStart(2, '0'),
       miliseconds: curDate.getMilliseconds(),
       context,
       time: {

@@ -1,10 +1,93 @@
 
 $border: 1px solid #8484841a;
-    $color: #494949;
-    $font: 'Quicksand';
+$color: #494949;
+$font: 'Quicksand';
+$ash: #f3f3f3ac;
+$slate: #8484841a;
+
     .cal-month-header {
       display: flex;
       justify-content: space-between;
+      .tabber-tab {
+        cursor: pointer;
+        border: $border;
+        width: 46px;
+        height: 46px;
+        margin-right: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12px;
+        position: relative;
+        z-index: 100;
+        margin-bottom: 12px;
+        transition: 200ms ease;
+        &::after {
+          content: "";
+          opacity: 0;
+          background: $slate;
+          position: absolute;
+          bottom: 0;
+          left: 4px;
+          right: 4px;
+          height: 1px;
+          border-radius: 100%;
+          transition: 150ms ease;
+          transform: translateY(2px);
+          box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.586);
+
+        }
+        &.active {
+          border: 1px solid #ccc;
+          background-color: #ffffffac;
+          scale: 1.1;
+          .tool-tip,&:hover .tool-tip {
+            opacity: 0;
+          }
+          &::after {
+          opacity: .8;
+          transform: translateY(0px);
+
+          }
+          &:before {
+            opacity: .8;
+            content: "";
+            background: $slate;
+            position: absolute;
+            bottom: 0;
+            left: 4px;
+            right: 4px;
+            height: 1px;
+            border-radius: 100%;
+            transition: 150ms ease;
+            transform: translateY(2px);
+          }
+        }
+        &:hover {
+          .tool-tip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(32px);
+          }
+        }
+        .icon {
+          svg { fill: $color};
+        }
+        .tool-tip {
+
+          padding: 12px;
+          border: $border;
+          opacity: 0;
+          pointer-events: none;
+          visibility: hidden;
+          background-color: white;
+          position: absolute;
+          bottom: -24px;
+          transition: 200ms ease 300ms;
+          border-radius: 8px;
+          transform: translateY(48px);
+        }
+      }
     }
     .tabber-labels {
       display: flex;
@@ -22,7 +105,6 @@ $border: 1px solid #8484841a;
           border-bottom: 1px solid #ddd;
         }
       }
-    
     }    
 .calendar {
   margin-left: 24px;
