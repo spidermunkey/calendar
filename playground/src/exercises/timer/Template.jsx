@@ -51,6 +51,7 @@ export const Template = ({
         if (this.state === 'running'){
           return;
         }
+          this.notify('start')
           this.state = 'running'
           this.started_at = Date.now();
           this.interval = setInterval(() => {
