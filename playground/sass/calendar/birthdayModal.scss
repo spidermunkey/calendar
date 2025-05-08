@@ -1,0 +1,171 @@
+
+
+
+.birthdays {
+    position: relative;
+
+
+    .btn-toggle-form {
+        margin: 12px 0px;
+        cursor: pointer;
+        display: inline-flex;
+        border: 1px solid #ccc;
+        padding: 8px 18px;
+        border-radius: 12px;
+        .icon {
+            margin-right: 12px;
+        }
+        .label {
+            padding-top: 1px;
+            font-size: 18px;
+        }
+        .label,.icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    }
+    .create-birthday {
+        background: white;
+        padding: 24px;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin-right: 12px;
+        margin-left: 0;
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transition: 150ms;
+        .form-title {
+            margin: 16px 0px;
+            font-size: 20px;
+        }
+        input {
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 8px 6px;
+            margin: 8px 0px;
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+            min-width: 60%;
+            border: 2px solid var(--ash);
+            outline: none;
+            transition: 150ms ease;
+            &:focus {
+                border: 2px solid rgba(16, 115, 154, 0.484);
+            }
+        }
+        .create-form {
+            position: relative;
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .btn-close-form {
+            position: absolute;
+            top: -42px;
+            right: 42px;
+        }
+        .btn-close-form, .btn-add-birthday {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            justify-content: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            button {
+                color: var(--color);
+            }
+            .label,.icon {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                color: var(--color);
+            }
+            .label {
+                padding-bottom: 1px;
+            }
+            .icon {
+                padding-top: 2px;
+                svg{fill: var(--color)};
+            }
+        }
+        .create-form {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: 200ms ease;
+        }
+        &.active {
+            opacity: 1;
+            pointer-events: all;
+            visibility: visible;
+            .create-form {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    }
+
+    .bday-name-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        height: 600px;
+        overflow: scroll;
+        .birthday {
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 4px 6px;
+            margin: 8px 0px;
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+            min-width: 60%;
+            border: 1px solid var(--ash);
+            &.active {
+                border: 1px solid rgba(0, 255, 0, 0.456);
+              }
+            &:hover:not(.active) {
+                background: var(--ash);
+                border: 1px solid var(--slate);
+            }
+            .info {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .bday-element {
+                margin: 0px 4px;
+                text-transform: capitalize;
+                height: 100%;
+                &.name {
+                    width: 100px;
+                }
+                &.date {
+                    font-size: 14px;
+                }
+            }
+            .bday-element.del {
+                padding-top: 4px;
+                margin-left: 24px;
+                border: 1px solid transparent;
+                padding: 4px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 8px;
+                transition: 300ms ease;
+                &:hover {
+                    border: 1px solid #ccc;
+                    background-color: white;
+                }
+            }
+        }
+    }
+  }
+  

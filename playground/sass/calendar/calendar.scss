@@ -1,16 +1,10 @@
 
-$border: 1px solid #8484841a;
-$color: #494949;
-$font: 'Quicksand';
-$ash: #f3f3f3ac;
-$slate: #8484841a;
-
     .cal-month-header {
       display: flex;
       justify-content: space-between;
       .tabber-tab {
         cursor: pointer;
-        border: $border;
+        border: var(--border);
         width: 46px;
         height: 46px;
         margin-right: 8px;
@@ -25,7 +19,7 @@ $slate: #8484841a;
         &::after {
           content: "";
           opacity: 0;
-          background: $slate;
+          background: var(--slate);
           position: absolute;
           bottom: 0;
           left: 4px;
@@ -52,7 +46,7 @@ $slate: #8484841a;
           &:before {
             opacity: .8;
             content: "";
-            background: $slate;
+            background: var(--slate);
             position: absolute;
             bottom: 0;
             left: 4px;
@@ -71,12 +65,12 @@ $slate: #8484841a;
           }
         }
         .icon {
-          svg { fill: $color};
+          svg { fill: var(--color)};
         }
         .tool-tip {
 
           padding: 12px;
-          border: $border;
+          border: var(--border);
           opacity: 0;
           pointer-events: none;
           visibility: hidden;
@@ -116,13 +110,6 @@ $slate: #8484841a;
   // border: 1px solid #ccc;
 }
 
-.birthdays {
-  width: fit-content;
-  .birthday.active {
-    border: 1px solid lime;
-  }
-}
-
 .cal-month {
   // flex: 1;
   // min-width: calc(80*8px);
@@ -135,14 +122,14 @@ $slate: #8484841a;
   border-radius: 8px;
   border-top-right-radius: 0px;
   border-top-left-radius: 0px;
-  border: $border;
+  border: var(--border);
   .this-month {
     margin: 8px 0px;
     display: flex;
   }
   .month-name {
-    color: $color;
-    font-family: $font;
+    color: var(--color);
+    font-family: var(--font);
     font-weight: 600;
     letter-spacing: 0.035em;
     min-width: 14ch;
@@ -206,7 +193,7 @@ $slate: #8484841a;
 .cal-header {
   display: flex;
   flex-direction: column;
-  border: $border;
+  border: var(--border);
   border-bottom: 1px solid transparent;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;

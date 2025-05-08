@@ -1,5 +1,9 @@
+@use './colors.scss';
+
 @forward './dims.scss';
 @forward './reset.scss';
+
+@forward './calendar/birthdayModal.scss';
 @forward './calendar/calendar.scss';
 @forward './flashcards/flashcards.scss';
 
