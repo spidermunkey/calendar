@@ -7,7 +7,7 @@ export const Template = ({
     time = 25,
     rest = 5,
     intermission = 0,
-  }) => { 
+  } = {}) => { 
 
   return {
 

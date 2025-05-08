@@ -4,6 +4,7 @@ import { Template } from './Template';
 export const useTimer = (config) => {
   const timerRef = useRef(null);
 
+  const [title,setTitle] = useState('')
   const [currentTime,setCurrentTime] = useState(0);
   const [state,setState] = useState('stopped');
   const [session,setSession] = useState(1);
@@ -35,7 +36,7 @@ export const useTimer = (config) => {
     const timer = Template(config);
     let timeouts = [];
     timerRef.current = timer;
-
+    setTitle(timer.title)
     const queueTransition = (args) => timeouts.push(transitionToState(...args));
     const update = (time) => setCurrentTime(prev => (prev !== time ? time : prev))
     const cleanup = (timeouts) => timeouts.forEach(timeout => clearTimeout(timeout))
@@ -77,5 +78,7 @@ export const useTimer = (config) => {
     transitioning,
     transitionText,
     currentTransition,
+    
+    title,
   };
 }
