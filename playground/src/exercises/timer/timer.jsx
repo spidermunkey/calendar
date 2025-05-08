@@ -3,7 +3,7 @@ import Controller from './Controller';
 
 import { useTimer } from './useTimer';
 
-export const Timer = () => {
+export const Timer = ({ name = 'focus', time={hours:0,minutes:25,seconds:0}, type='timer'}) => {
   const {
     currentTime,
     state,
@@ -17,9 +17,8 @@ export const Timer = () => {
     transitioning,
     transitionText,
     currentTransition,
-    title,
-  } = useTimer();
-
+    timer,
+  } = useTimer({name,time,type});
   const { hours, minutes, seconds } = currentTime;
   const notifyEnd = () => {
     alert('timer end')
@@ -36,7 +35,7 @@ export const Timer = () => {
 
   return (
     <div className="timer">
-      <div className="timer-title">{title}</div>
+      <div className="timer-title">{timer.title}</div>
       <Clock hours={hours} minutes={minutes} seconds={seconds} />
       <Controller handler={delegate}/>
     </div>

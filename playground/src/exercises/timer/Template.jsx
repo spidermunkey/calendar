@@ -1,25 +1,26 @@
-import { convertMinutes, secondsInMinutes, convertSeconds } from "../../utils/Convert"
+import { convertMinutes, secondsInMinutes, convertSeconds, toMinutes } from "../../utils/Convert"
 
 export const Template = ({
     title = 'focus',
     category = 'none',
     type = 'timer',
-    time = 25,
+    time = {minutes:25,hours:0,seconds:0},
     rest = 5,
     intermission = 0,
   } = {}) => { 
 
+    const total = toMinutes(time);
   return {
 
       title: title,
       category: category,
       type: type,
 
-      timeElapsed: time * secondsInMinutes,       // seconds
-      timeAlloted: time,                          // minutes
+      timeElapsed: type === 'tracker' ? 0 : total, // seconds
+      timeAlloted: total,                          // minutes
                           
-      breakElapsed: rest * secondsInMinutes,      // seconds
-      breakAlloted: rest,                         // minutes
+      breakElapsed: rest * secondsInMinutes,        // seconds
+      breakAlloted: rest,                           // minutes
 
       started_at: null,                             // epoc date
       stopped_at: null,                              // epoc date
@@ -51,13 +52,14 @@ export const Template = ({
         if (this.state === 'running'){
           return;
         }
-          this.notify('start')
           this.state = 'running'
           this.started_at = Date.now();
           this.interval = setInterval(() => {
             this.handleInterval();
             this.notify('interval',this.current);
           },1000);
+          this.notify('start')
+
       },
 
       reset() {
@@ -104,7 +106,23 @@ export const Template = ({
       },
 
   //-----------------------------------------------------------------------------------------//
-      handleTimeElapsed() {
+    
+    setTime() {
+      if (this.type === 'timer'){
+        this.timeElapsed = this.timeElapsed - 1;
+      }
+      if (this.type === 'tracker'){
+        this.timeElapsed = this.timeElapsed + 1;
+      }
+    },
+    isComplete() {
+      if (this.type === 'timer'){
+        return this.timeElapsed <= 0;
+      } else if (this.type === 'tracker' && this.time !== 0){
+        return this.timeElapsed >= this.timeAlloted;
+      } else throw Error('invalid timer type');
+    },
+    handleTimeElapsed() {
         this.interval = clearInterval(this.interval);
         this.timeElapsed = this.timeAlloted * secondsInMinutes;
         this.notify('timeElapsed', this.current)
@@ -118,10 +136,10 @@ export const Template = ({
         this.notify('complete')
       },
       handleInterval(){
-        const timeLeft = this.timeElapsed > 0;
+        const isComplete = this.isComplete();
         const breaksLeft = this.session < this.limit;
-        if (timeLeft){
-          this.timeElapsed = this.timeElapsed - 1;
+        if (!isComplete){
+          this.setTime();
           this.notify('interval',this.timeElapsed);
           return;
         } else {

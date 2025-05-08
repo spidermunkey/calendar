@@ -2,10 +2,9 @@ import { useEffect, useRef, useState, useCallback, startTransition } from 'react
 import { Template } from './Template';
 
 export const useTimer = (config) => {
-  const timerRef = useRef(null);
+  const timerRef = useRef(Template(config));
 
-  const [title,setTitle] = useState('')
-  const [currentTime,setCurrentTime] = useState(0);
+  const [currentTime,setCurrentTime] = useState(timerRef.current.current);
   const [state,setState] = useState('stopped');
   const [session,setSession] = useState(1);
   // test
@@ -13,7 +12,7 @@ export const useTimer = (config) => {
   const [transitionText, setTransitionText] = useState('');
   const [currentTransition, setCurrentTransition] = useState('none')
 
-  const play = useCallback(() => timerRef.current?.play(),[])
+  const play = useCallback(() => {console.log('playing',timerRef.current);timerRef.current?.play()},[])
   const stop = useCallback(() => timerRef.current?.stop(),[])
   const reset = useCallback(() => timerRef.current?.reset(),[])
   const pauseBreak = useCallback(() => timerRef.current?.pauseBreak(),[])
@@ -33,10 +32,8 @@ export const useTimer = (config) => {
   
   useEffect(() => {
 
-    const timer = Template(config);
+    const timer = timerRef.current
     let timeouts = [];
-    timerRef.current = timer;
-    setTitle(timer.title)
     const queueTransition = (args) => timeouts.push(transitionToState(...args));
     const update = (time) => setCurrentTime(prev => (prev !== time ? time : prev))
     const cleanup = (timeouts) => timeouts.forEach(timeout => clearTimeout(timeout))
@@ -54,11 +51,8 @@ export const useTimer = (config) => {
     timer.on('breakInterval', update);
     timer.on('reset', update);
 
-    update(timer.current);
-    setState(timer.state);
 
     return () => {
-      timer.destroy();
       cleanup(timeouts);
     }
   },[config])
@@ -79,6 +73,6 @@ export const useTimer = (config) => {
     transitionText,
     currentTransition,
     
-    title,
+    timer:timerRef.current,
   };
 }
