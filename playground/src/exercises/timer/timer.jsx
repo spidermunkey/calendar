@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Clock from './components/clock';
-import Controller from './components/Controller';
+import Clock from './Clock';
+import Controller from './Controller';
 
 let interval;
 

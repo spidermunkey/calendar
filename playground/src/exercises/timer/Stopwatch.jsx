@@ -1,6 +1,6 @@
 import { useState } from "react"
-import Controller from "./components/Controller";
-import Clock from "./components/clock";
+import Controller from "./Controller";
+import Clock from "./Clock";
 const secondsInHour = 3600;
 const minutesInHour = 60;
 const secondsInMinutes = 60;
