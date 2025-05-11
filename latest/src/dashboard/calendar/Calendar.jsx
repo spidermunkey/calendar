@@ -26,7 +26,7 @@ const Calendar = () => {
   }
   const refreshBirthdays = () => {
     const getData = async () => {
-      const data = await birthdays.data
+      const data = await birthdays.getData();
       const isToday = await birthdays.isToday();
       const isThisMonth = await birthdays.isThisMonth();
       console.log(isToday.length + ' birthdays today');
