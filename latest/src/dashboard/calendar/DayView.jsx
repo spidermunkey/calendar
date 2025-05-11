@@ -16,8 +16,7 @@ export const DayView = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const dayData = await state.dayData(currentDay,currentMonth)
-      console.log('YO',dayData,state.currentDay)
+      const dayData = await state.getDay(currentDay,currentMonth)
       setDayData(dayData)
     }
     getData();
