@@ -38,8 +38,8 @@ const Calendar = () => {
   }
   const removeBirthday = (data) => {
     const remove = async () => {
-      await state.birthdays.remove(data);
-      const updated = await state.birthdays.getData();
+      await birthdays.remove(data);
+      const updated = await birthdays.getData();
       setBdays(updated)
     }
     remove()
@@ -66,7 +66,7 @@ const Calendar = () => {
       const day = dayElement.getAttribute('day')
       setActiveTab(3)
       state.currentDay = day;
-      const dayData = await state.dayData(day)
+      const dayData = await state.getDay(day)
     }
   }
 

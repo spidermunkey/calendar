@@ -13,9 +13,9 @@ export const createAppModel = () => {
     },
 
     birthdays: {
-      data:birthdayStore,
+      store:birthdayStore,
       async getData() {
-        return this.data.getData();
+        return this.store.getData();
       },
       async isToday(){
         const data = await this.getData();
