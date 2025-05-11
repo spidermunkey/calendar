@@ -1,4 +1,3 @@
-const services = require('../controllers/timers.js');
 const express = require('express');
 const router = express.Router();
 
@@ -9,7 +8,7 @@ router.delete('/:id', function deleteTimer(){
 
 });
 
-router.put('/:id', async function editTimer(req,res,next){
+router.put('/:id', async function editTimer(){
     
 });
 

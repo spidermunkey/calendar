@@ -30,7 +30,7 @@ async function run() {
             console.log(err.code)
             console.log(err.reason)
         })
-        server.listen(PORT, (err) => {
+        app.listen(PORT, (err) => {
             console.log(`listening for api connections on port:${PORT}`)
         });
         
