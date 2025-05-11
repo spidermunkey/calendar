@@ -2,30 +2,13 @@ import '../sass/main.scss'
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-
-import { BrowserRouter, Routes, Route } from 'react-router'
-
-import Navbar from './Navbar'
-import Home from './pages/Home'
-import Calendar from './exercises/calendar/Calendar'
-import Flashcards from './exercises/flashcards/Dashboard'
-
+import Calendar from './dashboard/calendar/Calendar'
 import { AppProvider } from 'context';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AppProvider>
-
-      <BrowserRouter>
-        <Navbar/>
-        <Routes>
-          <Route index element={<Home/>}/>
-          <Route path='/calendar' element={<Calendar/>}/>
-          <Route path='/flashcards' element={<Flashcards/>}/>
-        </Routes>
-      </BrowserRouter>
-
+      <Calendar/>
     </AppProvider>
-
   </StrictMode>,
 )
