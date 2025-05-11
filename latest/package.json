@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start": "npx json-server --watch ./db/database.json --port 8080",
+    "start": "npx json-server ./db/database.json --port 8080",
     "clean": "rm -rf node_modules .vite dist; npm install; npm run dev",
     "build": "vite build",
     "lint": "eslint .",

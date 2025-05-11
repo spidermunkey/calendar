@@ -1,10 +1,10 @@
-import { birthdayModel } from './birthdays'
+import { birthdayStore } from './birthdays'
 
 export const createAppModel = () => {
   const date = new Date();
   return {
     name:'My first app',
-    birthdays: birthdayModel,
+    birthdays: birthdayStore,
     currentMonth: date.getMonth(),
     currentDay: date.getDate(),
 

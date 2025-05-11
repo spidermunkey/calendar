@@ -1,6 +1,6 @@
+const endpoint = 'api/birthdays';
 
-export const birthdayModel = {
-  endpoint: 'api/birthdays',
+export const birthdayStore = {
   stale: true,
   _data: [],
   get data(){
@@ -9,7 +9,7 @@ export const birthdayModel = {
   },
   async getData() {
     if (this.stale){
-      let data = await this.GET();
+      let data = await getBirthdays();
       this._data = data;
       this.stale = false;
       return data;
@@ -47,19 +47,23 @@ export const birthdayModel = {
 
 
   async add(date) {
-    const response = await this.POST(date);
+    const response = await addBirthday(date);
     this.stale = true;
     return response;
   },
 
   async remove(date){
     const {_id} = date;
-    const response = await this.DELETE(_id);
+    const response = await deleteBirthday(_id);
     this.stale = true;
     return response;
   },
 
-  async GET(enpoint = this.endpoint) {
+
+}
+
+
+  async function getBirthdays(enpoint = endpoint) {
     try {
       const response = await fetch(enpoint);
       const data = await response.json();
@@ -69,16 +73,17 @@ export const birthdayModel = {
         return []
       }
 
-  },
-  async POST(data, endpoint = this.endpoint){
+  }
+
+  async function addBirthday(data, endpoint = endpoint){
     const response = fetch(endpoint,{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
     return response;
-  },
-  async DELETE(id, enpoint = this.endpoint){
+  }
+  async function deleteBirthday(id, enpoint = endpoint){
     const response = fetch(enpoint,{
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json'},
@@ -86,4 +91,3 @@ export const birthdayModel = {
     })
     return response;
   }
-}
