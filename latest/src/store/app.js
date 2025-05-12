@@ -1,5 +1,25 @@
 import { birthdayStore } from './birthdays'
+import { timerStore } from './timers';
 
+const createStore = (store) => {
+  return {
+      store:store,
+      get data() {
+        return this.getData();
+      },
+      async add(...args){
+        const response = await this.store.add(...args);
+        return response;
+      },
+      async remove(...args){
+        const response = await this.store.remove(...args);
+        return response;
+      },
+      async getData() {
+        return this.store.getData();
+      },
+  }
+}
 export const createAppModel = () => {
   const date = new Date();
   return {
@@ -13,10 +33,7 @@ export const createAppModel = () => {
     },
 
     birthdays: {
-      store:birthdayStore,
-      async getData() {
-        return this.store.getData();
-      },
+      ...createStore(birthdayStore),
       async isToday(){
         const data = await this.getData();
         const today = new Date();
@@ -42,6 +59,10 @@ export const createAppModel = () => {
       },
     },
 
+    timers: {
+      ...createStore(timerStore)
+    },
+
     async getDay(day = this.currentDay , month = this.currentMonth){
       const birthdaysToday = await this.birthdays.getByDate({month,day})
       const birthdaysThisMonth = await this.birthdays.getByMonth(month)
@@ -54,6 +75,7 @@ export const createAppModel = () => {
     },
 
     observables: {},
+
     observe(prop,cb) {
       console.log(this)
       if (!this.observables[prop]){

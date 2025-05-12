@@ -1,5 +1,5 @@
 import {Timer} from './Timer'
-
+import { BtnAdd } from './AddButton'
 const timer1 = {
   info:{
     title: 'Pomodoro',
@@ -36,6 +36,7 @@ export const Timers = () => {
   return (    
   <>
   <div className="timers flex-col p-12">
+    <BtnAdd/>
     <Timer/>
   </div>
 

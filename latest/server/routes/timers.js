@@ -12,8 +12,8 @@ router.put('/:id', async function editTimer(){
     
 });
 
-router.get('/', function getTimers(){
-
+router.get('/', function getTimers(request,response){
+  response.json('ping')
 });
 
 router.post('/', function addTimer() {

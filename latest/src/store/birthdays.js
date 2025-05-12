@@ -1,4 +1,4 @@
-const endpoint = 'api/birthdays';
+const _endpoint = 'api/birthdays';
 
 export const birthdayStore = {
   stale: true,
@@ -32,7 +32,7 @@ export const birthdayStore = {
   },
 }
 
-async function getBirthdays(enpoint = endpoint) {
+async function getBirthdays(enpoint = _endpoint) {
   try {
     const response = await fetch(enpoint);
     const data = await response.json();
@@ -43,7 +43,7 @@ async function getBirthdays(enpoint = endpoint) {
     }
 
 }
-async function addBirthday(data, endpoint = endpoint){
+async function addBirthday(data, endpoint = _endpoint){
   const response = fetch(endpoint,{
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -51,7 +51,7 @@ async function addBirthday(data, endpoint = endpoint){
   })
   return response;
 }
-async function deleteBirthday(id, enpoint = endpoint){
+async function deleteBirthday(id, enpoint = _endpoint){
   const response = fetch(enpoint,{
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json'},
