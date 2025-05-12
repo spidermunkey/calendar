@@ -4,8 +4,107 @@
   display: flex;
   flex-direction: column;
   padding-top: 200px;
+
+      .btn-toggle-form {
+        margin: 12px 0px;
+        cursor: pointer;
+        display: inline-flex;
+        border: 1px solid #ccc;
+        padding: 8px 18px;
+        border-radius: 12px;
+        .icon {
+            margin-right: 12px;
+        }
+        .label {
+            padding-top: 1px;
+            font-size: 18px;
+        }
+        .label,.icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    }
+    .timer-element {
+      position: relative;
+
+      border: 1px solid var(--slate);
+      box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.386);
+      padding: 24px 24px;
+      border-radius: 10px;
+      margin: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .activity-sensor {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        height: 6px;
+        width: 6px;
+        border-radius: 100%;
+        background-color: lime;
+        animation: blink 3s infinite alternate-reverse forwards running;
+        @keyframes blink {
+          0% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0;
+          }
+          100%{
+            opacity: 1;
+          }
+        }
+      }
+        .current-time {
+          display: flex;
+          font-family: 'Quicksand';
+          font-weight: 800;
+          font-size: 18px;
+          color: var(--color);
+          letter-spacing: 0.1em;
+        }
+        .stopwatch-controls {
+          display: flex;
+          justify-content: center;
+        }
+        .info, .timer-title {
+          display: flex;
+        }
+        .info {
+          flex-direction: column;
+        }
+        .timer-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--color);
+          opacity: .8;
+          letter-spacing: 0.035em;
+        }
+        .btn-control {
+          margin-top: 16px;
+          font-size: 18px;
+          font-weight: 600;
+          letter-spacing: 0.035em;
+          opacity: .7;
+          color: var(--color);
+          text-transform: uppercase;;
+          background-color: var(--slate);
+          padding: 10px 24px;
+          border-radius: 16px;
+          min-width: 120px;
+          text-align: center;
+          border: 1px solid rgba(64, 64, 64, 0.253);
+          cursor: pointer;
+          user-select: none;
+        }
+    }
 }
-.timer {
+
+
+.timer-widget {
   border: 1px solid var(--slate);
           box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.386);
   padding: 60px 24px;
