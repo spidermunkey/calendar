@@ -16,7 +16,7 @@ changes persisted mongo db 'birthdays' && 'timers' && 'dates' for use with multi
     MONGO_CLUSTER=yourCluster
 
 > server/.config/env.js
-
+require('dotenv').config()
 const CONNECTION_STRING = `mongodb+srv://${process.env.MONGO_USER}:${encodeURIComponent(process.env.MONGO_PASSWORD)}@cluster${process.env.MONGO_CLUSTER}.fnp9j.mongodb.net/?retryWrites=true&w=majority`
 
 ## Start Local Server
