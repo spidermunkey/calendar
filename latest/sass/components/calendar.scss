@@ -270,3 +270,40 @@
     }
   }
 }
+
+.dayView {
+    .day-data {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--color);
+      opacity: .85;
+    }
+    .section-title {
+      margin-top: 12px;
+      margin-left: 12px;
+      color: var(--color);
+      font-weight: 600;
+      opacity: .82;
+      font-size: 20px;
+    }
+    .event-list {
+      padding-left: 40px;
+      .bullet {
+        text-transform: capitalize;
+        font-weight: 600;
+        opacity: .62;
+        font-size: 18px;
+        position: relative;
+        &::after {
+          content: "";
+          left: -12px;
+          top: 8px;
+          height: 6px;
+          width: 6px;
+          background: rgba(63, 63, 63, 0.811);
+          border-radius: 100%;
+          position: absolute;
+        }
+      }
+    }
+}

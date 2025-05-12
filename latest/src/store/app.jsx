@@ -2,7 +2,7 @@ import { birthdayStore } from './birthdays.js'
 import { timerStore } from './timers.js';
 import { createObservable } from 'utils';
 import { createStore } from '../utils/createStore.jsx'
-
+import { DateTime } from '../utils/DateTime.js';
 export const createAppModel = () => {
   const date = new Date();
   return createObservable({
@@ -56,5 +56,7 @@ export const createAppModel = () => {
         }
       }
     },
+
+    monthName:(monthIndex) => DateTime.month(monthIndex)
   })
 }
