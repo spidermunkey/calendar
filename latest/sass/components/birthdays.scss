@@ -125,7 +125,7 @@
             min-width: 60%;
             border: 1px solid var(--ash);
             &.active {
-                border: 1px solid rgba(0, 255, 0, 0.456);
+                border: 1px solid pink;
               }
             &:hover:not(.active) {
                 background: var(--ash);

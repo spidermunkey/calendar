@@ -6,6 +6,7 @@ export const Days = ( { month , year , activeBirthdays } ) => {
   const previousDays = []
   const currentDays = []
   const lastDays = []
+  const today = (new Date()).getDate()
   const isBday = (day) => activeBirthdays.find(bday => bday.day == day)
   for (let i = 1; i < daysFromSunday; i++){
     let dateNum = lastDayOfLastMonth - (i - 1)
@@ -13,7 +14,7 @@ export const Days = ( { month , year , activeBirthdays } ) => {
   }
   for (let i = 0; i < daysInMonth; i++){
     let dateNum = i + 1
-    currentDays.push(<div key={i} day={dateNum} className={`day ${isBday(dateNum) ? 'bday' : ''}`} ><div className="daynum">{dateNum}</div></div>)
+    currentDays.push(<div key={i} day={dateNum} className={`day ${isBday(dateNum) ? 'bday' : ''} ${today ===  dateNum ? 'today': ''}`} ><div className="daynum">{dateNum}</div></div>)
   }
   for (let i = 0; i < daysFromSaturday; i++){
     let dateNum = i + 1
