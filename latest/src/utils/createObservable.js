@@ -16,7 +16,7 @@ export const createObservable = (context) => {
           }
         })
       }
-      this.observables[prop].actions.push(cb);
+      context.observables[prop].actions.push(cb);
       const unMount = () => {
         const i = context.observables[prop].actions.indexOf(cb);
         if (i >= 0) context.observables[prop].actions.splice(i, 1);
