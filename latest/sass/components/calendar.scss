@@ -1,103 +1,103 @@
 
-    .cal-month-header {
-      display: flex;
-      justify-content: space-between;
-      .tabber-tab {
-        cursor: pointer;
-        border: var(--border);
-        width: 46px;
-        height: 46px;
-        margin-right: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 12px;
-        position: relative;
-        z-index: 100;
-        margin-bottom: 12px;
-        transition: 200ms ease;
-        &::after {
-          content: "";
-          opacity: 0;
-          background: var(--slate);
-          position: absolute;
-          bottom: 0;
-          left: 4px;
-          right: 4px;
-          height: 1px;
-          border-radius: 100%;
-          transition: 150ms ease;
-          transform: translateY(2px);
-          box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.586);
+.cal-month-header {
+  display: flex;
+  justify-content: space-between;
+  .tabber-tab {
+    cursor: pointer;
+    border: var(--border);
+    width: 46px;
+    height: 46px;
+    margin-right: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    position: relative;
+    z-index: 100;
+    margin-bottom: 12px;
+    transition: 200ms ease;
+    &::after {
+      content: "";
+      opacity: 0;
+      background: var(--slate);
+      position: absolute;
+      bottom: 0;
+      left: 4px;
+      right: 4px;
+      height: 1px;
+      border-radius: 100%;
+      transition: 150ms ease;
+      transform: translateY(2px);
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.586);
 
-        }
-        &.active {
-          border: 1px solid #ccc;
-          background-color: #ffffffac;
-          scale: 1.1;
-          .tool-tip,&:hover .tool-tip {
-            opacity: 0;
-          }
-          &::after {
-          opacity: .8;
-          transform: translateY(0px);
+    }
+    &.active {
+      border: 1px solid #ccc;
+      background-color: #ffffffac;
+      scale: 1.1;
+      .tool-tip,&:hover .tool-tip {
+        opacity: 0;
+      }
+      &::after {
+      opacity: .8;
+      transform: translateY(0px);
 
-          }
-          &:before {
-            opacity: .8;
-            content: "";
-            background: var(--slate);
-            position: absolute;
-            bottom: 0;
-            left: 4px;
-            right: 4px;
-            height: 1px;
-            border-radius: 100%;
-            transition: 150ms ease;
-            transform: translateY(2px);
-          }
-        }
-        &:hover {
-          .tool-tip {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(32px);
-          }
-        }
-        .icon {
-          svg { fill: var(--color)};
-        }
-        .tool-tip {
-
-          padding: 12px;
-          border: var(--border);
-          opacity: 0;
-          pointer-events: none;
-          visibility: hidden;
-          background-color: white;
-          position: absolute;
-          bottom: -24px;
-          transition: 200ms ease 300ms;
-          border-radius: 8px;
-          transform: translateY(48px);
-        }
+      }
+      &:before {
+        opacity: .8;
+        content: "";
+        background: var(--slate);
+        position: absolute;
+        bottom: 0;
+        left: 4px;
+        right: 4px;
+        height: 1px;
+        border-radius: 100%;
+        transition: 150ms ease;
+        transform: translateY(2px);
       }
     }
-    .tabber-labels {
-      display: flex;
-      color: #222;
-    }
-    .tabber-modals {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      overflow-y: scroll;
-      .tabber-tab {
-        &.active {
-          border-bottom: 1px solid #ddd;
-        }
+    &:hover {
+      .tool-tip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(32px);
       }
-    }    
+    }
+    .icon {
+      svg { fill: var(--color)};
+    }
+    .tool-tip {
+
+      padding: 12px;
+      border: var(--border);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      background-color: white;
+      position: absolute;
+      bottom: -24px;
+      transition: 200ms ease 300ms;
+      border-radius: 8px;
+      transform: translateY(48px);
+    }
+  }
+}
+.tabber-labels {
+  display: flex;
+  color: #222;
+}
+.tabber-modals {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: scroll;
+  .tabber-tab {
+    &.active {
+      border-bottom: 1px solid #ddd;
+    }
+  }
+}    
 .calendar {
   margin-left: 24px;
   position: relative;
@@ -105,6 +105,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  user-select: none;
   // border: 1px solid #ccc;
 }
 
@@ -153,17 +154,25 @@
     aspect-ratio: 1/ 1;
     box-shadow: 0 0 7px -4px #1b1f2303, 0 0 #1b1f2306, inset -2px 0 1px 1px #ababab03, inset -1px 0 2px #bdbdbd03, 0 1px 4px #1b1f2303;
     cursor: pointer;
-    &.bday::before {
+    .bday-marker {
       height: 6px;
       width:6px;
       border-radius: 100%;
       background: pink;
-      content: "";
       position: absolute;
       top: 8px;
       right: 8px;
+      opacity: 0;
     }
-    &.today {
+    &.bday .bday-marker{
+      opacity: 1;
+    }
+    &.today .daynum {
+      background: var(--blue);
+      color: white;
+      opacity:1;
+    }
+    &.active {
       border: 1px solid rgba(155, 155, 155, 0.422);
       box-shadow: var(--shadow-active);
     }
@@ -191,9 +200,15 @@
     .daynum {
       color: #444;
       font-size: 12px;
-      margin-top: 6px;
-      margin-left: 12px;
+      margin-top: 4px;
+      margin-left: 4px;
       opacity: .75;
+      height: 24px;
+      width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100%;
     }
   }
 }

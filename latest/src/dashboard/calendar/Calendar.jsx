@@ -18,6 +18,7 @@ const Calendar = () => {
 
   const [currentMonth,setMonth] = useState(month);
   const [activeBirthdays,setActiveBirthdays] = useState([]);
+  const [currentDay,setCurrentDay] = useState(state.currentDay);
   const [bdays,setBdays] = useState([]);
 
   const updateCurrentMonth = (month) => {
@@ -66,6 +67,7 @@ const Calendar = () => {
       const day = dayElement.getAttribute('day')
       setActiveTab(3)
       state.currentDay = day;
+      setCurrentDay(day)
       const dayData = await state.getDay(day)
     }
   }
@@ -95,7 +97,7 @@ const Calendar = () => {
                     }
                   </div>
                 </div>
-                  <Days activeBirthdays={activeBirthdays} month={month} year={year} />
+                  <Days activeDay={currentDay} activeBirthdays={activeBirthdays} month={currentMonth} year={year} />
               </div>
             </div>
               <TabModal> { tabs[activeTab].element({currentMonth:currentMonth,birthdays:bdays,update:refreshBirthdays,remove:removeBirthday,add:addBirthday}) } </TabModal>
