@@ -17,7 +17,7 @@ export const Timers = () => {
     }
 
   },[])
-  return (    
+  return (
   <>
   <div className="interface-modal timers flex-col p-12">
     <div className="interface-header">
@@ -31,8 +31,17 @@ export const Timers = () => {
       <div className={`tab ${currentTab === 'trackers' ? 'active' : ''}`} tab="trackers">trackers</div>
       <div className={`tab ${currentTab === 'dates' ? 'active' : ''}`} tab="dates">dates</div>
     </div>
-    <BtnAdd/>
-    <Timer/>
+    
+    <div tab="timers" className={`interface-tab ${currentTab === 'timers' ? 'active' : ''}`}>
+      <BtnAdd/>
+      <Timer/>
+    </div>
+    <div tab="trackers" className={`interface-tab ${currentTab === 'trackers' ? 'active' : ''}`}>
+      trackers
+    </div>
+    <div tab="timers" className={`interface-tab ${currentTab === 'dates' ? 'active' : ''}`}>
+      dates
+    </div>
   </div>
 
   </>
