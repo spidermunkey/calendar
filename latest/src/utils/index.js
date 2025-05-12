@@ -1,6 +1,6 @@
 export * from './Convert'
 export * from './createObservable'
-export * from './createStore.js'
+export * from './createStore'
 export * from './date'
 export * from './DateTime'
 export * from './getRemainder'

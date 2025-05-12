@@ -1,7 +1,7 @@
-import { birthdayStore } from './birthdays'
-import { timerStore } from './timers';
+import { birthdayStore } from './birthdays.js'
+import { timerStore } from './timers.js';
 import { createObservable } from 'utils';
-import { createStore } from 'utils'
+import { createStore } from '../utils/createStore.jsx'
 
 export const createAppModel = () => {
   const date = new Date();

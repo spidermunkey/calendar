@@ -19,7 +19,7 @@ export const Timer = ({ name = 'focus', time={hours:0,minutes:25,seconds:0}, typ
   const { hours, minutes, seconds } = currentTime;
   console.log(state)
   return (
-    <div className="timer timer-element">
+    <div className="timer tracker-element">
       {state === 'running' ? <div className="activity-sensor"></div>
       :''}
       <div className="info">

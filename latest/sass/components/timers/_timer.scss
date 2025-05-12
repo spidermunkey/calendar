@@ -1,11 +1,11 @@
-.timer-element {
+.tracker-element {
   position: relative;
 
   border: 1px solid var(--slate);
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.386);
-  padding: 24px 24px;
+  padding: 8px 24px;
   border-radius: 10px;
-  margin: 12px 24px;
+  margin: 12px 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
