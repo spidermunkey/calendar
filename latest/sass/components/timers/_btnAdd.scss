@@ -1,0 +1,21 @@
+.btn-toggle-form {
+    margin: 12px 0px;
+    cursor: pointer;
+    display: inline-flex;
+    border: 1px solid #ccc;
+    padding: 8px 18px;
+    border-radius: 12px;
+    .icon {
+        margin-right: 12px;
+    }
+    .label {
+        padding-top: 1px;
+        font-size: 18px;
+    }
+    .label,.icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+}

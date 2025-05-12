@@ -5,7 +5,7 @@
 
 @forward './components/birthdays.scss';
 @forward './components/calendar.scss';
-@forward './components/timer.scss';
+@forward './components/timers/timers.scss';
 
 .app,#root {
   height: 100%;
@@ -31,4 +31,47 @@
     }
   }
 
+}
+
+.interface-modal {
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    color: var(--color);
+    border: 1px solid var(--border-1);
+    padding: 20px;
+    border-radius: 20px;
+    .interface-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      font-weight: 600;
+    }
+    .interface-title {
+      font-size: 20px;
+      opacity: .8;
+      letter-spacing: 0.035em;
+    }
+    .btn-close {
+      display: flex;
+      align-items: center;
+      height: 20px;
+      cursor: pointer;
+      opacity: .8;
+      .icon,
+      .label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .label {
+        margin-right: 4px;
+      }
+      .icon {
+        padding-top: 2px;
+      }
+    }
 }
