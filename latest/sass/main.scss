@@ -3,10 +3,9 @@
 @forward './dims.scss';
 @forward './reset.scss';
 
-@forward './calendar/birthdays.scss';
-@forward './calendar/calendar.scss';
-@forward './calendar/timer.scss';
-@forward './flashcards/flashcards.scss';
+@forward './components/birthdays.scss';
+@forward './components/calendar.scss';
+@forward './components/timer.scss';
 
 .app,#root {
   height: 100%;
