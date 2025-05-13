@@ -3,3 +3,18 @@
 @forward './timerWidget';
 @forward './btnAdd';
 
+.create-timer-modal {
+    position: absolute;
+    height: 600px;
+    width: 300px;
+    top: 124px;
+    left: -324px;
+    background: white;
+    border: 1px solid red;
+    z-index: 100;
+    display: none;
+    &.active {
+      display: flex;
+      flex-direction: column;
+    }
+  }

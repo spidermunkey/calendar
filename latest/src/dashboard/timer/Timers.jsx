@@ -19,6 +19,7 @@ export const Timers = () => {
   console.log(timers)
   const [currentTab,setTab] = useState('timers');
   const [currentTimers,setCurrentTimers] = useState([]);
+  const [createTimerModalActive,setCreateTimerModalActive] = useState(false)
   const toggleActiveTab = useCallback((event) => {
     const selected = event.target.closest('.tab')
     if (selected){
@@ -40,7 +41,11 @@ export const Timers = () => {
   },[])
   return (
   <>
+  <div className={[`create-timer-modal`,createTimerModalActive && 'active'].filter(Boolean).join(' ')}>
+      <div className="close" onClick={() => setCreateTimerModalActive(false)}>close</div>
+  </div>
   <div className="interface-modal timers flex-col p-12">
+
     <div className="interface-header">
       <div className="interface-title">Timers</div>
       <div className="btn-close">
@@ -69,7 +74,7 @@ export const Timers = () => {
     </div>
     <div tab="timers" className={`interface-tab ${currentTab === 'timers' ? 'active' : ''}`}>
       <div className="section-title">My Timers</div>
-      <div className="btn-add-timer"><div className="icon"><PlusIcon/></div><div className="label">New Timer</div></div>
+      <div className="btn-add-timer" onClick={() => setCreateTimerModalActive(true)}><div className="icon"><PlusIcon/></div><div className="label">New Timer</div></div>
 
       <div className="timer-list">
         {currentTimers.length == 0 ? <div className='bullet'>You have no timers saved</div>:

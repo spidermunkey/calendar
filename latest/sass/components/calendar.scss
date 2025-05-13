@@ -91,7 +91,8 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow-y: scroll;
+  position: relative;
+  padding-right: 12px;
   .tabber-tab {
     &.active {
       border-bottom: 1px solid #ddd;

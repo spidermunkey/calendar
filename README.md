@@ -1,5 +1,4 @@
-# react
-My Calendar App
+# My Calendar App
 
 this is pet project for managing birthdays, tasks, and timers inside of a web ui.
 
