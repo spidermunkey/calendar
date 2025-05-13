@@ -10,14 +10,7 @@
   border: 1px solid var(--border-1);
   padding: 20px;
   border-radius: 20px;
-  .section-title {
-    color: var(--color);
-    font-weight: 600;
-    opacity: .72;
-    font-size: 14px;
-    padding-left: 12px;
-    margin-bottom: 12px;
-  }
+
   .interface-tab {
     display: none;
     margin-top: 12px;
@@ -28,6 +21,39 @@
 
   .interface-tab[tab="timers"]{
     flex-direction: column;
+    position: relative;
+    .btn-add-timer {
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: flex;
+      height: 52px;
+      border: 1px solid var(--border-1);
+      padding: 0px 8px;
+      border-radius: 8px;
+      & > div {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon {
+        border-right: 1px solid var(--border-1);
+        padding-right: 8px;
+        opacity: .65;
+      }
+      .label {
+        padding-left: 8px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--color);
+        opacity: .85;
+      }
+    }
+    .section-title {
+      transform: translateY(18px);
+      padding-left: 12px;
+    }
   }
   .tab-tray {
     display: flex;
@@ -93,6 +119,29 @@
     svg {
       opacity: .5;
       fill: var(--color);
+    }
+  }
+
+  .timer-list {
+    padding: 12px;
+    margin-top: 32px;
+    // border: 1px solid black;
+    .bullet {
+      font-family: 'Quicksand';
+      font-weight: 600;
+      opacity: .7;
+      position: relative;
+      &::after {
+        content: "";
+        height: 6px;
+        width: 6px;
+        border-radius: 100%;
+        position: absolute;
+        top: 8px;
+        left: -14px;
+        background: #333;
+        opacity: .9;
+      }
     }
   }
 

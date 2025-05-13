@@ -14,11 +14,11 @@ export const Days = ( { month , year , activeBirthdays, activeDay } ) => {
   }
   for (let i = 0; i < daysInMonth; i++){
     let dateNum = i + 1
-    let isToday = today.getDate() === dateNum && today.getMonth() === month;
-    console.log(month,today.getMonth(),today)
-    let bday = isBday(dateNum)
-    let active = activeDay == dateNum
-    currentDays.push(<div key={i} day={dateNum} className={`day ${ bday ? 'bday' : ''} ${isToday ? 'today': ''} ${active?'active':''}`.trim()} >
+    let isToday = today.getDate() === dateNum && today.getMonth() === month && 'today';
+    let bday = isBday(dateNum) && 'bday'
+    let active = activeDay == dateNum && 'active'
+    let styles = ['day', bday, isToday, active].filter(Boolean).join(' ')
+    currentDays.push(<div key={i} day={dateNum} className={styles} >
       {bday ? <div className="bday-marker"></div> : ''}
         <div className="daynum">{dateNum}</div>
       </div>)

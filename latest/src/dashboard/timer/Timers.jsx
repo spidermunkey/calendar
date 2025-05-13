@@ -2,7 +2,8 @@ import {Timer} from './Timer'
 import { BtnAdd } from './AddButton'
 import { useAppState } from 'context'
 import { CloseIcon } from 'icons'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
+import { PlusIcon } from '../../assets/icons/plus'
 const FavoriteTimerTemplate = () => {
   return (
     <div className="favorite-timer favorite">
@@ -14,10 +15,10 @@ const FavoriteTimerTemplate = () => {
   )
 }
 export const Timers = () => {
-  const state = useAppState();
-  const timers = state.timers;
+  const {timers} = useAppState();
   console.log(timers)
   const [currentTab,setTab] = useState('timers');
+  const [currentTimers,setCurrentTimers] = useState([]);
   const toggleActiveTab = useCallback((event) => {
     const selected = event.target.closest('.tab')
     if (selected){
@@ -28,6 +29,14 @@ export const Timers = () => {
       setTab(selected.getAttribute('tab'));
     }
 
+  },[])
+  const parseTimers = timers => timers.map(timer => <Timer {...timer}/>)
+  useEffect(() => {
+    const getTimers = async () => {
+      const data = await timers.data;
+      setCurrentTimers(data)
+    }
+    getTimers();
   },[])
   return (
   <>
@@ -60,8 +69,12 @@ export const Timers = () => {
     </div>
     <div tab="timers" className={`interface-tab ${currentTab === 'timers' ? 'active' : ''}`}>
       <div className="section-title">My Timers</div>
-      <div className="timer-list">
+      <div className="btn-add-timer"><div className="icon"><PlusIcon/></div><div className="label">New Timer</div></div>
 
+      <div className="timer-list">
+        {currentTimers.length == 0 ? <div className='bullet'>You have no timers saved</div>:
+          parseTimers(currentTimers)
+        }
       </div>
     </div>
     <div tab="trackers" className={`interface-tab ${currentTab === 'trackers' ? 'active' : ''}`}>

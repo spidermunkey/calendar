@@ -32,9 +32,9 @@ export const timerStore = {
   },
 }
 
-async function getTimers(enpoint = _endpoint) {
+async function getTimers(endpoint = _endpoint) {
   try {
-    const response = await fetch(enpoint);
+    const response = await fetch(endpoint);
     const data = await response.json();
     console.log(data,response)
     return data;
