@@ -1,6 +1,6 @@
 import { useTimer } from './useTimer';
 
-export const Timer = ({ name = 'focus', time={hours:0,minutes:25,seconds:0}, type='timer'}) => {
+export const Timer = ({ title = 'focus', time={hours:0,minutes:25,seconds:0}, type='timer'}) => {
   const {
     currentTime,
     state,
@@ -15,9 +15,8 @@ export const Timer = ({ name = 'focus', time={hours:0,minutes:25,seconds:0}, typ
     transitionText,
     currentTransition,
     timer,
-  } = useTimer({name,time,type});
-  const { hours, minutes, seconds } = currentTime;
-  console.log(state)
+  } = useTimer({title,time,type});
+  const { hours, minutes, seconds } = timer.current;
   return (
     <div className="timer tracker-element">
       {state === 'running' ? <div className="activity-sensor"></div>
@@ -26,7 +25,7 @@ export const Timer = ({ name = 'focus', time={hours:0,minutes:25,seconds:0}, typ
         <div className="timer-title">{timer.title}</div>
         
         <div className="current-time">
-          {hours > 1 ? <><div className="hours">{hours}</div><div className="divider">:</div></> : ''}
+          {hours >= 1 ? <><div className="hours">{hours}</div><div className="divider">:</div></> : ''}
           <div className="minutes">{minutes < 10 ? String(minutes).padStart(2,'0') : minutes}</div>
           <div className="divider">:</div>
           <div className="seconds">{seconds < 10 ? String(seconds).padStart(2,'0') : seconds}</div>

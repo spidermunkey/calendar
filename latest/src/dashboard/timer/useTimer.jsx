@@ -4,7 +4,6 @@ import { Template } from './Template';
 export const useTimer = (config) => {
   const timerRef = useRef(null);
   if (!timerRef.current) timerRef.current = Template(config);
-
   const [currentTime,setCurrentTime] = useState(timerRef.current.current);
   const [state,setState] = useState('stopped');
   const [session,setSession] = useState(1);
@@ -13,7 +12,7 @@ export const useTimer = (config) => {
   const [transitionText, setTransitionText] = useState('');
   const [currentTransition, setCurrentTransition] = useState('none')
 
-  const play = useCallback(() => {console.log('playing',timerRef.current);timerRef.current?.play()},[])
+  const play = useCallback(() => timerRef.current?.play(),[])
   const stop = useCallback(() => timerRef.current?.stop(),[])
   const reset = useCallback(() => timerRef.current?.reset(),[])
   const pauseBreak = useCallback(() => timerRef.current?.pauseBreak(),[])

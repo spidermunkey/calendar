@@ -18,7 +18,8 @@ export const convertMinutes = (minutes) => {
   return {
     hours: Math.floor( minutes / minutesInHour ),
     minutes: Math.floor(minutes % minutesInHour),
-    seconds: Math.floor((minutes % 1) * secondsInMinutes)
+    seconds: Math.floor((minutes % 1) * secondsInMinutes),
+    total: minutes,
   }
 }
 
@@ -36,10 +37,11 @@ export const toSeconds = ({ hours , minutes, seconds}) => {
   return hoursToSeconds + minutesToSeconds + seconds;
 }
 
-export const toMinutes = ({ hours , minutes, seconds}) => {
-  const hoursToSeconds = Math.floor(hours * secondsInHour)
-  const minutesToSeconds = Math.floor(minutes * secondsInMinutes);
-  return hoursToSeconds + minutesToSeconds + seconds;
+export const toMinutes = ({ hours = 0 , minutes = 0, seconds = 0}) => {
+  const hoursToSeconds = Math.floor(Number(hours) * secondsInHour)
+  const minutesToSeconds = Math.floor(Number(minutes) * secondsInMinutes);
+  const totalSecondsToMinutes = Math.floor((hoursToSeconds + minutesToSeconds + Number(seconds)) / secondsInMinutes)
+  return totalSecondsToMinutes;
 }
 
 export const toMilliseconds = ({ hours , minutes, seconds }) => {

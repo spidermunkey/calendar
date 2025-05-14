@@ -2,6 +2,8 @@ import {Timer} from './Timer'
 import { BtnAdd } from './AddButton'
 import { useAppState } from 'context'
 import { CloseIcon } from 'icons'
+import { uuid } from 'utils'
+
 import { useCallback, useState, useEffect } from 'react'
 import { PlusIcon } from '../../assets/icons/plus'
 const FavoriteTimerTemplate = () => {
@@ -32,6 +34,24 @@ export const Timers = () => {
 
   },[])
   const parseTimers = timers => timers.map(timer => <Timer {...timer}/>)
+  const handleForm = (event) => {
+    const form = event.target.closest('form');
+    if (form){
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      const settings = {
+        title: data.title,
+        category: data.category,
+        time: {
+          minutes: data.time
+        },
+        rest: data.break || 5,
+        sessions: data.sessions,
+        id: uuid(),
+      }
+      timers.add(settings).then(res => console.log(res))
+    }
+  }
   useEffect(() => {
     const getTimers = async () => {
       const data = await timers.data;
@@ -42,7 +62,35 @@ export const Timers = () => {
   return (
   <>
   <div className={[`create-timer-modal`,createTimerModalActive && 'active'].filter(Boolean).join(' ')}>
-      <div className="close" onClick={() => setCreateTimerModalActive(false)}>close</div>
+      <div className="modal-header">
+        <div className="modal-title">New Timer</div>
+        <div className="close" onClick={() => setCreateTimerModalActive(false)}>close</div>
+      </div>
+      <div className="form" onSubmit={(event) => event.preventDefault()}>
+        <form>
+          <div className="title">
+            <div className="label">Title</div>
+            <input name="title" type="text" spellCheck="false" />
+          </div>
+          <div className="category">
+            <div className="label">Category</div>
+            <input name="category" type="text" spellCheck="false" />
+          </div>
+          <div className="time">
+            <div className="time">Time</div>
+            <input name="time" type="number"/>
+          </div>
+          <div className="break">
+            <div className="break">Break</div>
+            <input name="break" type="number"/>
+          </div>
+          <div className="sessions">
+            <div className="label">Sessions</div>
+            <input name="sessions" type="number"/>
+          </div>
+          <BtnAdd onClick={handleForm}/>
+        </form>
+      </div>
   </div>
   <div className="interface-modal timers flex-col p-12">
 

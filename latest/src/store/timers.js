@@ -48,10 +48,11 @@ async function addTimer(data, endpoint = _endpoint){
   const response = fetch(endpoint,{
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify({data:data})
   })
   return response;
 }
+
 async function deleteTimer(id, enpoint = _endpoint){
   const response = fetch(enpoint,{
     method: 'DELETE',

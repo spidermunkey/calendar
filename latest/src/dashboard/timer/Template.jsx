@@ -7,16 +7,16 @@ export const Template = ({
     time = {minutes:25,hours:0,seconds:0},
     rest = 5,
     intermission = 0,
-  } = {}) => { 
+  }) => { 
 
-    const total = toMinutes(time);
+  const total = toMinutes(time);
   return {
 
       title: title,
       category: category,
       type: type,
-
-      timeElapsed: type === 'tracker' ? 0 : total, // seconds
+    
+      timeElapsed: type === 'tracker' ? 0 : total * 60, // seconds
       timeAlloted: total,                          // minutes
                           
       breakElapsed: rest * secondsInMinutes,        // seconds
@@ -110,6 +110,7 @@ export const Template = ({
     setTime() {
       if (this.type === 'timer'){
         this.timeElapsed = this.timeElapsed - 1;
+        console.log(this.timeElapsed)
       }
       if (this.type === 'tracker'){
         this.timeElapsed = this.timeElapsed + 1;
