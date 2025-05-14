@@ -46,18 +46,15 @@ export const Clock = ({ minutes = 25, hours = 0, seconds = 0 }) => {
         this.notify('reset', this.current);
       },
       tick() {
-        console.log('tick')
         this.timeElapsed = this.timeElapsed - 1;
       },
       handleInterval(){
         if(this.isComplete()) {
-          console.log('stop')
           this.stop();
           this.notify('complete',this.current);
           return;
         } else {
           this.tick();
-          console.log('tick')
           this.notify('interval',this.current);
           return;
         }
@@ -84,7 +81,7 @@ export const Clock = ({ minutes = 25, hours = 0, seconds = 0 }) => {
 
 // Count up timer
 export const Tracker = ({ minutes = 25, hours = 0, seconds = 0}) => {
-  const tracker = new Clock({minutes,hours,seconds})
+  const tracker = Clock({minutes,hours,seconds})
   tracker.timeElapsed = 0;
   tracker.elapsed = false;
   tracker.tick = () => tracker.timeElapsed = tracker.timeElapsed + 1;
@@ -113,8 +110,8 @@ export const Pomodoro = ({
     rest = 5,
     sessions = 1,
   } = {}) => {
-  const mainTimer = new Clock(time);
-  const restTimer = new Clock({minutes:rest});
+  const mainTimer = Clock(time);
+  const restTimer = Clock({minutes:rest});
   const totalSessions = sessions != null && sessions != undefined && Number(sessions) >= 1 ? Number(sessions) : 1
   const timer = {
 
@@ -133,12 +130,10 @@ export const Pomodoro = ({
       },
       play() {
         this.currentTimer.play();
-        this.state = 'running';
         this.notify('start',this.current);
       },
       stop() {
         this.currentTimer.stop();
-        this.state = 'running';
         this.notify('stopped',this.current);
       },
       reset(){
@@ -149,7 +144,7 @@ export const Pomodoro = ({
         this.notify('reset',this.current);
       },
       isComplete(){
-        this.currentSession === this.sessions
+        return this.currentSession === this.sessions
       },
 
       on(event,cb){
@@ -176,19 +171,25 @@ export const Pomodoro = ({
     // handle break switch
     mainTimer.on('complete',(...args) => {
       timer.currentTimer = restTimer;
+      console.log('main timer complete');
+      console.log('pomodoro isComplete:', timer.isComplete(),timer.currentSession === timer.sessions,timer)
       if (timer.isComplete()){
         timer.reset();
         timer.notify('complete',timer.current);
       } else {
-        timer.sessions = timer.sessions + 1;
-        timer.notfiy('sessionComplete',timer.currentSession);
-        timer.currentTimer.play();
+        console.log(timer)
+        timer.currentSession = timer.currentSession + 1;
+        mainTimer.reset();
+        timer.notify('sessionComplete',timer.currentSession);
+        timer.play();
       }
     })
     restTimer.on('complete', (...args) => {
       timer.currentTimer = mainTimer;
+      restTimer.reset();
       timer.notify('sessionStart',...args);
-      timer.currentTimer.play();
+      console.log('new session',timer.sessions,timer.currentTimer === mainTimer,timer)
+      timer.play();
     })
 
     // handle separate intervals

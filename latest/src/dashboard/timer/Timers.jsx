@@ -32,7 +32,8 @@ export const Timers = () => {
     }
 
   },[]);
-  const parseTimers = timers => timers.map(timer => <Timer {...timer}/>);
+
+  const parseTimers = timers => timers.map(timer => <Timer props={timer}/>);
   const handleForm = (event) => {
     const form = event.target.closest('form');
     if (form){
@@ -44,10 +45,12 @@ export const Timers = () => {
         time: {
           minutes: data.time
         },
-        rest: data.break || 5,
+        rest: data.rest || 5,
         sessions: data.sessions,
+        type: data.type,
         id: uuid(),
       }
+
       timers.add(settings).then(res => console.log(res))
     }
   };
@@ -77,12 +80,20 @@ export const Timers = () => {
             <input name="category" type="text" spellCheck="false" />
           </div>
           <div className="time">
-            <div className="time">Time</div>
+            <div className="label">Time</div>
             <input name="time" type="number"/>
           </div>
+          <div className="type">
+            <div className="label">Type</div>
+            <select name="type">
+              <option value="pomodoro">Pomodoro</option>
+              <option value="timer">Timer</option>
+              <option value="tracker">Tracker</option>
+            </select>
+          </div>
           <div className="break">
-            <div className="break">Break</div>
-            <input name="break" type="number"/>
+            <div className="label">Break</div>
+            <input name="rest" type="number"/>
           </div>
           <div className="sessions">
             <div className="label">Sessions</div>
@@ -118,7 +129,7 @@ export const Timers = () => {
       <div className="section-title">
         Most Recent
       </div>
-      <Timer/>
+      <Timer props={{title:'focus',time:{minutes:25},type:'timer'}}/>
     </div>
     <div tab="timers" className={`interface-tab ${currentTab === 'timers' ? 'active' : ''}`}>
       <div className="section-title">My Timers</div>

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState, useCallback, startTransition } from 'react';
-import { Template } from './Template';
-import { Clock, Tracker, Pomodoro} from './Clock'
+import { Clock, Tracker, Pomodoro } from './Clock'
 
 export const useTimer = (config) => {
   const timerRef = useRef(null);
@@ -18,8 +17,8 @@ export const useTimer = (config) => {
       case 'pomodoro': {
         timerRef.current = Pomodoro({
           time,
-          sessions: config.sessions,
-          rest: config.res,
+          sessions: Number(config.sessions),
+          rest: Number(config.rest),
         });
         break;
       }
@@ -28,7 +27,7 @@ export const useTimer = (config) => {
         break;
       }
       default: {
-        throw new Error('error setting up Timer Hooks')
+        timerRef.current = Clock(time)
       }
     }
   }
@@ -43,8 +42,14 @@ export const useTimer = (config) => {
   const [transitionText, setTransitionText] = useState('');
   const [currentTransition, setCurrentTransition] = useState('none');
 
-  const play = useCallback(() => timerRef.current?.play(),[])
-  const stop = useCallback(() => timerRef.current?.stop(),[])
+  const play = useCallback(() => {
+    timerRef.current?.play()
+    setState('running')
+  },[])
+  const stop = useCallback(() => { 
+    timerRef.current?.stop()
+    setState('stopped')
+  },[])
   const reset = useCallback(() => timerRef.current?.reset(),[])
 
   const startBreak = useCallback(() => timerRef.current?.startBreak(),[])
@@ -54,12 +59,14 @@ export const useTimer = (config) => {
 
   const transitionToState = (newState, text, optionalHook) => {
     setCurrentTitle(text);
+    console.log(newState,text)
     setTransitioning(true);
     setState(newState);
     setCurrentTransition(newState);
     if (typeof optionalHook === 'function') optionalHook()
     return setTimeout(() => {
       setTransitioning(false); // hide animation
+      newState === 'sessionComplete' ? setCurrentTitle('break:' + config.title) : setCurrentTitle(config.title)
     }, 1500); // match animation duration
   };
   
@@ -72,12 +79,11 @@ export const useTimer = (config) => {
       timer.on('elapsed',() => queueTransition('elapsed','Session Complete!'));
     }
     if (config.type === 'pomodoro') {
-      timer.on('sessionStart',() => queueTransition('sessionStart','Take A Break!'))
-      timer.on('sessionComplete',(session) => queueTransition('sessionComplete','Lets get back to work!',() => setSession(session)));
+      timer.on('sessionComplete',() => queueTransition('sessionComplete','Take A Break!'))
+      timer.on('sessionStart',(session) => queueTransition('sessionStart','Lets get back to work!',() => setSession(session)));
       timer.on('breakInterval', update);
     }
 
-    timer.on('start', () => queueTransition('running',timer.title))
     timer.on('complete',() => queueTransition('complete', 'Well Done!'));
     timer.on('stop', () => queueTransition('stopped', 'paused'));
     timer.on('interval',update);
@@ -98,10 +104,6 @@ export const useTimer = (config) => {
     play,
     stop,
     reset,
-
-    startBreak,
-    pauseBreak,
-    clearBreak,
 
     transitioning,
     currentTitle,

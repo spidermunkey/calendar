@@ -36,7 +36,6 @@ async function getTimers(endpoint = _endpoint) {
   try {
     const response = await fetch(endpoint);
     const data = await response.json();
-    console.log(data,response)
     return data;
   } catch(error){
       console.log('error fetching timers',error)

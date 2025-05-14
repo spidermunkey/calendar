@@ -1,10 +1,10 @@
 import { useTimer } from './useTimer';
 
-export const Timer = ({ title = 'focus', time={hours:0,minutes:25,seconds:0}, type='timer'}) => {
+export const Timer = ({ props }) => {
   const {
     currentTime,
     state,
-    session,
+    currentSession,
     play,
     stop,
     reset,
@@ -15,9 +15,8 @@ export const Timer = ({ title = 'focus', time={hours:0,minutes:25,seconds:0}, ty
     currentTitle,
     currentTransition,
     timer,
-  } = useTimer({title,time,type});
+  } = useTimer(props);
   const { hours, minutes, seconds } = timer.current;
-  const tite = currentTitle
   return (
     <div className="timer tracker-element">
       {state === 'running' ? <div className="activity-sensor"></div>
@@ -31,10 +30,9 @@ export const Timer = ({ title = 'focus', time={hours:0,minutes:25,seconds:0}, ty
           <div className="divider">:</div>
           <div className="seconds">{seconds < 10 ? String(seconds).padStart(2,'0') : seconds}</div>
         </div>
-
       </div>
       <div className="stopwatch-controls" >
-      { state === 'stopped' 
+      { state === 'stopped' || state === 'complete' 
         ? <div className="btn-control play" onClick={play}>play</div>
         : <div className="btn-control pause" onClick={stop}>Pause</div>
     }
