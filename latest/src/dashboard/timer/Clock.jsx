@@ -43,6 +43,7 @@ export const Clock = ({ minutes = 25, hours = 0, seconds = 0 }) => {
         this.stop();
         this.started_at = null;
         this.timeElapsed = total;
+        console.log('reset',this.current,this)
         this.notify('reset', this.current);
       },
       tick() {
@@ -137,10 +138,10 @@ export const Pomodoro = ({
         this.notify('stopped',this.current);
       },
       reset(){
-        this.currentTimer = time;
+        this.currentTimer = mainTimer;
         this.time.reset();
         this.rest.reset();
-        this.sessions = totalSessions;
+        this.currentSession = 1;
         this.notify('reset',this.current);
       },
       isComplete(){
@@ -170,18 +171,15 @@ export const Pomodoro = ({
 
     // handle break switch
     mainTimer.on('complete',(...args) => {
-      timer.currentTimer = restTimer;
-      console.log('main timer complete');
-      console.log('pomodoro isComplete:', timer.isComplete(),timer.currentSession === timer.sessions,timer)
-      if (timer.isComplete()){
-        timer.reset();
-        timer.notify('complete',timer.current);
-      } else {
-        console.log(timer)
+      mainTimer.reset();
+      if (!timer.isComplete()) {
+        timer.currentTimer = restTimer;
         timer.currentSession = timer.currentSession + 1;
-        mainTimer.reset();
         timer.notify('sessionComplete',timer.currentSession);
         timer.play();
+      } else {
+        console.log('pomodoro finished',timer.current,timer,timer.currentTimer)
+        timer.notify('complete',mainTimer);
       }
     })
     restTimer.on('complete', (...args) => {
@@ -195,6 +193,6 @@ export const Pomodoro = ({
     // handle separate intervals
     mainTimer.on('interval',(...args) => timer.notify('interval',...args))
     restTimer.on('interval',(...args) => timer.notify('breakInterval',...args))
-
+    
     return timer;
 }
