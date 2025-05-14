@@ -17,15 +17,15 @@ export const Template = ({
       type: type,
     
       timeElapsed: type === 'tracker' ? 0 : total * 60, // seconds
-      timeAlloted: total,                          // minutes
+      timeAlloted: total,                            // minutes
                           
-      breakElapsed: rest * secondsInMinutes,        // seconds
-      breakAlloted: rest,                           // minutes
+      breakElapsed: rest * secondsInMinutes,         // seconds
+      breakAlloted: rest,                            // minutes
 
-      started_at: null,                             // epoc date
+      started_at: null,                              // epoc date
       stopped_at: null,                              // epoc date
       completed_at: null,                            // epoc date
-      rest_start: null,                                // epoc date
+      rest_start: null,                              // epoc date
 
       session: 1,                                 // current break
       interval: undefined,                        // current setInterval
@@ -36,14 +36,15 @@ export const Template = ({
       intermission: intermission,                 // longbreak time in minutes
       sessions: 4,                                // breaks before complete
       
-      state: 'stopped',                            // running | rest | stopped | complete | intermission
+      intervalType: 'timer',                      // timer | rest
+      state: 'stopped',                           // running | rest | stopped | complete | intermission
       events: {},
   //-----------------------------------------------------------------------------------------//
       get time() {
         return convertMinutes(this.timeAlloted)
       },
       get current() {
-        return convertSeconds(this.timeElapsed)
+        return convertSeconds(this.intervalType === 'rest' ? this.breakElapsed : this.timeElapsed)
       },
 
   //-----------------------------------------------------------------------------------------//
@@ -54,9 +55,14 @@ export const Template = ({
         }
           this.state = 'running'
           this.started_at = Date.now();
+          
           this.interval = setInterval(() => {
-            this.handleInterval();
-            this.notify('interval',this.current);
+            if (this.intervalType === 'rest') {
+              this.handleBreakInterval();
+            } else {
+              this.handleInterval();
+            }
+
           },1000);
           this.notify('start')
 
@@ -87,7 +93,8 @@ export const Template = ({
         if (this.restInterval === undefined){
           this.session = this.session + 1;
           this.interval = clearInterval(this.interval)
-          this.state = 'break'
+          this.state = 'rest'
+          this.intervalType = 'rest'
           this.rest_start = Date.now();
           this.restInterval = setInterval(() => {
             this.handleBreakInterval();
@@ -98,7 +105,7 @@ export const Template = ({
       pauseBreak(){
         this.state = 'stopped'
         this.restInterval = clearInterval(this.restInterval)
-        this.notify('breakStop', this.current)
+        this.notify('stopped', this.current)
       },
 
       clearBreak() {
@@ -139,6 +146,7 @@ export const Template = ({
       handleInterval(){
         const isComplete = this.isComplete();
         const breaksLeft = this.session < this.limit;
+        console.log(this.state)
         if (!isComplete){
           this.setTime();
           this.notify('interval',this.timeElapsed);
@@ -159,6 +167,7 @@ export const Template = ({
           this.restInterval = clearInterval(this.restInterval);
           this.breakElapsed = this.breakAlloted * secondsInMinutes;
           this.notify('breakElapsed',this.session);
+          this.intervalType = 'timer';
           this.play();
         }
       },

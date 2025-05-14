@@ -5,6 +5,7 @@ export const useTimer = (config) => {
   const timerRef = useRef(null);
   if (!timerRef.current) timerRef.current = Template(config);
   const [currentTime,setCurrentTime] = useState(timerRef.current.current);
+  const [currentTitle, setCurrentTitle] = useState(timerRef.current.title)
   const [state,setState] = useState('stopped');
   const [session,setSession] = useState(1);
   // test
@@ -15,12 +16,14 @@ export const useTimer = (config) => {
   const play = useCallback(() => timerRef.current?.play(),[])
   const stop = useCallback(() => timerRef.current?.stop(),[])
   const reset = useCallback(() => timerRef.current?.reset(),[])
+
+  const startBreak = useCallback(() => timerRef.current?.startBreak(),[])
   const pauseBreak = useCallback(() => timerRef.current?.pauseBreak(),[])
   const clearBreak = useCallback(() => timerRef.current?.clearBreak(),[])
   
 
   const transitionToState = (newState, text, optionalHook) => {
-    setTransitionText(text);
+    setCurrentTitle(text);
     setTransitioning(true);
     setState(newState);
     setCurrentTransition(newState);
@@ -63,14 +66,17 @@ export const useTimer = (config) => {
     currentTime,
     state,
     session,
+    
     play,
     stop,
     reset,
+
+    startBreak,
     pauseBreak,
     clearBreak,
 
     transitioning,
-    transitionText,
+    currentTitle,
     currentTransition,
     
     timer:timerRef.current,

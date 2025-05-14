@@ -12,17 +12,18 @@ export const Timer = ({ title = 'focus', time={hours:0,minutes:25,seconds:0}, ty
     clearBreak,
 
     transitioning,
-    transitionText,
+    currentTitle,
     currentTransition,
     timer,
   } = useTimer({title,time,type});
   const { hours, minutes, seconds } = timer.current;
+  const tite = currentTitle
   return (
     <div className="timer tracker-element">
       {state === 'running' ? <div className="activity-sensor"></div>
       :''}
       <div className="info">
-        <div className="timer-title">{timer.title}</div>
+        <div className="timer-title">{currentTitle}</div>
         
         <div className="current-time">
           {hours >= 1 ? <><div className="hours">{hours}</div><div className="divider">:</div></> : ''}
@@ -33,7 +34,7 @@ export const Timer = ({ title = 'focus', time={hours:0,minutes:25,seconds:0}, ty
 
       </div>
       <div className="stopwatch-controls" >
-      {state === 'stopped' 
+      { state === 'stopped' 
         ? <div className="btn-control play" onClick={play}>play</div>
         : <div className="btn-control pause" onClick={stop}>Pause</div>
     }

@@ -31,16 +31,14 @@ export const convertMilliseconds = (milliseconds) => {
   }
 }
 
-export const toSeconds = ({ hours , minutes, seconds}) => {
-  const hoursToSeconds = Math.floor(hours * secondsInHour)
-  const minutesToSeconds = Math.floor(minutes * secondsInMinutes);
-  return hoursToSeconds + minutesToSeconds + seconds;
+export const toSeconds = ({ hours = 0 , minutes = 0, seconds = 0 }) => {
+  const hoursToSeconds = Math.floor(Number(hours) * secondsInHour)
+  const minutesToSeconds = Math.floor(Number(minutes) * secondsInMinutes);
+  return hoursToSeconds + minutesToSeconds + Number(seconds);
 }
 
 export const toMinutes = ({ hours = 0 , minutes = 0, seconds = 0}) => {
-  const hoursToSeconds = Math.floor(Number(hours) * secondsInHour)
-  const minutesToSeconds = Math.floor(Number(minutes) * secondsInMinutes);
-  const totalSecondsToMinutes = Math.floor((hoursToSeconds + minutesToSeconds + Number(seconds)) / secondsInMinutes)
+  const totalSecondsToMinutes = toSeconds({hours,minutes,seconds}) / secondsInMinutes;
   return totalSecondsToMinutes;
 }
 

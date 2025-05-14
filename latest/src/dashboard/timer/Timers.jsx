@@ -18,10 +18,9 @@ const FavoriteTimerTemplate = () => {
 }
 export const Timers = () => {
   const {timers} = useAppState();
-  console.log(timers)
   const [currentTab,setTab] = useState('timers');
   const [currentTimers,setCurrentTimers] = useState([]);
-  const [createTimerModalActive,setCreateTimerModalActive] = useState(false)
+  const [createTimerModalActive,setCreateTimerModalActive] = useState(false);
   const toggleActiveTab = useCallback((event) => {
     const selected = event.target.closest('.tab')
     if (selected){
@@ -32,8 +31,8 @@ export const Timers = () => {
       setTab(selected.getAttribute('tab'));
     }
 
-  },[])
-  const parseTimers = timers => timers.map(timer => <Timer {...timer}/>)
+  },[]);
+  const parseTimers = timers => timers.map(timer => <Timer {...timer}/>);
   const handleForm = (event) => {
     const form = event.target.closest('form');
     if (form){
@@ -51,11 +50,12 @@ export const Timers = () => {
       }
       timers.add(settings).then(res => console.log(res))
     }
-  }
+  };
+  
   useEffect(() => {
     const getTimers = async () => {
       const data = await timers.data;
-      setCurrentTimers(data)
+      setCurrentTimers(data);
     }
     getTimers();
   },[])
