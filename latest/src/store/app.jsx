@@ -43,7 +43,8 @@ export const createAppModel = () => {
     },
 
     timers: {
-      ...createStore(timerStore)
+      activeTimer:null,
+      ...createStore(timerStore),
     },
 
     async getDay(day = this.currentDay , month = this.currentMonth){

@@ -8,6 +8,7 @@ import { TabModal } from './TabModal';
 import { CalendarCursor } from "./CalendarCursor";
 import { Days } from "./Days";
 import { useAppState } from "context";
+import { TimerProvider } from '../../context';
 
 const Calendar = () => {
   const state = useAppState();
@@ -98,7 +99,9 @@ const Calendar = () => {
                   <Days activeDay={currentDay} activeBirthdays={activeBirthdays} month={currentMonth} year={year} />
               </div>
             </div>
+            <TimerProvider>
               <TabModal> { tabs[activeTab].element({currentMonth:currentMonth,birthdays:bdays,update:refreshBirthdays,remove:removeBirthday,add:addBirthday}) } </TabModal>
+            </TimerProvider>
           </div>
         </>
   )

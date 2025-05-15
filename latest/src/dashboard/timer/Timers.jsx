@@ -1,11 +1,12 @@
 import {Timer} from './Timer'
 import { BtnAdd } from './AddButton'
-import { useAppState } from 'context'
+import { useTimerState } from 'context'
 import { CloseIcon } from 'icons'
 import { uuid } from 'utils'
 
 import { useCallback, useState, useEffect } from 'react'
 import { PlusIcon } from '../../assets/icons/plus'
+
 const FavoriteTimerTemplate = () => {
   return (
     <div className="favorite-timer favorite">
@@ -16,8 +17,9 @@ const FavoriteTimerTemplate = () => {
     </div>
   )
 }
+
 export const Timers = () => {
-  const {timers} = useAppState();
+  const timers = useTimerState();
   const [currentTab,setTab] = useState('timers');
   const [currentTimers,setCurrentTimers] = useState([]);
   const [createTimerModalActive,setCreateTimerModalActive] = useState(false);
@@ -30,10 +32,9 @@ export const Timers = () => {
       selected.classList.add('active');
       setTab(selected.getAttribute('tab'));
     }
-
   },[]);
-
-  const parseTimers = timers => timers.map(timer => <Timer props={timer}/>);
+  console.log(timers)
+  const parseTimers = timers => timers.map((timer,index) => <Timer key={timer.id} props={timer}/>);
   const handleForm = (event) => {
     const form = event.target.closest('form');
     if (form){
@@ -57,98 +58,102 @@ export const Timers = () => {
   
   useEffect(() => {
     const getTimers = async () => {
+      console.log(timers)
       const data = await timers.data;
       setCurrentTimers(data);
     }
     getTimers();
   },[])
+
   return (
-  <>
-  <div className={[`create-timer-modal`,createTimerModalActive && 'active'].filter(Boolean).join(' ')}>
-      <div className="modal-header">
-        <div className="modal-title">New Timer</div>
-        <div className="close" onClick={() => setCreateTimerModalActive(false)}>close</div>
-      </div>
-      <div className="form" onSubmit={(event) => event.preventDefault()}>
-        <form>
-          <div className="title">
-            <div className="label">Title</div>
-            <input name="title" type="text" spellCheck="false" />
-          </div>
-          <div className="category">
-            <div className="label">Category</div>
-            <input name="category" type="text" spellCheck="false" />
-          </div>
-          <div className="time">
-            <div className="label">Time</div>
-            <input name="time" type="number"/>
-          </div>
-          <div className="type">
-            <div className="label">Type</div>
-            <select name="type">
-              <option value="pomodoro">Pomodoro</option>
-              <option value="timer">Timer</option>
-              <option value="tracker">Tracker</option>
-            </select>
-          </div>
-          <div className="break">
-            <div className="label">Break</div>
-            <input name="rest" type="number"/>
-          </div>
-          <div className="sessions">
-            <div className="label">Sessions</div>
-            <input name="sessions" type="number"/>
-          </div>
-          <BtnAdd onClick={handleForm}/>
-        </form>
-      </div>
-  </div>
-  <div className="interface-modal timers flex-col p-12">
+    <>
+    <div className={[`create-timer-modal`,createTimerModalActive && 'active'].filter(Boolean).join(' ')}>
+        <div className="modal-header">
+          <div className="modal-title">New Timer</div>
+          <div className="close" onClick={() => setCreateTimerModalActive(false)}>close</div>
+        </div>
+        <div className="form" onSubmit={(event) => event.preventDefault()}>
+          <form>
+            <div className="title">
+              <div className="label">Title</div>
+              <input name="title" type="text" spellCheck="false" />
+            </div>
+            <div className="category">
+              <div className="label">Category</div>
+              <input name="category" type="text" spellCheck="false" />
+            </div>
+            <div className="time">
+              <div className="label">Time</div>
+              <input name="time" type="number"/>
+            </div>
+            <div className="type">
+              <div className="label">Type</div>
+              <select name="type">
+                <option value="pomodoro">Pomodoro</option>
+                <option value="timer">Timer</option>
+                <option value="tracker">Tracker</option>
+              </select>
+            </div>
+            <div className="break">
+              <div className="label">Break</div>
+              <input name="rest" type="number"/>
+            </div>
+            <div className="sessions">
+              <div className="label">Sessions</div>
+              <input name="sessions" type="number"/>
+            </div>
+            <BtnAdd onClick={handleForm}/>
+          </form>
+        </div>
+    </div>
+    <div className="interface-modal timers flex-col p-12">
 
-    <div className="interface-header">
-      <div className="interface-title">Timers</div>
-      <div className="btn-close">
-        <div className="label">close</div>
-        <div className="icon"><CloseIcon/></div></div>
-    </div>
-    <div className="tab-tray" onClick={toggleActiveTab}>
-      <div className={`tab ${currentTab === 'timers' ? 'active' : ''}`} tab="timers">timers</div>
-      <div className={`tab ${currentTab === 'trackers' ? 'active' : ''}`} tab="trackers">trackers</div>
-    </div>
-    <div className="favorites">
-      <div className="section-title">Favorites</div>
-      <div className="favorite-tray">
-        <FavoriteTimerTemplate/>
-        <FavoriteTimerTemplate/>
-        <FavoriteTimerTemplate/>
-        <FavoriteTimerTemplate/>
-        <FavoriteTimerTemplate/>
+      <div className="interface-header">
+        <div className="interface-title">Timers</div>
+        <div className="btn-close">
+          <div className="label">close</div>
+          <div className="icon"><CloseIcon/></div></div>
       </div>
-    </div>
-    <div className="most-recent">
-      <div className="section-title">
-        Most Recent
+      <div className="tab-tray" onClick={toggleActiveTab}>
+        <div className={`tab ${currentTab === 'timers' ? 'active' : ''}`} tab="timers">timers</div>
+        <div className={`tab ${currentTab === 'trackers' ? 'active' : ''}`} tab="trackers">trackers</div>
       </div>
-      <Timer props={{title:'focus',time:{minutes:25},type:'timer'}}/>
-    </div>
-    <div tab="timers" className={`interface-tab ${currentTab === 'timers' ? 'active' : ''}`}>
-      <div className="section-title">My Timers</div>
-      <div className="btn-add-timer" onClick={() => setCreateTimerModalActive(true)}><div className="icon"><PlusIcon/></div><div className="label">New Timer</div></div>
+      <div className="favorites">
+        <div className="section-title">Favorites</div>
+        <div className="favorite-tray">
+          <FavoriteTimerTemplate/>
+          <FavoriteTimerTemplate/>
+          <FavoriteTimerTemplate/>
+          <FavoriteTimerTemplate/>
+          <FavoriteTimerTemplate/>
+        </div>
+      </div>
+      <div className="most-recent">
+        <div className="section-title">
+          Most Recent
+        </div>
+        {timers.activeTimer 
+          ? <Timer key={timers.activeTimer.id} props={timers.activeTimer} />
+          : <Timer key={'default'} props={{title:'focus',time:{minutes:25},type:'timer'}}/>
+          }
+      </div>
+      <div tab="timers" className={`interface-tab ${currentTab === 'timers' ? 'active' : ''}`}>
+        <div className="section-title">My Timers</div>
+        <div className="btn-add-timer" onClick={() => setCreateTimerModalActive(true)}><div className="icon"><PlusIcon/></div><div className="label">New Timer</div></div>
 
-      <div className="timer-list">
-        {currentTimers.length == 0 ? <div className='bullet'>You have no timers saved</div>:
-          parseTimers(currentTimers)
-        }
+        <div className="timer-list">
+          {currentTimers.length == 0 ? <div className='bullet'>You have no timers saved</div>:
+            parseTimers(currentTimers)
+          }
+        </div>
+      </div>
+      <div tab="trackers" className={`interface-tab ${currentTab === 'trackers' ? 'active' : ''}`}>
+        <div className="section-title">My Trackers</div>
+        <div className="tracker-list">
+          
+        </div>
       </div>
     </div>
-    <div tab="trackers" className={`interface-tab ${currentTab === 'trackers' ? 'active' : ''}`}>
-      <div className="section-title">My Trackers</div>
-      <div className="tracker-list">
-        
-      </div>
-    </div>
-  </div>
-
-  </>
+    </>
   )
 }
