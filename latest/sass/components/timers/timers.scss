@@ -1,7 +1,6 @@
 @forward './timer.scss';
-@forward './timerList';
-@forward './timerWidget';
-@forward './btnAdd';
+@forward './timer_widget';
+@forward './btn_add';
 
 .create-timer-modal {
     position: absolute;
@@ -11,8 +10,7 @@
     padding: 12px 24px 24px 12px;
     background: white;
     box-shadow: 0 0 7px -4px #1b1f2303, 0 0 #1b1f2306, inset -2px 0 1px 1px #ababab03, inset -1px 0 2px #bdbdbd03, 0 1px 4px #1b1f2303;
-      box-shadow: 0 4px 6px 0px #0000001f, 0 0px 12px -2px #64646430;
-
+    box-shadow: 0 4px 6px 0px #0000001f, 0 0px 12px -2px #64646430;
     // border: 1px solid red;
     border: 1px solid var(--border-1);
     border-radius: 16px;

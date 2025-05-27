@@ -43,10 +43,10 @@ export const DayView = () => {
           </div>
           : <div className="bday-data">
           <div className="section-title label"> { namesToday.length } birthday{namesToday.length !== 1 ? 's' : ''}</div>
-            <div className="bday-list">
-              
-              {/* {namesToday.length > 0 ? namesToday : 'none'} */}
-            </div>
+          <div className="bullet">{ namesToday.length } birthday{namesToday.length !== 1 ? 's' : ''}</div>
+            {/* <div className="bday-list">
+              {namesToday.length > 0 ? namesToday : 'none'}
+            </div> */}
           </div>
           : <span className="bullet">none</span>
         }
@@ -60,6 +60,16 @@ export const DayView = () => {
             {/* {namesThisMonth.length > 0 ? namesThisMonth : 'none'} */}
           </div>  
         </div>
+      </div>
+
+      <div className="section-title">Tasks</div>
+      <div className="event-list task">
+        <div className="bullet">none</div>
+      </div>
+
+      <div className="section-title">Todo</div>
+      <div className="event-list todo">
+        <div className="bullet">none</div>
       </div>
 
     </div>

@@ -1,4 +1,7 @@
-
+@forward './events';
+@forward './timers';
+@forward './birthdays';
+@forward './day';
 
 .tabber-modals {
   display: flex;
