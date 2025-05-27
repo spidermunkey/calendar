@@ -19,6 +19,7 @@
         padding-left: 12px;
         height: fit-content;
         align-items: center;
+        margin-top: 2px;
         .dayPart {
           font-size: 24px;
           font-style: medium;
@@ -50,9 +51,13 @@
       .time {
         margin-left: 12px;
         display: flex;
+        color: var(--color-3);
         .icon {
           scale: .8;
           padding-right: 6px;
+          svg {
+            fill: var(--color-2)
+          }
 
         }
         .curtime {

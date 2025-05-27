@@ -1,7 +1,8 @@
 .cal-month {
   width: var(--cal-width);
   min-height: 0;
-  padding: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   border-radius: 8px;
@@ -12,7 +13,6 @@
 
   $row: 90px;
   height: calc($row * 6);
-  
   .days {
     width: 100%;
     justify-content: center;

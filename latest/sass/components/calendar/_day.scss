@@ -42,10 +42,9 @@
     border: 1px solid #8484841a;
     height: 68px;
     width: 68px;
-    border-radius: 14px;
+    border-radius: 12px;
     aspect-ratio: 1/ 1;
     background: white;
-    box-shadow: 0 0 7px -4px #1b1f2303, 0 0 #1b1f2306, inset -2px 0 1px 1px #ababab03, inset -1px 0 2px #bdbdbd03, 0 1px 4px #1b1f2303;
     cursor: pointer;
     &::before {
       bottom: 0px;
