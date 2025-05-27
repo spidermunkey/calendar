@@ -74,13 +74,19 @@
 .cal-month-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
+  // border: 1px solid black;
+  .cursor-pointer svg {
+    stroke: var(--color-2)
+  }
   .this-month {
-    margin: 8px 0px;
     display: flex;
+    height: 18px;
+    padding-left: 24px;
   }
   .month-name {
-    color: var(--color);
+    color: var(--color-2);
     font-family: var(--font);
     font-weight: 600;
     letter-spacing: 0.035em;
@@ -98,8 +104,6 @@
     position: relative;
     z-index: 100;
     border-radius: 12px;
-    margin-bottom: 12px;
-    color: #222;
     z-index: 1;
 
     &::after {
@@ -194,4 +198,6 @@
 
 .tabber-labels {
   display: flex;
+  align-items: center;
+  
 }
