@@ -4,7 +4,7 @@
 @forward './reset.scss';
 
 @forward './components/birthdays.scss';
-@forward './components/calendar.scss';
+@forward './components/calendar/calendar.scss';
 @forward './components/timers/timers.scss';
 
 .app,#root {

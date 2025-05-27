@@ -1,0 +1,106 @@
+.dayView {
+  
+    .day-data {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--color);
+      opacity: .85;
+    }
+    .section-title {
+      margin-top: 12px;
+      margin-left: 12px;
+      color: var(--color);
+      font-weight: 600;
+      opacity: .82;
+      font-size: 20px;
+    }
+    .event-list {
+      padding-left: 40px;
+      .bullet {
+        text-transform: capitalize;
+        font-weight: 600;
+        opacity: .62;
+        font-size: 18px;
+        position: relative;
+        &::after {
+          content: "";
+          left: -12px;
+          top: 8px;
+          height: 6px;
+          width: 6px;
+          background: rgba(63, 63, 63, 0.811);
+          border-radius: 100%;
+          position: absolute;
+        }
+      }
+    }
+}
+
+.cal-month .day {
+    // max-height: 80px;
+    // max-width: 80px;
+    position: relative;
+    margin: 8px;
+    border: 1px solid #8484841a;
+    flex:0 0 calc(100%/9);
+    border-radius: 14px;
+    aspect-ratio: 1/ 1;
+    box-shadow: 0 0 7px -4px #1b1f2303, 0 0 #1b1f2306, inset -2px 0 1px 1px #ababab03, inset -1px 0 2px #bdbdbd03, 0 1px 4px #1b1f2303;
+    cursor: pointer;
+    .bday-marker {
+      height: 6px;
+      width:6px;
+      border-radius: 100%;
+      background: pink;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      opacity: 0;
+    }
+    &.bday .bday-marker{
+      opacity: 1;
+    }
+    &.today .daynum {
+      background: var(--blue);
+      color: white;
+      opacity:1;
+    }
+    &.active {
+      border: 1px solid rgba(155, 155, 155, 0.267);
+      box-shadow: 0 3px 6px -2px #0000001f, 0 1px 3px -2px #00000020;
+    }
+    &:hover::after{
+      opacity: 1;
+      .daynum {
+        opacity: 1;
+      }
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: 200ms ease;
+      border-radius: inherit;
+      box-shadow: 0 3px 6px #0000001f, 0 1px 3px #00000020;
+    }
+    &.null-day {
+      background: #f5f5f586;
+      .daynum {
+        color: #ccc;
+      }
+    }
+    .daynum {
+      color: #444;
+      font-size: 12px;
+      margin-top: 4px;
+      margin-left: 4px;
+      opacity: .75;
+      height: 24px;
+      width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100%;
+    }
+  }

@@ -13,7 +13,7 @@ export function useClock(){
     const alignTime = () => {
       setTime(getTime)
       intervalId = setInterval(() => setTime(getTime),30000)
-      return 
+      return
     }
     timeoutId = setTimeout(() => alignTime(),nextMinute)
     return () => {

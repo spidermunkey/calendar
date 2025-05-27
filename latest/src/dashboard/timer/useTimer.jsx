@@ -34,7 +34,6 @@ export const useTimer = (config) => {
   let timer = timerRef.current;
   const [currentTime,setCurrentTime] = useState(timer.current);
   const [currentTitle, setCurrentTitle] = useState(config.title);
-
   const [state,setState] = useState('stopped');
   const [session,setSession] = useState(1);
   // test
