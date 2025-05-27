@@ -71,11 +71,15 @@
   }
 }
 
-.cal-month .this-month {
+.cal-month-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  .this-month {
     margin: 8px 0px;
     display: flex;
   }
-.cal-month .month-name {
+  .month-name {
     color: var(--color);
     font-family: var(--font);
     font-weight: 600;
@@ -83,93 +87,109 @@
     min-width: 14ch;
     text-align: center;
   }
-
-.cal-month-header {
-  display: flex;
-  justify-content: space-between;
   .tabber-tab {
     cursor: pointer;
-    border: var(--border);
     width: 46px;
     height: 46px;
     margin-right: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 12px;
     position: relative;
     z-index: 100;
+    border-radius: 12px;
     margin-bottom: 12px;
-    transition: 200ms ease;
+    color: #222;
+    z-index: 1;
+        transition: 200ms ease;
+
     &::after {
       content: "";
       opacity: 0;
-      background: var(--slate);
       position: absolute;
       bottom: 0;
-      left: 4px;
-      right: 4px;
+      left: 2px;
+      right: 2px;
       height: 1px;
       border-radius: 100%;
       transition: 150ms ease;
-      transform: translateY(2px);
-      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.586);
-
+      transform: translateY(0px);
+      box-shadow: 0px 4px 12px 1px rgba(0, 0, 0, 0.36);
+      z-index: -1;
     }
     &.active {
-      border: 1px solid #ccc;
+      border: 1px solid rgba(155, 155, 155, 0.267);
       background-color: #ffffffac;
       scale: 1.1;
       .tool-tip,&:hover .tool-tip {
         opacity: 0;
       }
-      &::after {
-      opacity: .8;
-      transform: translateY(0px);
 
+      .icon::before {
+        opacity: 1;
+        transform: translateY(2px) rotate(180deg);
       }
-      &:before {
+      &::after {
         opacity: .8;
-        content: "";
-        background: var(--slate);
-        position: absolute;
-        bottom: 0;
-        left: 4px;
-        right: 4px;
-        height: 1px;
-        border-radius: 100%;
-        transition: 150ms ease;
-        transform: translateY(2px);
+        transform: translateY(0px);
       }
+
     }
     &:hover {
       .tool-tip {
         opacity: 1;
         visibility: visible;
-        transform: translateY(32px);
+        transform: translateY(8px);
       }
     }
     .icon {
+      position: relative;
+      background-color: white;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: inherit;
+      background: white;
+      overflow: hidden;
+      z-index: 10;
+      &:before {
+        transition: 200ms ease;
+        opacity: 0;
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0px;
+        right: 0px;
+        height: 1px;
+        border-radius: 100%;
+        transition: 150ms ease;
+        transform: translateY(12px) rotate(195deg);
+        box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.0829);
+      }
       svg { fill: var(--color)};
     }
     .tool-tip {
-
       padding: 12px;
       border: var(--border);
       opacity: 0;
       pointer-events: none;
       visibility: hidden;
-      background-color: white;
       position: absolute;
       bottom: -24px;
-      transition: 200ms ease 300ms;
+      transition: 200ms ease 500ms;
       border-radius: 8px;
-      transform: translateY(48px);
+      transform: translateY(24px);
+
+      letter-spacing: 0.035em;
+      font-weight: 600;
+      color: #494949d2;
+      
     }
   }
 }
 
 .tabber-labels {
   display: flex;
-  color: #222;
 }

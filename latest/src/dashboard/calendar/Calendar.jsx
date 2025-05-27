@@ -76,10 +76,10 @@ const Calendar = () => {
   return (
         <>
           <div className="app">
+
             <div className="calendar">
               <Header></Header>
-              <div className="cal-month" onClick={handleDashboardClick}>
-                <div className="cal-month-header">
+              <div className="cal-month-header">
                   <CalendarCursor currentMonth={ DateTime.month(currentMonth) } next={toggleNext} prev={togglePrev} reset={toggleCurrent}/>
                   <div className="tabber-labels">
                     { tabs.map((tab,index) => {
@@ -95,10 +95,12 @@ const Calendar = () => {
                       }})
                     }
                   </div>
-                </div>
+              </div>
+              <div className="cal-month" onClick={handleDashboardClick}>
                   <Days activeDay={currentDay} activeBirthdays={activeBirthdays} month={currentMonth} year={year} />
               </div>
             </div>
+            
             <TimerProvider>
               <TabModal> { tabs[activeTab].element({currentMonth:currentMonth,birthdays:bdays,update:refreshBirthdays,remove:removeBirthday,add:addBirthday}) } </TabModal>
             </TimerProvider>
