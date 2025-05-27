@@ -7,7 +7,12 @@
   border-radius: 8px;
   border-top-right-radius: 0px;
   border-top-left-radius: 0px;
-  border: var(--border);
+  justify-content: center;
+  align-items: center;
+
+  $row: 90px;
+  height: calc($row * 6);
+  
   .days {
     width: 100%;
     justify-content: center;
