@@ -1,17 +1,16 @@
 .cal-header {
   display: flex;
   flex-direction: column;
-  border: var(--border);
   border-bottom: 1px solid transparent;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
   width: var(--cal-width);
-  height: fit-content;
-  color: #494949;
+  color: var(--color-2);
   .header-module-container {
     display: flex;
     padding-top: 12px;
     padding-bottom: 10px;
+    padding-left: 16px;
     .dayToday {
       display: flex;
       flex-direction: column;
@@ -49,10 +48,10 @@
         }
       }
       .time {
-        margin-top: -6px;
-        margin-left: 16px;
+        margin-left: 12px;
         display: flex;
         .icon {
+          scale: .8;
           padding-right: 6px;
 
         }
@@ -199,5 +198,4 @@
 .tabber-labels {
   display: flex;
   align-items: center;
-  
 }
