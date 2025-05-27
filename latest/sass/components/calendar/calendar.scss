@@ -1,5 +1,5 @@
+@use 'header';
 @use 'day';
-
 .cal-month-header {
   display: flex;
   justify-content: space-between;
@@ -148,75 +148,4 @@
 
 }
 
-.cal-header {
-  display: flex;
-  flex-direction: column;
-  border: var(--border);
-  border-bottom: 1px solid transparent;
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
-  width: var(--cal-width);
-  height: fit-content;
-  color: #494949;
-  .header-module-container {
-    display: flex;
-    padding-top: 12px;
-    padding-bottom: 10px;
-    .dayToday {
-      display: flex;
-      flex-direction: column;
-      .today {
-        display: flex;
-        padding-left: 12px;
-        height: fit-content;
-        align-items: center;
-        .dayPart {
-          font-size: 24px;
-          font-style: medium;
-          font-family:"Sofia Sans", Arial, Helvetica, sans-serif;
-          font-weight: 500;
-          letter-spacing: -0.045em;
-          &.date {
-            margin-left: 8px;
-            margin-right: 8px;
-          }
-        }
-        .expand-widget {
-          position: relative;
-          border: 1px solid #84848434;
-          height: 90%;
-          aspect-ratio: 1/1;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-left: 10px;
-          border-radius: 100%;
-          cursor: pointer;
-          transition: 200ms ease;
-          &:hover {
-            border-color: #64646470;
-          }
-        }
-      }
-      .time {
-        margin-top: -6px;
-        margin-left: 16px;
-        display: flex;
-        .icon {
-          padding-right: 6px;
 
-        }
-        .curtime {
-          font-family: 'Quicksand';
-          font-weight: 800;
-        }
-        & > div {
-          height: 100%;
-          display: inline-flex;
-          justify-content: center;
-          align-items: center;
-        }
-      }
-    }
-  }
-}
