@@ -1,0 +1,19 @@
+.cal-month {
+  width: var(--cal-width);
+  min-height: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  border: var(--border);
+  .days {
+    width: 100%;
+    justify-content: center;
+    display:flex;
+    flex-wrap: wrap;
+    justify-items: start;
+    flex: 1 1 auto;
+  }
+}

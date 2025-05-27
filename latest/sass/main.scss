@@ -77,3 +77,16 @@
       }
     }
 }
+
+.tabber-modals {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  padding-right: 12px;
+  .tabber-tab {
+    &.active {
+      border-bottom: 1px solid #ddd;
+    }
+  }
+}  

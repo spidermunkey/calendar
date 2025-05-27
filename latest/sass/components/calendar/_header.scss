@@ -70,3 +70,106 @@
     }
   }
 }
+
+.cal-month .this-month {
+    margin: 8px 0px;
+    display: flex;
+  }
+.cal-month .month-name {
+    color: var(--color);
+    font-family: var(--font);
+    font-weight: 600;
+    letter-spacing: 0.035em;
+    min-width: 14ch;
+    text-align: center;
+  }
+
+.cal-month-header {
+  display: flex;
+  justify-content: space-between;
+  .tabber-tab {
+    cursor: pointer;
+    border: var(--border);
+    width: 46px;
+    height: 46px;
+    margin-right: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    position: relative;
+    z-index: 100;
+    margin-bottom: 12px;
+    transition: 200ms ease;
+    &::after {
+      content: "";
+      opacity: 0;
+      background: var(--slate);
+      position: absolute;
+      bottom: 0;
+      left: 4px;
+      right: 4px;
+      height: 1px;
+      border-radius: 100%;
+      transition: 150ms ease;
+      transform: translateY(2px);
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.586);
+
+    }
+    &.active {
+      border: 1px solid #ccc;
+      background-color: #ffffffac;
+      scale: 1.1;
+      .tool-tip,&:hover .tool-tip {
+        opacity: 0;
+      }
+      &::after {
+      opacity: .8;
+      transform: translateY(0px);
+
+      }
+      &:before {
+        opacity: .8;
+        content: "";
+        background: var(--slate);
+        position: absolute;
+        bottom: 0;
+        left: 4px;
+        right: 4px;
+        height: 1px;
+        border-radius: 100%;
+        transition: 150ms ease;
+        transform: translateY(2px);
+      }
+    }
+    &:hover {
+      .tool-tip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(32px);
+      }
+    }
+    .icon {
+      svg { fill: var(--color)};
+    }
+    .tool-tip {
+
+      padding: 12px;
+      border: var(--border);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      background-color: white;
+      position: absolute;
+      bottom: -24px;
+      transition: 200ms ease 300ms;
+      border-radius: 8px;
+      transform: translateY(48px);
+    }
+  }
+}
+
+.tabber-labels {
+  display: flex;
+  color: #222;
+}
