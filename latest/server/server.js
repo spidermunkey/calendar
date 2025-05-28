@@ -17,7 +17,7 @@ app.use(cors());
 const timerRouter = require('./routes/timers.js');
 const birthdayRouter = require('./routes/birthdays.js');
 const calendarRouter = require('./routes/calendar.js')
-const eventRouter = require('./routes/event.js')
+const eventRouter = require('./routes/events.js')
 app.use('/timers', timerRouter);
 app.use('/birthdays',birthdayRouter);
 app.use('/calendar',calendarRouter);

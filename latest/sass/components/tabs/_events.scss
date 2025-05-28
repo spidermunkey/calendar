@@ -115,9 +115,28 @@
       .input-options {
         display: flex;
         justify-content: space-evenly;
+        .opt {
+          border: 1px solid transparent;
+          cursor: pointer;
+        }
+        .opt.active {
+          border: 1px solid var(--border-1)
+        }
       }
       .frequency-modal {
+        position: relative;
         min-height: 140px;
+        .option-modal {
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 0;
+          pointer-events: none;
+          &.active {
+            opacity: 1;
+            pointer-events: all;
+          }
+        }
       }
     }
     .time.modal-form-section {
