@@ -1,16 +1,16 @@
 import { PlusIcon } from "../../assets/icons/plus"
-import { CreateModal } from "./EventForm"
-import { EventTemplate } from "./EventForm"
+import { CreateModal, dailyFrequency, monthlyFrequency, weeklyFrequency } from "./EventForm"
 import { useState } from "react"
 
 export const EventModal = () => {
 
+  const [template,setTemplate] = useState({});
 
   const onFormSubmit = (e) => {
     console.log(e)
   }
 
-  const showForm = (eventType) => {
+  const showForm = () => {
     const ref = document.querySelector('.interface-modal.events .create-modal')
     return ref && ref.classList.add('active')
   }
@@ -22,7 +22,7 @@ export const EventModal = () => {
 
   return (<>
       <div className="interface-modal events">
-        <CreateModal template={EventTemplate()} onSubmit={onFormSubmit} />
+        <CreateModal eventDate={template} onSubmit={onFormSubmit} />
         <div className="interface-header">
           <div className="interface-title">Events</div>
         </div>
@@ -33,6 +33,11 @@ export const EventModal = () => {
             <div className="bullet">none</div>
           </div>
           <div className="btn-add-event" onClick={() => {
+            setTemplate({
+              frequencyType:'dynamic',
+              frequency:'daily',
+              dynamic_frequency:dailyFrequency
+            })
             showForm('daily')
           }}>
             <div className="text">Add Daily Event</div>
@@ -47,6 +52,11 @@ export const EventModal = () => {
             <div className="bullet">none</div>
           </div>
           <div className="btn-add-event" onClick={() => {
+            setTemplate({
+              frequencyType:'dynamic',
+              frequency:'weekly',
+              dynamic_frequency:weeklyFrequency
+            })
             showForm('weekly')
           }}>
             <div className="text">Add Weekly Event</div>
@@ -61,6 +71,11 @@ export const EventModal = () => {
             <div className="bullet">none</div>
           </div>
           <div className="btn-add-event" onClick={() => {
+            setTemplate({
+              frequencyType:'dynamic',
+              frequency:'monthly',
+              dynamic_frequency:monthlyFrequency
+            })
             showForm('monthly')
           }}>
             <div className="text">Add Monthly Event</div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const milisecondsInDay = 86400000;
 
@@ -9,7 +9,29 @@ const midnight = (date) => new Date( getDate(date) + 'T00:00:00');
 const today = midnight(new Date());
 const tommorow = midnight(new Date(Date.now() + milisecondsInDay));
 
+const frequencyMap = {
+  days:Array(7).fill(undefined),
+  weeks: Array(4).fill(undefined),
+  months: Array(12).fill(undefined),
+}
+export const monthlyFrequency = {
+  days: Array(7).fill(undefined),
+  weeks: Array(4).fill(undefined),
+  months: ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'],
+}
+export const weeklyFrequency = {
+  days: Array(7).fill(undefined),  
+  weeks: ['1','2','3','4'],
+  months: ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'],
+}
+export const dailyFrequency = {
+  days:['mon','tue','wed','thu','fri','sat','sun'],
+  weeks: ['1','2','3','4'],
+  months: ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'],
+
+}
 export const EventTemplate = (date = today) => {
+
   return {
     title: 'untitled',
     description: 'none',
@@ -22,24 +44,17 @@ export const EventTemplate = (date = today) => {
     },
     dated_frequency: [date],
     category: 'general',
-    date: getDate(date),
-    time: {
-      start: {
-        date: getDate(date),
-        time: getTime(date),
-      },
-      end: {
-        date: getDate(tommorow),
-        time: getTime(tommorow),
-      }
-    }
+    start_time: getTime(date),
+    start_date: getDate(date),
+    end_time: getTime(tommorow),
+    end_date: getDate(tommorow),
   }
 }
 export const validateTemplate = (eventDate) => {
   const template = EventTemplate();
   const event = {};
   for (const prop in eventDate){
-    if (template[prop]){
+    if (template[prop] && typeof template[prop] === typeof eventDate[prop] ){
       event[prop] = eventDate[prop]
     }
   }
@@ -49,11 +64,16 @@ export const validateTemplate = (eventDate) => {
   }
 }
 export const CreateModal = ({ eventDate, onSubmit }) => {
-const [ event , setEvent ] = useState(validateTemplate(eventDate));
-
-const [ frequencyType, setFrequencyType ] = useState('once');
-const [ frequency, setFrequency ] = useState('once');
-
+const [ event , setEvent ] = useState({...validateTemplate(eventDate)});
+const [ frequencyType, setFrequencyType ] = useState(event.frequencyType);
+const [ frequency, setFrequency ] = useState(event.frequency);
+console.log(event,eventDate)
+useEffect(() => {
+  const data = validateTemplate(eventDate)
+  setEvent(data)
+  setFrequencyType(data.frequencyType)
+  setFrequency(data.frequency)
+},[eventDate])
 return (
   <div className="create-modal">
     <div className="modal-header">
