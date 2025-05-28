@@ -32,11 +32,12 @@
     &.bday .bday-marker{
       opacity: 1;
     }
-    &:hover, &.active {
+    &:hover, 
+    &.active {
       .daynum{
         opacity: 1;
       }
-      &::before {
+      &::after {
         opacity: 1;
       }
     }

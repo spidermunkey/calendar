@@ -1,7 +1,7 @@
 import { Birthdays } from "../../birthdays/Birthdays"
 import { Timers } from "../../timer/Timers"
 
-import { DayView } from "../DayView"
+import { DayModal } from "../DayModal"
 import { EventModal } from "../EventModal"
 
 const compose = (Element) => (props) => <Element {...props}/> 
@@ -30,7 +30,7 @@ export const CalendarTabs = [
   },
   {
     label: 'dayview',
-    element: compose(DayView),
+    element: compose(DayModal),
     buttonType: 'floating',
     index: 4,
   }
