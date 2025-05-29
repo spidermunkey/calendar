@@ -141,7 +141,7 @@ export const DailyModal = ({eventDate, onSubmit}) => {
       <div className="modal-header">
         <div className="modal-title">{frequency} Event</div>
         <div className="close" onClick={() => {
-          const ref = document.querySelector('.interface-modal.events .create-modal')
+          const ref = document.querySelector('.interface-modal.events .daily-modal')
           return ref && ref.classList.remove('active')
         }}>close</div>
       </div>
