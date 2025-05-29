@@ -15,17 +15,17 @@ export const frequencyMap = {
   months: Array(12).fill(false),
 }
 export const monthlyFrequency = {
-  days: Array(7).fill(false),
+  days:Array(7).fill(false).map((value,index) => {if (today.getDay === index) value = true; return value}),
   weeks: Array(4).fill(false),
   months: Array(12).fill(true),
 }
 export const weeklyFrequency = {
-  days: Array(7).fill(false),  
+  days:Array(7).fill(false).map((value,index) => {if (today.getDay === index) value = true; return value}),
   weeks: Array(4).fill(true),
   months: Array(12).fill(true),
 }
 export const dailyFrequency = {
-    days:Array(7).fill(true),
+    days:Array(7).fill(true).map((value,index) => {if (today.getDay === index) value = true; return value}),
     weeks: Array(4).fill(true),
     months: Array(12).fill(true),
 }
@@ -157,12 +157,31 @@ export const DailyModal = ({eventDate, onSubmit}) => {
       dynamic_frequency: dynamicFrequency,
     })
 }
-
+ const setDays = (index,value) => {
+    dynamicFrequency.days[index] = value;  
+    setDynamicFrequency({
+        ...dynamicFrequency,
+    })
+  }
+ const setWeeks = (index,value) => {
+    dynamicFrequency.weeks[index] = value;  
+    setDynamicFrequency({
+        ...dynamicFrequency,
+    })
+  }
+ const setMonths = (index,value) => {
+    dynamicFrequency.months[index] = value;  
+    setDynamicFrequency({
+        ...dynamicFrequency,
+    })
+  }
+  
   const onClose = () => {
     const ref = document.querySelector('.interface-modal.events .daily-modal')
     return ref && ref.classList.remove('active')
   }
   useEffect(() => {
+    console.log(frequency)
     const data = validateTemplate(eventDate)
     setEvent(data)
     setFrequencyType(data.frequencyType)
@@ -170,7 +189,23 @@ export const DailyModal = ({eventDate, onSubmit}) => {
     setCategory(data.category)
     setDescription(data.description)
     setTitle(data.title)
-    setDynamicFrequency(data.dynamic_frequency)
+    if (data.frequency === 'weekly'){
+      console.log(today.getDay())
+      data.dynamic_frequency.days[today.getDay()] = true;
+      setDynamicFrequency({
+        ...data.dynamic_frequency
+      })
+    }
+    else if (data.frequency === 'monthly'){
+      data.dynamic_frequency.days[today.getDay()] = true;
+      setDynamicFrequency({
+        ...data.dynamic_frequency
+      })
+    } else {
+      setDynamicFrequency(data.dynamic_frequency)
+
+    }
+
     console.log('cat',data.category)
   },[eventDate])
 
@@ -187,15 +222,21 @@ export const DailyModal = ({eventDate, onSubmit}) => {
               <div className="flexbox column ">
                 <TitleInput title={title} setTitle={setTitle}/>
                 <DescriptionInput description={description} setDescription={setDescription}/>
-                <CategorySelectInput controller={{category,setCategory}} categories={["general","bill","deadline","birthday","deposit"]}/>
+                <CategorySelectInput controller={{category,setCategory}} categories={["general","deadline","birthday","deposit"]}/>
               </div>
               {frequency === 'daily'
-                ? <DynamicDayPicker days={dynamicFrequency.days} setDays={(index,value) => {
-                  dynamicFrequency.days[index] = value;  
-                  setDynamicFrequency({
-                      ...dynamicFrequency,
-                    })
-                }}/>
+                ? <DynamicDayPicker days={dynamicFrequency.days} setDays={setDays}/>
+                : frequency === 'weekly'
+                ? <div className="flexbox column">
+                    <DynamicDayPicker days={dynamicFrequency.days} setDays={setDays}/>
+                    <DynamicWeekPicker weeks={dynamicFrequency.weeks} setWeeks={setWeeks}/>
+                  </div>
+                : frequency === 'monthly'
+                ? <div className="flexbox column">
+                    <DynamicDayPicker days={dynamicFrequency.days} setDays={setDays}/>
+                    <DynamicWeekPicker weeks={dynamicFrequency.weeks} setWeeks={setWeeks}/>
+                    <DynamicMonthPicker months={dynamicFrequency.months} setMonths={setMonths}/>
+                  </div>
                 : <StartDateInput date={date} setDate={setDate}/>
               }
             </div>
@@ -395,13 +436,13 @@ function FrequencyForm({controller}){
                 }
               }}>
             <div className="options option-buttons">
-              <div className="df-list-item opt"><input type="checkbox" frequency={0} value={dynamicFrequency.days[0]}/> MON </div>
-              <div className="df-list-item opt"><input type="checkbox" frequency={1} value={dynamicFrequency.days[1]}/> TUE </div>
-              <div className="df-list-item opt"><input type="checkbox" frequency={2} value={dynamicFrequency.days[2]}/> WED </div>
-              <div className="df-list-item opt"><input type="checkbox" frequency={3} value={dynamicFrequency.days[3]}/> THU </div>
-              <div className="df-list-item opt"><input type="checkbox" frequency={4} value={dynamicFrequency.days[4]}/> FRI </div>
-              <div className="df-list-item opt"><input type="checkbox" frequency={5} value={dynamicFrequency.days[5]}/> SAT </div>
-              <div className="df-list-item opt"><input type="checkbox" frequency={6} value={dynamicFrequency.days[6]}/> SUN </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={1} value={dynamicFrequency.days[0]}/> MON </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={2} value={dynamicFrequency.days[1]}/> TUE </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={3} value={dynamicFrequency.days[2]}/> WED </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={4} value={dynamicFrequency.days[3]}/> THU </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={5} value={dynamicFrequency.days[4]}/> FRI </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={6} value={dynamicFrequency.days[5]}/> SAT </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={0} value={dynamicFrequency.days[6]}/> SUN </div>
             </div>
           </div>
           <div className="flexbox">
@@ -482,25 +523,64 @@ function DynamicDayPicker({days,setDays}){
       const input = option.querySelector('input');
       if (option){
         const index = input.getAttribute('frequency');
-        setDays(index, !input.checked)
-        if (input.checked){
-          option.setAttribute('active','true') 
-        } else {
-          option.setAttribute('active','true')
-        }
+        setDays(index, !days[index])
       }
     }}>
   <div className="options option-buttons">
-    <div className="df-list-item opt" active={`${days[0]}`}><input type="checkbox" frequency={0}/> MON </div>
-    <div className="df-list-item opt" active={`${days[1]}`}><input type="checkbox" frequency={1}/> TUE </div>
-    <div className="df-list-item opt" active={`${days[2]}`}><input type="checkbox" frequency={2}/> WED </div>
-    <div className="df-list-item opt" active={`${days[3]}`}><input type="checkbox" frequency={3}/> THU </div>
-    <div className="df-list-item opt" active={`${days[4]}`}><input type="checkbox" frequency={4}/> FRI </div>
-    <div className="df-list-item opt" active={`${days[5]}`}><input type="checkbox" frequency={5}/> SAT </div>
-    <div className="df-list-item opt" active={`${days[6]}`}><input type="checkbox" frequency={6}/> SUN </div>
+    <div className="df-list-item opt" active={`${days[1]}`}><input type="checkbox" frequency={1}/> MON </div>
+    <div className="df-list-item opt" active={`${days[2]}`}><input type="checkbox" frequency={2}/> TUE </div>
+    <div className="df-list-item opt" active={`${days[3]}`}><input type="checkbox" frequency={3}/> WED </div>
+    <div className="df-list-item opt" active={`${days[4]}`}><input type="checkbox" frequency={4}/> THU </div>
+    <div className="df-list-item opt" active={`${days[5]}`}><input type="checkbox" frequency={5}/> FRI </div>
+    <div className="df-list-item opt" active={`${days[6]}`}><input type="checkbox" frequency={6}/> SAT </div>
+    <div className="df-list-item opt" active={`${days[0]}`}><input type="checkbox" frequency={0}/> SUN </div>
   </div>
 </div>)
 }
+
 function DynamicWeekPicker({weeks, setWeeks}){
-  
+   return (            
+    <div className="dynamic-weeks"
+      onClick={(e) => {
+      const option = e.target.closest('.opt');
+      const input = option.querySelector('input');
+      if (option){
+        const index = input.getAttribute('frequency');
+        setWeeks(index, !weeks[index])
+      }}} >
+      <div className="option-buttons">
+        <div className="df-list-item opt" active={`${weeks[0]}`}><input frequency={0} type="checkbox"/> 1 </div>
+        <div className="df-list-item opt" active={`${weeks[1]}`}><input frequency={1} type="checkbox"/> 2 </div>
+        <div className="df-list-item opt" active={`${weeks[2]}`}><input frequency={2} type="checkbox"/> 3 </div>
+        <div className="df-list-item opt" active={`${weeks[3]}`}><input frequency={3} type="checkbox"/> 4 </div>
+      </div>
+    </div>)
+}
+
+function DynamicMonthPicker({months, setMonths}){
+     return (            
+    <div className="dynamic-weeks"
+      onClick={(e) => {
+      const option = e.target.closest('.opt');
+      const input = option.querySelector('input');
+      if (option){
+        const index = input.getAttribute('frequency');
+        setMonths(index, !months[index])
+      }}} >
+      <div className="option-buttons">
+        <div className="dm-list-item opt" active={`${months[0]}`}><input frequency={0} type="checkbox"/> JAN </div>
+        <div className="dm-list-item opt" active={`${months[1]}`}><input frequency={1} type="checkbox"/> FEB </div>
+        <div className="dm-list-item opt" active={`${months[2]}`}><input frequency={2} type="checkbox"/> MAR </div>
+        <div className="dm-list-item opt" active={`${months[3]}`}><input frequency={3} type="checkbox"/> APR </div>
+        <div className="dm-list-item opt" active={`${months[4]}`}><input frequency={4} type="checkbox"/> MAY </div>
+        <div className="dm-list-item opt" active={`${months[5]}`}><input frequency={5} type="checkbox"/> JUN </div>
+        <div className="dm-list-item opt" active={`${months[6]}`}><input frequency={6} type="checkbox"/> JUL </div>
+        <div className="dm-list-item opt" active={`${months[7]}`}><input frequency={7} type="checkbox"/> AUG </div>
+        <div className="dm-list-item opt" active={`${months[8]}`}><input frequency={8} type="checkbox"/> SEP </div>
+        <div className="dm-list-item opt" active={`${months[9]}`}><input frequency={9} type="checkbox"/> OCT </div>
+        <div className="dm-list-item opt" active={`${months[10]}`}><input frequency={10} type="checkbox"/> NOV </div>
+        <div className="dm-list-item opt" active={`${months[11]}`}><input frequency={11} type="checkbox"/> DEC </div>
+      </div>
+    </div>
+    )
 }
