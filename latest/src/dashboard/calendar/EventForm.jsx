@@ -84,11 +84,11 @@ export const GenericModal = ({ eventDate, onSubmit }) => {
   },[eventDate])
 
   return (
-    <div className="create-modal">
+    <div className="event-form-modal custom-modal">
       <div className="modal-header">
         <div className="modal-title">Create Event</div>
         <div className="close" onClick={() => {
-          const ref = document.querySelector('.interface-modal.events .create-modal')
+          const ref = document.querySelector('.interface-modal.events .custom-modal')
           return ref && ref.classList.remove('active')
         }}>close</div>
       </div>
@@ -96,9 +96,8 @@ export const GenericModal = ({ eventDate, onSubmit }) => {
         <div className="modal-form">
           <form action="">
             <div className="flexbox">
-            <TitleInput controller={{title,setTitle}}/>
-            <CategorySelectInput controller={{category,setCategory}} categories={["general","bill","deadline","birthday","deposit"]}/>
-
+              <TitleInput controller={{title,setTitle}}/>
+              <CategorySelectInput controller={{category,setCategory}} categories={["general","bill","deadline","birthday","deposit"]}/>
             </div>
            
             <DescriptionInput controller={{description,setDescription}}/>
@@ -138,7 +137,7 @@ export const DailyModal = ({eventDate, onSubmit}) => {
   },[eventDate])
 
   return (
-    <div className="create-modal daily-modal">
+    <div className="event-form-modal daily-modal">
       <div className="modal-header">
         <div className="modal-title">{frequency} Event</div>
         <div className="close" onClick={() => {

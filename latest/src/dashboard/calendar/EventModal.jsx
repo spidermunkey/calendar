@@ -1,6 +1,6 @@
 import { PlusIcon } from "../../assets/icons/plus"
 import { GenericModal, DailyModal, dailyFrequency,  monthlyFrequency, weeklyFrequency,frequencyMap } from "./EventForm"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export const EventModal = () => {
 
@@ -10,32 +10,45 @@ export const EventModal = () => {
     console.log(e)
   }
 
-  const showForm = () => {
-    const ref = document.querySelector('.interface-modal.events .create-modal')
+  const showGenericForm = () => {
+    const ref = document.querySelector('.interface-modal.events .event-form-modal.custom-modal')
+    closeDailyForm();
     return ref && ref.classList.add('active')
+  }
+  const closeGenericForm = () => {
+    const ref = document.querySelector('.interface-modal.events .event-form-modal.custom-modal')
+    return ref && ref.classList.remove('active')
+  }
+  const showDailyForm = () => {
+    const ref = document.querySelector('.interface-modal.events .event-form-modal.daily-modal')
+    closeGenericForm();
+    return ref && ref.classList.add('active');
+    
+  }
+  const closeDailyForm = () => {
+        const ref = document.querySelector('.interface-modal.events .event-form-modal.daily-modal')
+    return ref && ref.classList.remove('active')
   }
 
   const hideForm = () => {
     const ref = document.querySelector('.interface-modal.events .create-modal')
     return ref && ref.classList.remove('active')
   }
-
   return (<>
       <div className="interface-modal events">
-        { template.frequencyType === 'once' 
-          ? <DailyModal eventDate={template} onSubmit={onFormSubmit}/>
-          : <GenericModal eventDate={template} onSubmit={onFormSubmit}/>
-        } <div/>
+          <DailyModal eventDate={template} onSubmit={onFormSubmit}/>
+          <GenericModal eventDate={template} onSubmit={onFormSubmit}/>
+       <div/>
         <div className="interface-header">
           <div className="interface-title">Events</div>
 
           <div className="btn-add-event" onClick={e => {
             setTemplate({
-              frequencyType:'dynamic',
+              frequencyType:'custom',
               frequency:'once',
               dynamic_frequency:frequencyMap,
             })
-            showForm('daily')
+            showGenericForm('daily')
           }}>
             <div className="icon"><PlusIcon/></div>
             <div className="label">Add Event</div>
@@ -53,7 +66,7 @@ export const EventModal = () => {
               frequency:'daily',
               dynamic_frequency:dailyFrequency
             })
-            showForm('daily')
+            showDailyForm('daily')
           }}>
             <div className="text">Daily Event</div>
             <div className="btn-add-icon" handle="daily">
@@ -72,7 +85,7 @@ export const EventModal = () => {
               frequency:'weekly',
               dynamic_frequency:weeklyFrequency
             })
-            showForm('weekly')
+            showDailyForm('weekly')
           }}>
             <div className="text">Weekly Event</div>
             <div className="btn-add-icon" handle="daily">
@@ -91,7 +104,7 @@ export const EventModal = () => {
               frequency:'monthly',
               dynamic_frequency:monthlyFrequency
             })
-            showForm('monthly')
+            showDailyForm('monthly')
           }}>
             <div className="text">Monthly Event</div>
             <div className="btn-add-icon" handle="daily">
