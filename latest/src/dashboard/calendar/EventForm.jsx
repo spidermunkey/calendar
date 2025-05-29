@@ -10,9 +10,9 @@ const today = midnight(new Date());
 const tommorow = midnight(new Date(Date.now() + milisecondsInDay));
 
 export const frequencyMap = {
-  days:Array(7).fill(undefined),
-  weeks: Array(4).fill(undefined),
-  months: Array(12).fill(undefined),
+  days:Array(7).fill(0),
+  weeks: Array(4).fill(0),
+  months: Array(12).fill(0),
 }
 export const monthlyFrequency = {
   days: Array(7).fill(undefined),
@@ -37,9 +37,9 @@ export const EventTemplate = (date = today) => {
     frequencyType: 'once',
     frequency: 'once',
     dynamic_frequency: {
-      days:[],
-      weeks: [],
-      months: [],
+      days:Array(7).fill(false),
+      weeks: Array(4).fill(false),
+      months: Array(12).fill(false),
     },
     dated_frequency: [date],
     category: 'general',
@@ -66,11 +66,10 @@ export const GenericModal = ({ eventDate, onSubmit }) => {
   const [ event , setEvent ] = useState({...validateTemplate(eventDate)});
   const [ frequencyType, setFrequencyType ] = useState(event.frequencyType);
   const [ frequency, setFrequency ] = useState(event.frequency);
-  const [category,setCategory] = useState(event.category);
-  const [description,setDescription] = useState(event.description);
-  const [title,setTitle] = useState(event.title);
-
-  console.log(event,eventDate)
+  const [ dynamicFrequency, setDynamicFrequency] = useState(event.dynamic_frequency)
+  const [ category,setCategory] = useState(event.category);
+  const [ description,setDescription] = useState(event.description);
+  const [ title,setTitle] = useState(event.title);
 
   useEffect(() => {
     const data = validateTemplate(eventDate)
@@ -94,24 +93,38 @@ export const GenericModal = ({ eventDate, onSubmit }) => {
       </div>
       <div className="modal-content">
         <div className="modal-form">
-          <form action="">
+          <form onSubmit={
+            e => {
+              e.preventDefault()
+              const form = e.target;
+              const formData = new FormData(form);
+              const entries = Object.fromEntries(formData.entries());
+              console.log('form',{
+                ...entries,
+                title,
+                description,
+                category,
+                frequency,
+                frequencyType,
+                dynamic_frequency: dynamicFrequency,
+              })
+            }
+          }>
             <div className="flexbox">
-              <TitleInput controller={{title,setTitle}}/>
+              <TitleInput title={title} setTitle={setTitle}/>
               <CategorySelectInput controller={{category,setCategory}} categories={["general","bill","deadline","birthday","deposit"]}/>
             </div>
            
-            <DescriptionInput controller={{description,setDescription}}/>
-            {category === 'general' && <GeneralEventForm template={event} controller={{frequencyType,setFrequencyType}} />}
-            
+            <DescriptionInput description={description} setDescription={setDescription}/>
+            {category === 'general' && <GeneralEventForm template={event} controller={{frequency,setFrequency,frequencyType,setFrequencyType,dynamicFrequency,setDynamicFrequency}} />}
+            <input className="btn-submit" type="submit"/>
           </form>
         </div>
       </div>
-      <div className="btn-submit" onClick={(e) => {
+      {/* <input className="btn-submit" type="submit" onSubmit={(e) => {
         onSubmit(e);
         console.log(event)
-      }}>
-        submit
-      </div>
+      }}/> */}
     </div>
   )
 }
@@ -148,7 +161,7 @@ export const DailyModal = ({eventDate, onSubmit}) => {
       <div className="modal-content">
         <div className="modal-form">
           <form action="">
-            <TitleInput controller={{title,setTitle}}/>
+            <TitleInput title={title} setTitle={setTitle}/>
             <DescriptionInput controller={{description,setDescription}}/>
             <CategorySelectInput 
               controller={{category,setCategory}} 
@@ -156,30 +169,26 @@ export const DailyModal = ({eventDate, onSubmit}) => {
           </form>
         </div>
       </div>
-      <div className="btn-submit" onClick={(e) => {
-        onSubmit(e);
-        console.log(event)
-      }}>
+      <div className="btn-submit">
         submit
       </div>
     </div>
   )
     
 }
-function TitleInput({controller}) {
-  const {title,setTitle} = controller;
+
+function TitleInput({title,setTitle}) {
   return (<div className="modal-form-section title">
             <div className="input-label">Event Title</div>
-            <input className="input" type="text" value={title} placeholder={title} onChange={(event) => setTitle(event.target.value)}></input>
+            <input name="title" id="title" className="input" type="text" value={title} placeholder={title} onChange={(event) => setTitle(event.target.value)}></input>
           </div>)
 }
 
-function DescriptionInput({ controller }) {
-  const {description,setDescription} = controller
+function DescriptionInput({description,setDescription}) {
   return (          
     <div className="modal-form-section description">
       <div className="input-label">Event Description</div>
-      <textarea name="description" value={description} onChange={event => setDescription(event.target.value)}></textarea>
+      <textarea id="description" name="description" value={description} onChange={event => setDescription(event.target.value)}></textarea>
     </div>)
 }
 
@@ -234,11 +243,11 @@ function TimeInput(){
       <option name="time" value="noon">noon</option>
       <option name="time" value="custom">custom</option>
     </select>
-    <input className="digit" type="number"  max="12" min="1" value={hours} placeholder="12" onChange={(e) => {
+    <input className="digit" type="number"  max="12" min="1" name="hour" value={hours} placeholder="12" onChange={(e) => {
       setHours(e.target.value)
       setType('custom')
       }}/>
-    <input className="digit" type="number" min="0" max="59" value={minutesFormatted()} placeholder="00" onChange={(e) => {
+    <input className="digit" type="number" min="0" max="59" name="minute" value={minutesFormatted()} placeholder="00" onChange={(e) => {
       setMinutes(e.target.value)
       setType('custom')
     }}/>
@@ -265,27 +274,39 @@ function DurationInput(){
         <option name="duration" value="days">days</option>
       </select>
       { context === 'hours' 
-      ? <input type="number" max='24' min="1" value={Math.min(duration,24)} placeholder="24" onChange={(e) => setDuration(e.target.value)}/>
-      : <input type="number" placeholder="1" min='1' value={duration} onChange={(e) => setDuration(e.target.value)}/>
+      ? <input type="number" name="hours" max='24' min="1" value={Math.min(duration,24)} placeholder="24" onChange={(e) => setDuration(e.target.value)}/>
+      : <input type="number" name="days" placeholder="1" min='1' value={duration} onChange={(e) => setDuration(e.target.value)}/>
       }
     </div>
   </div>
   )
 }
 
-function GeneralEventForm({ controller } ) {
-  const { frequencyType, setFrequencyType } = controller;
-  const [duration,setDuration] = useState('hours');
-  const [timeopt,setTimeOpt] = useState('midnight');
-  return (
-  <>
-    <div className="modal-form-section time">
+function GeneralEventForm({ controller }) {
+  return (<>
+    <TimeForm/>
+    <FrequencyForm controller = { controller }/>
+  </>)
+}
+
+function TimeForm(){
+   return(<div className="modal-form-section time">
       <div className="time-options">
         <TimeInput/>
         <DurationInput/>
       </div>
-    </div>
+    </div>)
+}
 
+function FrequencyForm({controller}){
+  const { 
+    frequency,
+    setFrequency,
+    frequencyType, 
+    setFrequencyType, 
+    dynamicFrequency, 
+    setDynamicFrequency } = controller
+  return (
     <div className="modal-form-section frequency">
       <div className="input-label">Frequency</div>
       <div className="input-options">
@@ -300,47 +321,105 @@ function GeneralEventForm({ controller } ) {
         onClick={() => setFrequencyType('dated')}>Dated</div>
       </div>
       <div className="frequency-modal">
-        <div className={frequencyType === 'once' ? 'active once option-modal' : 'option-modal'}>
-          <div className="fm-list-item once">once</div>
-          <div className="fm-list-item daily">daily</div>
-          <div className="fm-list-item weekly">weekly</div>
-          <div className="fm-list-item monthly">monthly</div>
+        <div className={frequencyType === 'once' ? 'active once option-modal' : 'option-modal'}
+        onClick={(event) => {
+          const option = event.target.closest('.opt');
+          if (option){
+            const input = option.querySelector('input')
+            const siblings = Array.from(document.querySelectorAll(`input[name="${input.name}"][type="radio"]`))
+            siblings.forEach(sib => sib.parentElement.classList.remove('active'))
+            setFrequency(input.getAttribute('frequency'))
+            option.classList.add('active')
+            }
+        }}>
+          <div className="fm-list-item opt once"><input name="once" type="radio" frequency="once" value={frequency === 'once'}/>once</div>
+          <div className="fm-list-item opt daily"><input name="once" type="radio" frequency="daily" value={frequency === 'daily'}/>daily</div>
+          <div className="fm-list-item opt weekly"><input name="once" type="radio" frequency="weekly" value={frequency === 'weekly'}/>weekly</div>
+          <div className="fm-list-item opt monthly"><input name="once" type="radio" frequency="monthly" value={frequency === 'monthly'}/>monthly</div>
         </div>
         <div className={frequencyType === 'dynamic' ? 'active dynamic option-modal' : 'option-modal'}>
-          <div className="dynamic-days">
+          <div className="dynamic-days"
+              onClick={(e) => {
+                const option = e.target.closest('.opt');
+                if (option){
+                  const input = option.querySelector('input')
+                  const index = input.getAttribute('frequency');
+                  dynamicFrequency.days[Number(index)] = input.checked
+                    setDynamicFrequency({
+                      ...dynamicFrequency,
+                    })
+                  if (input.checked){
+                    option.classList.add('active') 
+                  } else {
+                    option.classList.remove('active')
+                  }
+                }
+              }}>
             <div className="options option-buttons">
-              <div className="df-list-item opt"> MON </div>
-              <div className="df-list-item opt"> TUE </div>
-              <div className="df-list-item opt"> WED </div>
-              <div className="df-list-item opt"> THU </div>
-              <div className="df-list-item opt"> FRI </div>
-              <div className="df-list-item opt"> SAT </div>
-              <div className="df-list-item opt"> SUN </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={0} value={dynamicFrequency.days[0]}/> MON </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={1} value={dynamicFrequency.days[1]}/> TUE </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={2} value={dynamicFrequency.days[2]}/> WED </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={3} value={dynamicFrequency.days[3]}/> THU </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={4} value={dynamicFrequency.days[4]}/> FRI </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={5} value={dynamicFrequency.days[5]}/> SAT </div>
+              <div className="df-list-item opt"><input type="checkbox" frequency={6} value={dynamicFrequency.days[6]}/> SUN </div>
             </div>
           </div>
           <div className="flexbox">
-            <div className="dynamic-weeks">
+            <div className="dynamic-weeks"
+              onClick={(e) => {
+                const option = e.target.closest('.opt');
+                if (option){
+                  const input = option.querySelector('input')
+                  const index = input.getAttribute('frequency');
+                  dynamicFrequency.weeks[Number(index)] = input.checked
+                    setDynamicFrequency({
+                      ...dynamicFrequency,
+                    })
+                  if (input.checked){
+                    option.classList.add('active') 
+                  } else {
+                    option.classList.remove('active')
+                  }
+                }
+              }}>
               <div className="option-buttons">
-                <div className="df-list-item opt"> 1 </div>
-                <div className="df-list-item opt"> 2 </div>
-                <div className="df-list-item opt"> 3 </div>
-                <div className="df-list-item opt"> 4 </div>
+                <div className="df-list-item opt"><input frequency={0} value={dynamicFrequency.weeks[0]} type="checkbox"/> 1 </div>
+                <div className="df-list-item opt"><input frequency={1} value={dynamicFrequency.weeks[1]} type="checkbox"/> 2 </div>
+                <div className="df-list-item opt"><input frequency={2} value={dynamicFrequency.weeks[2]} type="checkbox"/> 3 </div>
+                <div className="df-list-item opt"><input frequency={3} value={dynamicFrequency.weeks[3]} type="checkbox"/> 4 </div>
               </div>
             </div>
-            <div className="dynamic-months">
+            <div className="dynamic-months"
+            onClick={(e) => {
+                const option = e.target.closest('.opt');
+                if (option){
+                  const input = option.querySelector('input')
+                  const index = input.getAttribute('frequency');
+                  dynamicFrequency.months[Number(index)] = input.checked
+                    setDynamicFrequency({
+                      ...dynamicFrequency,
+                    })
+                  if (input.checked){
+                    option.classList.add('active') 
+                  } else {
+                    option.classList.remove('active')
+                  }
+                }
+              }}>
               <div className="option-buttons">
-                <div className="opt dm-list-item">Jan</div> 
-                <div className="opt dm-list-item">Feb</div> 
-                <div className="opt dm-list-item">Mar</div> 
-                <div className="opt dm-list-item">Apr</div> 
-                <div className="opt dm-list-item">May</div> 
-                <div className="opt dm-list-item">Jun</div> 
-                <div className="opt dm-list-item">Jul</div> 
-                <div className="opt dm-list-item">Aug</div> 
-                <div className="opt dm-list-item">Sep</div> 
-                <div className="opt dm-list-item">Oct</div> 
-                <div className="opt dm-list-item">Nov</div> 
-                <div className="opt dm-list-item">Dec</div>
+                <div className="opt dm-list-item"><input frequency={0} value={dynamicFrequency.months[0]} type="checkbox"/>Jan</div> 
+                <div className="opt dm-list-item"><input frequency={1} value={dynamicFrequency.months[1]} type="checkbox"/>Feb</div> 
+                <div className="opt dm-list-item"><input frequency={2} value={dynamicFrequency.months[3]} type="checkbox"/>Mar</div> 
+                <div className="opt dm-list-item"><input frequency={3} value={dynamicFrequency.months[3]} type="checkbox"/>Apr</div> 
+                <div className="opt dm-list-item"><input frequency={4} value={dynamicFrequency.months[4]} type="checkbox"/>May</div> 
+                <div className="opt dm-list-item"><input frequency={5} value={dynamicFrequency.months[5]} type="checkbox"/>Jun</div> 
+                <div className="opt dm-list-item"><input frequency={6} value={dynamicFrequency.months[6]} type="checkbox"/>Jul</div> 
+                <div className="opt dm-list-item"><input frequency={7} value={dynamicFrequency.months[7]} type="checkbox"/>Aug</div> 
+                <div className="opt dm-list-item"><input frequency={8} value={dynamicFrequency.months[8]} type="checkbox"/>Sep</div> 
+                <div className="opt dm-list-item"><input frequency={9} value={dynamicFrequency.months[9]} type="checkbox"/>Oct</div> 
+                <div className="opt dm-list-item"><input frequency={10} value={dynamicFrequency.months[10]} type="checkbox"/>Nov</div> 
+                <div className="opt dm-list-item"><input frequency={11} value={dynamicFrequency.months[11]} type="checkbox"/>Dec</div>
               </div>
             </div>
           </div>
@@ -353,5 +432,5 @@ function GeneralEventForm({ controller } ) {
         </div>
       </div>
     </div>
-  </>)
+  )
 }

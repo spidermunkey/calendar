@@ -240,6 +240,22 @@
           width: 100%;
           margin-top: 8px;
         }
+        fieldset {
+          appearance: none;
+        }
+        .opt {
+          position: relative;
+            input[type="checkbox"],
+            input[type="radio"]{
+            margin: 0;
+            cursor: pointer;
+            position: absolute;
+            inset: 0;
+            appearance: none;
+            border: none;
+          }
+        }
+
         .option-modal {
           position: absolute;
           top: 0;
@@ -304,6 +320,9 @@
           &:hover {
             color: var(--color-2);
             opacity: 1;
+          }
+          &.active {
+            color: var(--blue);
           }
           }
         }
