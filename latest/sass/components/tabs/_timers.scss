@@ -42,6 +42,9 @@
         border-right: 1px solid var(--border-1);
         padding-right: 8px;
         opacity: .65;
+          svg {
+            stroke: var(--color);
+          }
       }
       .label {
         padding-left: 8px;

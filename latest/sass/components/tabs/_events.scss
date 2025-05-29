@@ -5,6 +5,40 @@
   flex-direction: column;
   border: 1px solid transparent;
   overflow: visible;
+  .interface-header {
+    margin-bottom: 28px;
+    .btn-add-event {
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        top: -6px;
+        display: flex;
+        height: 52px;
+        border: 1px solid var(--border-1);
+        padding: 0px 8px;
+        border-radius: 8px;
+        & > div {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .icon {
+          border-right: 1px solid var(--border-1);
+          padding-right: 8px;
+          opacity: .65;
+          svg {
+            stroke: var(--color);
+          }
+        }
+        .label {
+          padding-left: 8px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          color: var(--color);
+          opacity: .85;
+        }
+      }
+  }
   .section {
     border: 1px solid var(--border-1);
     padding: 20px;
@@ -74,19 +108,23 @@
     }
   }
   .create-modal {
+    box-shadow: -6px 10px 30px -26px rgba(45, 45, 45, 0.9);
     position: absolute;
-    top: 42px;
-    left: -332px;
+    top: 72px;
+    left: -524px;
     min-height: 380px;
-    width: 300px;
+    min-width: 300px;
+    width: 500px;
     background: white;
     z-index: 10;
-    border: 1px solid var(--border-1);
+    border: 1px solid var(--border-3);
     border-radius: 28px;
     opacity: 0;
     pointer-events: none;
     visibility: hidden;
-    
+    padding: 10px 24px;
+    padding-bottom: 40px;
+  
     .modal-header {
       display: flex;
       justify-content: space-between;
@@ -99,12 +137,76 @@
       font-size: 20px;
       opacity: .8;
       letter-spacing: 0.035em;
+      text-transform: capitalize;
     }
-    .modal-content {
-      padding: 10px 24px;
-    }
+
     .modal-form-section {
       margin: 12px 0px;
+      color: var(--color-2);
+      .input-label { 
+        margin: 6px 0px;
+        letter-spacing: 0.025em;
+      }
+      &.title {
+          margin-right: 32px;
+      }
+      &.time .time-options {
+        display: flex;
+        .option {
+          margin-right: 32px;
+        }
+        .duration-options {
+          display: inline-flex;
+          select {
+            padding-left: 8px;
+            padding-right: 10px;
+          }
+        }
+        .time-input {
+          display: inline-flex;
+          .time-type {
+            margin-right: 8px;
+            padding-left: 8px;
+            padding-right: 10px;
+          }
+          input.digit{
+            margin-left: 4px;
+          }
+          .context-input {
+            padding: 2px;
+            margin-left: 4px;
+          }
+        }
+      }
+      input,
+      textarea,
+      select {
+        padding: 8px 12px;
+        padding-left: 8px;
+        border-radius: 6px;
+        border: 1px solid var(--border-1);
+        color: #a9a9a9;
+        outline: none;
+        letter-spacing: 0.05rem;
+        &:focus,
+        &.checked {
+          border: 1px solid var(--border-3);
+          color: var(--color-2);
+        }
+      }
+      input[type="number"] {
+        width: 6ch;
+        padding: 8px 6px;
+        margin-left: 12px;
+        text-align: center;
+        font-weight: 600;
+        font-family: 'Sofia Sans';
+      }
+      &.description textarea {
+          height: 64px;
+          width: 227px;
+          resize: none;
+      }
     }
 
     .close {
@@ -112,11 +214,16 @@
       letter-spacing: 0.05em;
     }
     .frequency {
+      .input-label {
+        font-size: 14px;
+      }
       .input-options {
         display: flex;
-        justify-content: space-evenly;
         .opt {
           border: 1px solid transparent;
+          margin-right: 12px;
+          padding: 8px;
+          border-radius: 6px;
           cursor: pointer;
         }
         .opt.active {
@@ -126,15 +233,78 @@
       .frequency-modal {
         position: relative;
         min-height: 140px;
+        margin-top: 12px;
+        .flexbox {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          margin-top: 8px;
+        }
         .option-modal {
           position: absolute;
           top: 0;
           left: 0;
           opacity: 0;
           pointer-events: none;
+          display: flex;
+          flex-wrap: wrap;
+          &.once {
+            width: 300px;
+          }
           &.active {
             opacity: 1;
             pointer-events: all;
+          }
+          .fm-list-item {
+            margin: 8px;
+            width: 120px;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: .123rem;
+            color: var(--color-3);
+            opacity: .8;
+            cursor: pointer;
+            border: 1px solid var(--border-1);
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            &.active,
+            &:hover {
+              color: var(--color-2);
+              opacity: 1;
+            }
+        }
+        }
+
+        .dynamic-days .option-buttons {
+          .opt {width: 6ch}
+        }
+        .dynamic-months .option-buttons {
+          flex-wrap: wrap;
+          margin-left: 40px;
+          .opt {width: 8ch;}
+
+        }
+        .option-buttons {
+          display: flex;
+          margin-top: 12px;
+          .opt {
+            margin: 2px 0px;
+            // margin: 2px 6px;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: .123rem;
+            color: var(--color-3);
+            opacity: .8;
+            cursor: pointer;
+            border: 1px solid var(--border-1);
+            padding: 4px 8px;
+
+          &.active,
+          &:hover {
+            color: var(--color-2);
+            opacity: 1;
+          }
           }
         }
       }
