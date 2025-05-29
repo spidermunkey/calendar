@@ -10,25 +10,24 @@ const today = midnight(new Date());
 const tommorow = midnight(new Date(Date.now() + milisecondsInDay));
 
 export const frequencyMap = {
-  days:Array(7).fill(0),
-  weeks: Array(4).fill(0),
-  months: Array(12).fill(0),
+  days:Array(7).fill(false),
+  weeks: Array(4).fill(false),
+  months: Array(12).fill(false),
 }
 export const monthlyFrequency = {
-  days: Array(7).fill(undefined),
-  weeks: Array(4).fill(undefined),
-  months: ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'],
+  days: Array(7).fill(false),
+  weeks: Array(4).fill(false),
+  months: Array(12).fill(true),
 }
 export const weeklyFrequency = {
-  days: Array(7).fill(undefined),  
-  weeks: ['1','2','3','4'],
-  months: ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'],
+  days: Array(7).fill(false),  
+  weeks: Array(4).fill(true),
+  months: Array(12).fill(true),
 }
 export const dailyFrequency = {
-  days:['mon','tue','wed','thu','fri','sat','sun'],
-  weeks: ['1','2','3','4'],
-  months: ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'],
-
+    days:Array(7).fill(true),
+    weeks: Array(4).fill(true),
+    months: Array(12).fill(true),
 }
 export const EventTemplate = (date = today) => {
   return {
@@ -41,8 +40,10 @@ export const EventTemplate = (date = today) => {
       weeks: Array(4).fill(false),
       months: Array(12).fill(false),
     },
+
     dated_frequency: [date],
     category: 'general',
+    date: getDate(date),
     time: getTime(date),
     duration: '24',
     duration_type: 'hours',
@@ -61,15 +62,37 @@ export const validateTemplate = (eventDate) => {
     ...event
   }
 }
+
 export const GenericModal = ({ eventDate, onSubmit }) => {
 
   const [ event , setEvent ] = useState({...validateTemplate(eventDate)});
+  const [ date, setDate ] = useState(event.date);
   const [ frequencyType, setFrequencyType ] = useState(event.frequencyType);
   const [ frequency, setFrequency ] = useState(event.frequency);
   const [ dynamicFrequency, setDynamicFrequency] = useState(event.dynamic_frequency)
   const [ category,setCategory] = useState(event.category);
   const [ description,setDescription] = useState(event.description);
   const [ title,setTitle] = useState(event.title);
+
+  const onClose = () => {
+    const ref = document.querySelector('.interface-modal.events .custom-modal')
+    return ref && ref.classList.remove('active')
+  }
+  const onFormSubmit = e => {
+    e.preventDefault()
+    const form = e.target;
+    const formData = new FormData(form);
+    const entries = Object.fromEntries(formData.entries());
+    console.log('form',{
+      ...entries,
+      title,
+      description,
+      category,
+      frequency,
+      frequencyType,
+      dynamic_frequency: dynamicFrequency,
+    })
+}
 
   useEffect(() => {
     const data = validateTemplate(eventDate)
@@ -86,58 +109,59 @@ export const GenericModal = ({ eventDate, onSubmit }) => {
     <div className="event-form-modal custom-modal">
       <div className="modal-header">
         <div className="modal-title">Create Event</div>
-        <div className="close" onClick={() => {
-          const ref = document.querySelector('.interface-modal.events .custom-modal')
-          return ref && ref.classList.remove('active')
-        }}>close</div>
+        <div className="close" onClick={onClose}>close</div>
       </div>
       <div className="modal-content">
         <div className="modal-form">
-          <form onSubmit={
-            e => {
-              e.preventDefault()
-              const form = e.target;
-              const formData = new FormData(form);
-              const entries = Object.fromEntries(formData.entries());
-              console.log('form',{
-                ...entries,
-                title,
-                description,
-                category,
-                frequency,
-                frequencyType,
-                dynamic_frequency: dynamicFrequency,
-              })
-            }
-          }>
-            <div className="flexbox">
+          <form onSubmit={onFormSubmit}>
+            <div className="flexbox row-1">
               <TitleInput title={title} setTitle={setTitle}/>
+              <StartDateInput date={date} setDate={setDate}/>
+            </div>
+            <div className="flexbox row-2">
+              <DescriptionInput description={description} setDescription={setDescription}/>
               <CategorySelectInput controller={{category,setCategory}} categories={["general","bill","deadline","birthday","deposit"]}/>
             </div>
-           
-            <DescriptionInput description={description} setDescription={setDescription}/>
             {category === 'general' && <GeneralEventForm template={event} controller={{frequency,setFrequency,frequencyType,setFrequencyType,dynamicFrequency,setDynamicFrequency}} />}
             <input className="btn-submit" type="submit"/>
           </form>
         </div>
       </div>
-      {/* <input className="btn-submit" type="submit" onSubmit={(e) => {
-        onSubmit(e);
-        console.log(event)
-      }}/> */}
     </div>
   )
 }
 export const DailyModal = ({eventDate, onSubmit}) => {
-  const [ event , setEvent ] = useState({...validateTemplate(eventDate)});
-  const [ frequencyType, setFrequencyType ] = useState(event.frequencyType);
-  const [ frequency, setFrequency ] = useState(event.frequency);
-  const [ category,setCategory] = useState(event.category);
-  const [ description,setDescription] = useState(event.description);
-  const [ title,setTitle] = useState(event.title);
+  const data = validateTemplate(eventDate)
+  const [ event , setEvent ] = useState({...data});
+  const [ date, setDate ] = useState(data.date);
+  const [ frequencyType, setFrequencyType ] = useState(data.frequencyType);
+  const [ frequency, setFrequency ] = useState(data.frequency);
+  const [ dynamicFrequency, setDynamicFrequency] = useState(data.dynamic_frequency)
+  const [ category,setCategory] = useState(data.category);
+  const [ description,setDescription] = useState(data.description);
+  const [ title,setTitle] = useState(data.title);
 
-  console.log(event,eventDate)
+  console.log(dynamicFrequency)
+  const onFormSubmit = e => {
+    e.preventDefault()
+    const form = e.target;
+    const formData = new FormData(form);
+    const entries = Object.fromEntries(formData.entries());
+    console.log('form',{
+      ...entries,
+      title,
+      description,
+      category,
+      frequency,
+      frequencyType,
+      dynamic_frequency: dynamicFrequency,
+    })
+}
 
+  const onClose = () => {
+    const ref = document.querySelector('.interface-modal.events .daily-modal')
+    return ref && ref.classList.remove('active')
+  }
   useEffect(() => {
     const data = validateTemplate(eventDate)
     setEvent(data)
@@ -146,6 +170,7 @@ export const DailyModal = ({eventDate, onSubmit}) => {
     setCategory(data.category)
     setDescription(data.description)
     setTitle(data.title)
+    setDynamicFrequency(data.dynamic_frequency)
     console.log('cat',data.category)
   },[eventDate])
 
@@ -153,24 +178,31 @@ export const DailyModal = ({eventDate, onSubmit}) => {
     <div className="event-form-modal daily-modal">
       <div className="modal-header">
         <div className="modal-title">{frequency} Event</div>
-        <div className="close" onClick={() => {
-          const ref = document.querySelector('.interface-modal.events .daily-modal')
-          return ref && ref.classList.remove('active')
-        }}>close</div>
+        <div className="close" onClick={onClose}>close</div>
       </div>
       <div className="modal-content">
         <div className="modal-form">
-          <form action="">
-            <TitleInput title={title} setTitle={setTitle}/>
-            <DescriptionInput controller={{description,setDescription}}/>
-            <CategorySelectInput 
-              controller={{category,setCategory}} 
-              categories={["general","bill","deadline","deposit"]}/>
+          <form onSubmit={onFormSubmit}>
+              <div className="flexbox">
+              <div className="flexbox column ">
+                <TitleInput title={title} setTitle={setTitle}/>
+                <DescriptionInput description={description} setDescription={setDescription}/>
+                <CategorySelectInput controller={{category,setCategory}} categories={["general","bill","deadline","birthday","deposit"]}/>
+              </div>
+              {frequency === 'daily'
+                ? <DynamicDayPicker days={dynamicFrequency.days} setDays={(index,value) => {
+                  dynamicFrequency.days[index] = value;  
+                  setDynamicFrequency({
+                      ...dynamicFrequency,
+                    })
+                }}/>
+                : <StartDateInput date={date} setDate={setDate}/>
+              }
+            </div>
+            <input className="btn-submit" type="submit"/>
+
           </form>
         </div>
-      </div>
-      <div className="btn-submit">
-        submit
       </div>
     </div>
   )
@@ -217,7 +249,7 @@ function TimeInput(){
  const [minutes,setMinutes] = useState(0);
  const [hours,setHours] = useState(12);
  const [context,setContext] = useState('am');
- const [type, setType] = useState('noon')
+ const [type, setType] = useState('midnight')
  const minutesFormatted = () => String(minutes).padStart(2,0)
  return (
   <div className="option option-time">
@@ -253,6 +285,7 @@ function TimeInput(){
     }}/>
     <select className="context-input" name="context" value={context} onChange={(e) => {
       setContext(e.target.value)
+      setType('custom')
     }}>
       <option name="context" value="am">am</option>
       <option name="context" value="pm">pm</option>
@@ -262,6 +295,12 @@ function TimeInput(){
       
 }
 
+function StartDateInput({date,setDate}) {
+  return (<div className="modal-form-section date">
+            <div className="input-label">Start Date</div>
+            <input name="date" type="date" value={date} onChange={e => setDate(e.target.value)}/>
+          </div>)
+}
 function DurationInput(){
   const [context,setContext] = useState('hours');
   const [duration,setDuration] = useState(24);
@@ -314,7 +353,7 @@ function FrequencyForm({controller}){
         className={frequencyType === 'once' ? "opt-1 opt active": "opt opt-1"} 
         onClick={() => setFrequencyType('once')}>Once</div>
         <div 
-        className={frequencyType === 'dynamic' ? "opt-2 opt active": "opt opt-2"} 
+        className={frequencyType === 'dynamic' || frequencyType === 'custom' ? "opt-2 opt active": "opt opt-2"} 
         onClick={() => setFrequencyType('dynamic')}>Dynamic</div>
         <div 
         className={frequencyType === 'dated' ? "opt-3 opt active": "opt opt-3"} 
@@ -332,12 +371,12 @@ function FrequencyForm({controller}){
             option.classList.add('active')
             }
         }}>
-          <div className="fm-list-item opt once"><input name="once" type="radio" frequency="once" value={frequency === 'once'}/>once</div>
+          <div className="fm-list-item opt active once"><input name="once" type="radio" frequency="once" value={frequency === 'once'} />once</div>
           <div className="fm-list-item opt daily"><input name="once" type="radio" frequency="daily" value={frequency === 'daily'}/>daily</div>
           <div className="fm-list-item opt weekly"><input name="once" type="radio" frequency="weekly" value={frequency === 'weekly'}/>weekly</div>
           <div className="fm-list-item opt monthly"><input name="once" type="radio" frequency="monthly" value={frequency === 'monthly'}/>monthly</div>
         </div>
-        <div className={frequencyType === 'dynamic' ? 'active dynamic option-modal' : 'option-modal'}>
+        <div className={frequencyType === 'dynamic' || frequencyType ==='custom' ? 'active dynamic option-modal' : 'option-modal'}>
           <div className="dynamic-days"
               onClick={(e) => {
                 const option = e.target.closest('.opt');
@@ -433,4 +472,35 @@ function FrequencyForm({controller}){
       </div>
     </div>
   )
+}
+
+function DynamicDayPicker({days,setDays}){
+  return (<div className="dynamic-days"
+    onClick={(e) => {
+      console.log(days)
+      const option = e.target.closest('.opt');
+      const input = option.querySelector('input');
+      if (option){
+        const index = input.getAttribute('frequency');
+        setDays(index, !input.checked)
+        if (input.checked){
+          option.setAttribute('active','true') 
+        } else {
+          option.setAttribute('active','true')
+        }
+      }
+    }}>
+  <div className="options option-buttons">
+    <div className="df-list-item opt" active={`${days[0]}`}><input type="checkbox" frequency={0}/> MON </div>
+    <div className="df-list-item opt" active={`${days[1]}`}><input type="checkbox" frequency={1}/> TUE </div>
+    <div className="df-list-item opt" active={`${days[2]}`}><input type="checkbox" frequency={2}/> WED </div>
+    <div className="df-list-item opt" active={`${days[3]}`}><input type="checkbox" frequency={3}/> THU </div>
+    <div className="df-list-item opt" active={`${days[4]}`}><input type="checkbox" frequency={4}/> FRI </div>
+    <div className="df-list-item opt" active={`${days[5]}`}><input type="checkbox" frequency={5}/> SAT </div>
+    <div className="df-list-item opt" active={`${days[6]}`}><input type="checkbox" frequency={6}/> SUN </div>
+  </div>
+</div>)
+}
+function DynamicWeekPicker({weeks, setWeeks}){
+  
 }
