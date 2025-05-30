@@ -21,7 +21,6 @@ router.get('/', async function getTimers(request,response){
   const db = client.db('Timers')
   const collection = db.collection('all')
   const timers = await collection.find().toArray();
-  console.log(timers)
   response.json(timers)
 });
 

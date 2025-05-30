@@ -1,4 +1,4 @@
-import {Timer} from './Timer'
+import { Timer } from './Timer'
 import { BtnAdd } from './AddButton'
 import { useTimerState } from 'context'
 import { CloseIcon } from 'icons'
@@ -6,7 +6,7 @@ import { uuid } from 'utils'
 
 import { useCallback, useState, useEffect } from 'react'
 import { PlusIcon } from '../../assets/icons/plus'
-
+  
 const FavoriteTimerTemplate = () => {
   return (
     <div className="favorite-timer favorite">
@@ -33,7 +33,6 @@ export const Timers = () => {
       setTab(selected.getAttribute('tab'));
     }
   },[]);
-  console.log(timers)
   const parseTimers = timers => timers.map((timer,index) => <Timer key={timer.id} props={timer}/>);
   const handleForm = (event) => {
     const form = event.target.closest('form');
@@ -59,7 +58,8 @@ export const Timers = () => {
   useEffect(() => {
     const getTimers = async () => {
       console.log(timers)
-      const data = await timers.data;
+      const data = await timers.getData();
+      console.log('data fetched', data)
       setCurrentTimers(data);
     }
     getTimers();

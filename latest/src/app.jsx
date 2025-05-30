@@ -1,14 +1,15 @@
-import { birthdayStore } from './birthdays.js'
-import { timerStore } from './timers.js';
 import { createObservable } from 'utils';
-import { createStore } from '../utils/createStore.jsx'
-import { DateTime } from '../utils/DateTime.js';
+import { createStore } from 'utils'
+import { DateTime } from 'utils';
+
 export const createAppModel = () => {
   const date = new Date();
   return createObservable({
     name:'My first app',
+
     currentMonth: date.getMonth(),
     currentDay: date.getDate(),
+    currentDow: date.getDay(),
     today: {
       month: date.getMonth(), 
       year: date.getFullYear(),
@@ -16,7 +17,7 @@ export const createAppModel = () => {
     },
 
     birthdays: {
-      ...createStore(birthdayStore),
+      ...createStore('api/birthdays'),
       async isToday(){
         const data = await this.getData();
         const today = new Date();
@@ -43,10 +44,13 @@ export const createAppModel = () => {
     },
 
     timers: {
+      ...createStore('api/timers'),
       activeTimer:null,
-      ...createStore(timerStore),
     },
 
+    events: {
+      ...createStore('/api/events'),
+    },
     async getDay(day = this.currentDay , month = this.currentMonth){
       const birthdaysToday = await this.birthdays.getByDate({month,day})
       const birthdaysThisMonth = await this.birthdays.getByMonth(month)
