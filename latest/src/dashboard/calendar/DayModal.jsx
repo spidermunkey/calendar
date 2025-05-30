@@ -5,7 +5,6 @@ export const DayModal  = () => {
   const state = useAppState()
   const [currentDay,setCurrentDay] = useState(state.currentDay)
   const [currentMonth,setCurrentMonth] = useState(state.currentMonth)
-  const [view,setCurrentView] = useState('')
   const unsubCurrentDay = state.observe('currentDay', setCurrentDay);
   const unsubCurrentMonth = state.observe('currentMonth',setCurrentMonth)
 
@@ -31,16 +30,7 @@ export const DayModal  = () => {
     }
   },[currentDay,currentMonth])
   
-  if (view === 'daily'){
-    return (
-      <div className="interface-modal dayView">
-        <div className="interface-header">
-          <div className="interface-title">Today View</div>
-          <div className="close" onClick={()=> setCurrentView('')}>close</div>
-        </div>
-      </div>
-    )
-  }else {
+
     return (
       <div className="interface-modal dayView">
         <div className="interface-header">
@@ -87,6 +77,6 @@ export const DayModal  = () => {
 
       </div>
     )
-  }
+
 
 }

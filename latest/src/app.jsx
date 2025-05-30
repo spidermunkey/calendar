@@ -19,7 +19,7 @@ export const createAppModel = () => {
     birthdays: {
       ...createStore('api/birthdays'),
       async isToday(){
-        const data = await this.getData();
+        const data = await this.data;
         const today = new Date();
         const month = today.getMonth() + 1;
         const day = today.getDate();
@@ -32,12 +32,12 @@ export const createAppModel = () => {
         return thisMonth
       },
       async getByDate({ month, day }){
-        const data = await this.getData();
+        const data = await this.data;
         const found = data.filter(bday => bday.month == month + 1 && bday.day == day);
         return found;
       },
       async getByMonth(monthIndex){
-        const data = await this.getData();
+        const data = await this.data;
         const isThisMonth = data.filter(bday => bday.month == monthIndex + 1);
         return isThisMonth;
       },

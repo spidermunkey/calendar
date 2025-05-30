@@ -16,8 +16,8 @@ const Calendar = () => {
   const [activeTab, setActiveTab] = useState(0);
   const { birthdays, today } = state;
   const { month, year } = today;
-
   const [currentMonth,setMonth] = useState(month);
+
   const [activeBirthdays,setActiveBirthdays] = useState([]);
   const [currentDay,setCurrentDay] = useState(state.currentDay);
   const [bdays,setBdays] = useState([]);
@@ -28,7 +28,7 @@ const Calendar = () => {
   }
   const refreshBirthdays = () => {
     const getData = async () => {
-      const data = await birthdays.getData();
+      const data = await birthdays.data;
       const isToday = await birthdays.isToday();
       const isThisMonth = await birthdays.isThisMonth();
       setBdays(data)
@@ -39,7 +39,7 @@ const Calendar = () => {
   const removeBirthday = (data) => {
     const remove = async () => {
       await birthdays.remove(data);
-      const updated = await birthdays.getData();
+      const updated = await birthdays.data;
       setBdays(updated)
     }
     remove()
@@ -110,4 +110,3 @@ const Calendar = () => {
 }
 
 export default Calendar
-
