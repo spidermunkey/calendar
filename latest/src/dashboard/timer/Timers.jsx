@@ -57,9 +57,7 @@ export const Timers = () => {
   
   useEffect(() => {
     const getTimers = async () => {
-      console.log(timers)
-      const data = await timers.getData();
-      console.log('data fetched', data)
+      const data = await timers.data;
       setCurrentTimers(data);
     }
     getTimers();
