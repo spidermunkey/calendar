@@ -1,11 +1,16 @@
 import { PlusIcon } from "../../assets/icons/plus"
+import { useAppState } from "../../context"
 import { GenericModal, DailyModal, dailyFrequency,  monthlyFrequency, weeklyFrequency,frequencyMap } from "./EventForm"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 export const EventModal = () => {
+  const {events} = useAppState();
   const [template,setTemplate] = useState({});
-  const handleData = (formData) => {
+  const handleData = async (formData) => {
     console.log('posting data',formData)
+    const response = await events.add(formData);
+    const result = await response.json();
+    console.log('eventForm response',result)
   }
   const showGenericForm = () => {
     const ref = document.querySelector('.interface-modal.events .event-form-modal.custom-modal')
@@ -30,6 +35,7 @@ export const EventModal = () => {
     const ref = document.querySelector('.interface-modal.events .create-modal')
     return ref && ref.classList.remove('active')
   }
+  
   return (<>
       <div className="interface-modal events">
           <DailyModal eventDate={template} handleSubmit={handleData}/>
