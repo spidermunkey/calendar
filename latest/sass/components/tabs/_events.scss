@@ -390,5 +390,31 @@
         }
           }
         }
+
+        .datePicker {
+          display: inline-flex;
+          input[name="dom"] {
+            margin-left: 0;
+            font-size: 52px;
+            border: none;
+            width: 100px;
+            background: transparent;
+          }
+          input[name="dom"]:hover + .floating-context,
+          input[name="dom"]:focus + .floating-context {
+            transform: translate(-4px,10px);
+          }
+          .floating-context {
+            font-size: 24px;
+            transform: translate(-28px,10px);
+            pointer-events: none;
+            z-index: -1;
+            font-weight: 800;
+            color: var(--color-3);
+            opacity: .5;
+            transition: 150ms ease;
+          }
+        }
+
   }
 }

@@ -3,13 +3,10 @@ import { GenericModal, DailyModal, dailyFrequency,  monthlyFrequency, weeklyFreq
 import { useEffect, useState } from "react"
 
 export const EventModal = () => {
-
   const [template,setTemplate] = useState({});
-  console.log(template.frequencyType)
-  const onFormSubmit = (e) => {
-    console.log(e)
+  const handleData = (formData) => {
+    console.log('posting data',formData)
   }
-
   const showGenericForm = () => {
     const ref = document.querySelector('.interface-modal.events .event-form-modal.custom-modal')
     closeDailyForm();
@@ -29,16 +26,16 @@ export const EventModal = () => {
         const ref = document.querySelector('.interface-modal.events .event-form-modal.daily-modal')
     return ref && ref.classList.remove('active')
   }
-
   const hideForm = () => {
     const ref = document.querySelector('.interface-modal.events .create-modal')
     return ref && ref.classList.remove('active')
   }
   return (<>
       <div className="interface-modal events">
-          <DailyModal eventDate={template} onSubmit={onFormSubmit}/>
-          <GenericModal eventDate={template} onSubmit={onFormSubmit}/>
+          <DailyModal eventDate={template} handleSubmit={handleData}/>
+          <GenericModal eventDate={template} handleSubmit={handleData}/>
        <div/>
+
         <div className="interface-header">
           <div className="interface-title">Events</div>
 
@@ -46,7 +43,7 @@ export const EventModal = () => {
             setTemplate({
               frequencyType:'custom',
               frequency:'once',
-              dynamic_frequency:frequencyMap,
+              dynamic_frequency:{...frequencyMap},
             })
             showGenericForm('daily')
           }}>
@@ -64,7 +61,7 @@ export const EventModal = () => {
             setTemplate({
               frequencyType:'once',
               frequency:'daily',
-              dynamic_frequency:dailyFrequency
+              dynamic_frequency:{...dailyFrequency}
             })
             showDailyForm('daily')
           }}>
@@ -83,7 +80,7 @@ export const EventModal = () => {
             setTemplate({
               frequencyType:'once',
               frequency:'weekly',
-              dynamic_frequency:weeklyFrequency
+              dynamic_frequency:{...weeklyFrequency}
             })
             showDailyForm('weekly')
           }}>
@@ -102,7 +99,7 @@ export const EventModal = () => {
             setTemplate({
               frequencyType:'once',
               frequency:'monthly',
-              dynamic_frequency:monthlyFrequency
+              dynamic_frequency:{...monthlyFrequency}
             })
             showDailyForm('monthly')
           }}>
