@@ -5,10 +5,48 @@
   flex-direction: column;
   color: var(--color);
   font-family: 'Quicksand';
-  border: 1px solid var(--border-1);
+  // border: 1px solid var(--border-1);
   border-radius: 20px;
-  overflow: hidden;
-  padding: 20px;
+  // overflow: hidden;
+  .interface-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    font-weight: 600;
+    margin-bottom: 28px;
+    .btn-add-timer {
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+      top: -6px;
+      display: flex;
+      height: 52px;
+      border: 1px solid var(--border-1);
+      padding: 0px 8px;
+      border-radius: 8px;
+              & > div {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .icon {
+          border-right: 1px solid var(--border-1);
+          padding-right: 8px;
+          opacity: .65;
+          svg {
+            stroke: var(--color);
+          }
+        }
+        .label {
+          padding-left: 8px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          color: var(--color);
+          opacity: .85;
+        }
+    }
+  }
   .interface-tab {
     display: none;
     margin-top: 12px;
@@ -58,7 +96,11 @@
       transform: translateY(18px);
       padding-left: 12px;
     }
+
   }
+  .most-recent {
+      margin: 12px 0px;
+    }
   .tab-tray {
     display: flex;
     margin: 20px 0px;

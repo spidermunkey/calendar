@@ -1,7 +1,6 @@
 import { Timer } from './Timer'
 import { BtnAdd } from './AddButton'
 import { useTimerState } from 'context'
-import { CloseIcon } from 'icons'
 import { uuid } from 'utils'
 
 import { useCallback, useState, useEffect } from 'react'
@@ -108,15 +107,14 @@ export const Timers = () => {
 
       <div className="interface-header">
         <div className="interface-title">Timers</div>
-        <div className="btn-close">
-          <div className="label">close</div>
-          <div className="icon"><CloseIcon/></div></div>
+        <div className="btn-add-timer" onClick={() => setCreateTimerModalActive(true)}><div className="icon"><PlusIcon/></div><div className="label">New Timer</div></div>
+
       </div>
-      <div className="tab-tray" onClick={toggleActiveTab}>
+      {/* <div className="tab-tray" onClick={toggleActiveTab}>
         <div className={`tab ${currentTab === 'timers' ? 'active' : ''}`} tab="timers">timers</div>
         <div className={`tab ${currentTab === 'trackers' ? 'active' : ''}`} tab="trackers">trackers</div>
-      </div>
-      <div className="favorites">
+      </div> */}
+      {/* <div className="favorites">
         <div className="section-title">Favorites</div>
         <div className="favorite-tray">
           <FavoriteTimerTemplate/>
@@ -125,7 +123,7 @@ export const Timers = () => {
           <FavoriteTimerTemplate/>
           <FavoriteTimerTemplate/>
         </div>
-      </div>
+      </div> */}
       <div className="most-recent">
         <div className="section-title">
           Most Recent
@@ -137,8 +135,6 @@ export const Timers = () => {
       </div>
       <div tab="timers" className={`interface-tab ${currentTab === 'timers' ? 'active' : ''}`}>
         <div className="section-title">My Timers</div>
-        <div className="btn-add-timer" onClick={() => setCreateTimerModalActive(true)}><div className="icon"><PlusIcon/></div><div className="label">New Timer</div></div>
-
         <div className="timer-list">
           {currentTimers.length == 0 ? <div className='bullet'>You have no timers saved</div>:
             parseTimers(currentTimers)
