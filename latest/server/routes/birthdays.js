@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { MongoClient, ObjectId } = require('mongodb');
 const { CONNECTION_STRING } = require('../.config/env.js');
-
+const {connection,local_connection} = require('../db/connect.js')
 let client;
 
 async function connect() {
@@ -25,7 +25,7 @@ async function connect() {
 
 router.get('/', async (request,response) => {
     try {
-        const db = await connect();
+        const db = (await local_connection()).db('birthdays');
         const collection = db.collection('all');
         const birthdays = await collection.find().toArray();
         return response.json(birthdays);  
@@ -38,7 +38,7 @@ router.get('/', async (request,response) => {
 
 router.post('/', async (request,response) => {
     try {
-        const db = await connect();
+        const db = (await local_connection()).db('birthdays');
         const collection = db.collection('all');
         const birthday = request.body;
         console.log('adding',birthday,request.body);
@@ -52,7 +52,7 @@ router.post('/', async (request,response) => {
 
 router.delete('/',async (request,response) => {
     try {
-        const db = await connect();
+        const db = (await local_connection()).db('birthdays');
         const collection = db.collection('all');
         const {id} = request.body;
         console.log('deleting', id);

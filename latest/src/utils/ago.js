@@ -23,7 +23,7 @@ export function ago(msDate) {
   let msAgo = now - then.getTime();
   let context = 'ago'
   if (msAgo < 0) {
-      context = 'til'
+      context = 'from now'
   }
 
   msAgo = Math.abs(msAgo);

@@ -14,6 +14,7 @@ export const Birthdays = () => {
   useEffect(() => {
     const update = async () => setBirthdays(await state.birthdays.getData())
     update();
+
   },[])
   return (
     <div className='interface-modal birthdays'>
@@ -24,7 +25,7 @@ export const Birthdays = () => {
           <div className="icon"><CloseIcon/></div>
         </div>
       </div>
-      <CreateForm add={state.birthdays.add} isActive={formActive} setActive={setFormActive}/>
+      <CreateForm add={state.birthdays.add.bind(state.birthdays)} isActive={formActive} setActive={setFormActive}/>
       <BtnAdd onClick={() => setFormActive(!formActive)}/>
       <NamedList currentMonth={currentMonth} birthdays={birthdays} onDelete={state.birthdays.destroy}/>
     </div>

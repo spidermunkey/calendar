@@ -53,6 +53,7 @@
     }
     &.active {
       border: 1px solid var(--border);
+      background-color: #efefef;
     }
     &:hover::after{
       opacity: 1;
