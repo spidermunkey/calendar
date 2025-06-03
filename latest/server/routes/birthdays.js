@@ -7,16 +7,15 @@ let client;
 
 async function connect() {
     if (!client) {
-        client = new MongoClient(CONNECTION_STRING);
+        client = new MongoClient(CONNECTION_STRING)
         try {
-            await client.connect();
-            const db = client.db('birthdays');
-            console.log('Connected to MongoDB');
+            await client.connect()
+            const db = client.db('birthdays')
             return db
         } catch (error) {
             // console.error('Failed to connect to MongoDB', error);
             // use local
-            console.log('db connection error',error);
+            console.log('db connection error',error)
             return false;
         }
     }
@@ -31,8 +30,8 @@ router.get('/', async (request,response) => {
         const birthdays = await collection.find().toArray();
         return response.json(birthdays);  
     } catch(error){
-        console.log(error);
-        return false
+        console.log(error)
+        response.json({})
     }
 
 })
@@ -47,9 +46,8 @@ router.post('/', async (request,response) => {
         response.status(200).json({ success: true });   
      } catch(error){
         console.log(error)
-        return false;
+        response.json({});
     }
-
 })
 
 router.delete('/',async (request,response) => {
@@ -62,7 +60,7 @@ router.delete('/',async (request,response) => {
         response.status(200).json({ success: true });   
     } catch(error){
         console.log(error)
-        return false;
+        response.json({});
     }
 })
 

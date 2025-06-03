@@ -32,8 +32,8 @@ async function run() {
     try {
         process.on('uncaughtException',(err) => {
             console.log('[[process]]')
-            console.log(err.code)
-            console.log(err.reason)
+            console.log(err.message)
+            console.log(err.stack)
         })
         app.listen(PORT, (err) => {
             console.log(`listening for api connections on port:${PORT}`)

@@ -19,6 +19,7 @@ export const createAppModel = () => {
 
     birthdays: {
       ...createStore('api/birthdays'),
+
       async isToday(){
         const data = await this.data;
         const today = new Date();
@@ -28,16 +29,14 @@ export const createAppModel = () => {
         return found;
       },
       async isThisMonth() {
-        const date = new Date();
-        const thisMonth = await this.getByMonth(date.getMonth())
-        return thisMonth
+        return this.getByMonth()
       },
       async getByDate({ month, day }){
         const data = await this.data;
         const found = data.filter(bday => bday.month == month + 1 && bday.day == day);
         return found;
       },
-      async getByMonth(monthIndex){
+      async getByMonth(monthIndex = (new Date()).getMonth()){
         const data = await this.data;
         const isThisMonth = data.filter(bday => bday.month == monthIndex + 1);
         return isThisMonth;
@@ -51,6 +50,36 @@ export const createAppModel = () => {
 
     events: {
       ...createStore('/api/events'),
+
+      async today(){
+        const data = await this.data;
+        const today = new Date();
+        const date = today.toISOString().slice(0,10)
+        const day = today.getDate();
+        const found = data.filter(
+          event => {
+            const isDaily = event.frequency === 'daily' || event.frequency === 'weekly' || event.frequency === 'monthly';
+            const isDow = event?.dynamic_frequency?.days[today.getDay()] == true;
+            const isDom = event?.dom == day;
+            const isToday = event?.date == date;
+            return isToday || isDaily && isDow || isDaily && isDom;
+        })
+        return found;
+      },
+      async thisMonth() {
+        return this.getByMonth();
+      },
+      async getByMonth(monthIndex = (new Date()).getMonth()) {
+        const data = await this.data;
+        const isThisMonth = data.filter(event => {
+          console.log(event)
+            const isDaily = event.frequency === 'monthly';
+            const isMonthOfYear = event?.dynamic_frequency?.months[monthIndex] == true;
+            const isThisMonth = event?.date?.slice(5,7) == monthIndex + 1;
+            return isDaily && isMonthOfYear || isThisMonth
+        });
+        return isThisMonth;
+      }
     },
 
     async getDay(day = this.currentDay , month = this.currentMonth){
@@ -66,5 +95,5 @@ export const createAppModel = () => {
 
     monthName:(monthIndex) => DateTime.month(monthIndex)
   })
-  
+
 }

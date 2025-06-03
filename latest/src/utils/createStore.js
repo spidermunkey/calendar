@@ -1,5 +1,5 @@
 import { createObservable } from "./createObservable";
-import { add, destroy, get } from "./api";
+import { add, destroy, get, update } from "./api";
 
 export const createStore = (endpoint) => {
   const context = createObservable({
@@ -7,14 +7,11 @@ export const createStore = (endpoint) => {
       stale: true,
       _data: [],
       get data(){
-        console.log('retrieving events')
         return this.getData();
       },
       async getData() {
         if (this.stale){
-          console.log('fetching',(this.endpoint));
           let data = await get(this.endpoint);
-          console.log(this.endpoint,'data',data)
           this._data = data;
           this.stale = false;
           return data;
@@ -24,15 +21,20 @@ export const createStore = (endpoint) => {
         }
       },
       async add(data) {
-        const response = await add(data,this.endpoint);
+        const response = await add(this.endpoint,data);
         this.stale = true;
         return response;
       },
       async remove(id){
-        const response = await destroy(id,this.endpoint);
+        const response = await destroy(this.endpoint,id);
         this.stale = true;
         return response;
       },
+      async update(data){
+        const response = await update(this.endpoint,data);
+        this.stale = true;
+        return response;
+      }
   })
   return context
 }

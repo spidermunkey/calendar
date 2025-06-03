@@ -1,16 +1,16 @@
-export async function get(enpoint) {
+export async function get(endpoint) {
   try {
-    const response = await fetch(enpoint);
+    const response = await fetch(endpoint);
     const data = await response.json();
     return data;
   } catch(error){
-      console.log('error fetching birthdays',error)
+      console.log('error fetching resource', endpoint, error)
       return []
     }
 
 }
 
-export async function add(data, endpoint){
+export function add(endpoint, data){
   const response = fetch(endpoint,{
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,11 +18,28 @@ export async function add(data, endpoint){
   })
   return response;
 }
-export async function destroy(id){
-  const response = fetch(enpoint,{
+
+export function destroy(endpoint, id){
+  const response = fetch(`${endpoint}/${id}`,{
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json'},
-    body: JSON.stringify({id:id})
   })
   return response;
+}
+
+export function update(endpoint, data){
+  const response = fetch(`${endpoint}/${data.id}`,{
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(data),
+  })
+  return response
+}
+export function edit(endpoint, data){
+  const response = fetch(`${endpoint}/${data.id}`,{
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(data),
+  })
+  return response
 }
