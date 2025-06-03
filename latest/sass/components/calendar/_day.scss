@@ -19,17 +19,27 @@
       opacity: 0;
       box-shadow: 0 3px 6px 0px #0000001f, 0 1px 3px 0px #00000020;
     }
-    .bday-marker {
+    .markers {
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0;
+    }
+    .marker {
       height: 6px;
       width:6px;
       border-radius: 100%;
-      background: pink;
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      opacity: 0;
+      margin-top: 8px;
+      margin-right: 8px;
     }
-    &.bday .bday-marker{
+    .bday-marker {
+      background: pink;
+    }
+    .event-marker {
+      background: var(--event-grey)
+    }
+    &.bday .markers,
+    &.event .markers {
       opacity: 1;
     }
     &:hover, 

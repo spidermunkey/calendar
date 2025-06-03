@@ -11,16 +11,19 @@ export const DayModal  = () => {
   const [dayData,setDayData] = useState({ birthdays : {
     today:[],
     thisMonth:[],
-  }})
+  }, events:[]})
 
   const birthdaysToday = useCallback(() => dayData.birthdays.today.map(bday => <span className="bullet">  {bday.name}'s birthday </span>),[dayData])
   const birthdaysThisMonth = useCallback(() => dayData.birthdays.thisMonth.map(bday => (<span className="bullet">  {bday.name}  </span>)),[dayData])
+  const eventsToday = useCallback(() => dayData.events,[dayData])
   const monthName = state.monthName(currentMonth)
   const namesToday = birthdaysToday();
   const namesThisMonth = birthdaysThisMonth();
+  const events = eventsToday();
   useEffect(() => {
     const getData = async () => {
       const dayData = await state.getDay(currentDay,currentMonth)
+      console.log('yo',dayData.events)
       setDayData(dayData)
     }
     getData();
@@ -41,7 +44,7 @@ export const DayModal  = () => {
         </div>
 
         <div className="section daily">
-          <div className="section-title">Daily Events</div>
+          <div className="section-title">Birthdays</div>
           <div className="section-data daily">
             { namesToday.length > 0 ?
               namesToday.length === 1 ?
@@ -49,8 +52,8 @@ export const DayModal  = () => {
                   {namesToday}
               </div>
               : <div className="bday-data">
-              <div className="section-title label"> { namesToday.length } birthday{namesToday.length !== 1 ? 's' : ''}</div>
-              <div className="bullet">{ namesToday.length } birthday{namesToday.length !== 1 ? 's' : ''}</div>
+              <div className="section-title label"> { namesToday.length } birthday{namesToday.length !== 1 && 's'}</div>
+              <div className="bullet">{ namesToday.length } birthday{namesToday.length !== 1 && 's'}</div>
                 {/* <div className="bday-list">
                   {namesToday.length > 0 ? namesToday : 'none'}
                 </div> */}
@@ -61,9 +64,10 @@ export const DayModal  = () => {
         </div>
 
         <div className="section monthly">
-          <div className="section-title">Monthly Events</div>
+          <div className="section-title">Events</div>
           <div className="section-data monthly">
-            <div className="bullet">none</div>
+            
+            <div className="bullet">{events.length} event{events.length !== 1 && 's'}</div>
           </div>
         </div>
 

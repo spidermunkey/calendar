@@ -11,67 +11,32 @@ import { useAppState } from "context";
 import { TimerProvider } from '../../context';
 
 const Calendar = () => {
+  
   const state = useAppState();
-
-  const [activeTab, setActiveTab] = useState(0);
-  const { birthdays, today } = state;
-  const { month, year } = today;
-  const [currentMonth,setMonth] = useState(month);
-
-  const [activeBirthdays,setActiveBirthdays] = useState([]);
-  const [currentDay,setCurrentDay] = useState(state.currentDay);
-  const [bdays,setBdays] = useState([]);
+  const [ activeTab, setActiveTab ] = useState(0);
+  const [ month, setMonth ] = useState(state.currentMonth);
+  const [ day, setDay ] = useState(state.currentDay);
+  const [ bdays, setBdays ] = useState([]);
 
   const updateCurrentMonth = (month) => {
-    setMonth(month);
     state.currentMonth = month;
+    setMonth(month);
   }
-  const refreshBirthdays = () => {
-    const getData = async () => {
-      const data = await birthdays.data;
-      const isToday = await birthdays.isToday();
-      const isThisMonth = await birthdays.isThisMonth();
-      setBdays(data)
-      updateBirthdaysThisMonth()
-    }
-    getData()
-  }
-  const removeBirthday = (data) => {
-    const remove = async () => {
-      await birthdays.remove(data);
-      const updated = await birthdays.data;
-      setBdays(updated)
-    }
-    remove()
-  }
-  const addBirthday = ({name,day,month,year}) => {
-    birthdays.add({name,day,month,year}).then(res => {
-      refreshBirthdays();
-  })
-
-  }
-  const thisMonth = useRef(today.month).current
+  const today = useRef((new Date())).current;
   const tabs = CalendarTabs;
-  const toggleNext = () => updateCurrentMonth(currentMonth + 1)
-  const togglePrev = () => updateCurrentMonth(currentMonth - 1)
-  const toggleCurrent = () => updateCurrentMonth(thisMonth)
+  const toggleNext = () => updateCurrentMonth(month + 1)
+  const togglePrev = () => updateCurrentMonth(month - 1)
+  const toggleCurrent = () => updateCurrentMonth(today.getMonth())
   
-  const updateBirthdaysThisMonth = () => {
-    const update = async () => setActiveBirthdays(await birthdays.getByMonth(currentMonth)) 
-    update();
-  }
   const handleDashboardClick = async (event) => {
-    const dayElement = event.target.closest('.day')
+    const dayElement = event.target.closest('.day');
     if (dayElement) {
-      const day = dayElement.getAttribute('day')
-      setActiveTab(3)
+      const day = dayElement.getAttribute('day');
+      setActiveTab(3);
       state.currentDay = day;
-      setCurrentDay(day)
-      const dayData = await state.getDay(day)
+      setDay(day);
     }
   }
-
-  useEffect(updateBirthdaysThisMonth,[currentMonth])
 
   return (
         <>
@@ -80,7 +45,7 @@ const Calendar = () => {
             <div className="calendar">
               <Header></Header>
               <div className="cal-month-header">
-                  <CalendarCursor currentMonth={ DateTime.month(currentMonth) } next={toggleNext} prev={togglePrev} reset={toggleCurrent}/>
+                  <CalendarCursor currentMonth={ DateTime.month(month) } next={toggleNext} prev={togglePrev} reset={toggleCurrent}/>
                   <div className="tabber-labels">
                     { tabs.map((tab,index) => {
                       if (tab.buttonType === 'inline'){
@@ -97,12 +62,18 @@ const Calendar = () => {
                   </div>
               </div>
               <div className="cal-month" onClick={handleDashboardClick}>
-                  <Days activeDay={currentDay} activeBirthdays={activeBirthdays} month={currentMonth} year={year} />
+                  <Days day={day} month={month} year={today.getFullYear()} />
               </div>
             </div>
             
             <TimerProvider>
-              <TabModal> { tabs[activeTab].element({currentMonth:currentMonth,birthdays:bdays,update:refreshBirthdays,remove:removeBirthday,add:addBirthday}) } </TabModal>
+              <TabModal> 
+                { 
+                  tabs[activeTab].element({
+                    currentMonth:month,
+                  }) 
+                }
+              </TabModal>
             </TimerProvider>
           </div>
         </>

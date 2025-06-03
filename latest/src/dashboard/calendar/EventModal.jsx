@@ -25,9 +25,12 @@ export const EventModal = () => {
     const test = async () => {
       const today = setToday(await events.today());
       const thisMonth = setThisMonth(await events.thisMonth());
+
       console.log('total', await events.data)
-      console.log('today',today)
-      console.log('this month', thisMonth)
+      console.log('today', await events.today())
+      console.log('this month', await events.thisMonth())
+      console.log('test date', await events.findByDay(9))
+
     }
     test();
   },[events])

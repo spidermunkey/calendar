@@ -53,43 +53,50 @@ export const createAppModel = () => {
 
       async today(){
         const data = await this.data;
-        const today = new Date();
-        const date = today.toISOString().slice(0,10)
-        const day = today.getDate();
-        const found = data.filter(
-          event => {
-            const isDaily = event.frequency === 'daily' || event.frequency === 'weekly' || event.frequency === 'monthly';
-            const isDow = event?.dynamic_frequency?.days[today.getDay()] == true;
-            const isDom = event?.dom == day;
-            const isToday = event?.date == date;
-            return isToday || isDaily && isDow || isDaily && isDom;
-        })
-        return found;
+        return this.findByDate(new Date(),data)
       },
       async thisMonth() {
-        return this.getByMonth();
+        return this.findByMonth( date.getMonth() , await this.data);
       },
-      async getByMonth(monthIndex = (new Date()).getMonth()) {
+
+      match(date,event){
+        const isDaily = event.frequency === 'daily' || event.frequency === 'weekly' || event.frequency === 'monthly';
+        const isDow = event?.dynamic_frequency?.days[date.getDay()] == true;
+        const isDom = event?.dom == date.getDate();
+        const isToday = event?.date == date.toISOString().slice(0,10);
+        return isToday || isDaily && isDow || isDaily && isDom;
+      },
+      async findByDay(day, monthIndex = date.getMonth()){
+        console.log(day,monthIndex)
         const data = await this.data;
-        const isThisMonth = data.filter(event => {
-          console.log(event)
+        const today = new Date();
+        today.setMonth(monthIndex);
+        today.setDate(day);
+        return this.findByDate(today,data)
+      },
+      findByDate(date,events = this._data){
+        return events.filter(this.match.bind(this,date))
+      },
+      findByMonth(monthIndex = (new Date()).getMonth(), events = this._data) {
+        return events.filter(event => {
             const isDaily = event.frequency === 'monthly';
             const isMonthOfYear = event?.dynamic_frequency?.months[monthIndex] == true;
             const isThisMonth = event?.date?.slice(5,7) == monthIndex + 1;
             return isDaily && isMonthOfYear || isThisMonth
         });
-        return isThisMonth;
-      }
+      },
     },
 
     async getDay(day = this.currentDay , month = this.currentMonth){
       const birthdaysToday = await this.birthdays.getByDate({month,day})
       const birthdaysThisMonth = await this.birthdays.getByMonth(month)
+      const eventsToday = await this.events.findByDay(day,month);
       return {
         birthdays:{
           today:[...birthdaysToday],
           thisMonth:[...birthdaysThisMonth],
-        }
+        },
+        events: [...eventsToday],
       }
     },
 
