@@ -3,8 +3,6 @@ import { CalendarTabs } from './tabs/tab_data';
 import { Header } from './Header';
 import { DateTime } from "../../utils/DateTime";
 import { useState,useRef, useEffect, createContext , useContext } from "react";
-
-import { TabModal } from './TabModal';
 import { CalendarCursor } from "./CalendarCursor";
 import { Days } from "./Days";
 import { useAppState } from "context";
@@ -47,17 +45,14 @@ const Calendar = () => {
               <div className="cal-month-header">
                   <CalendarCursor currentMonth={ DateTime.month(month) } next={toggleNext} prev={togglePrev} reset={toggleCurrent}/>
                   <div className="tabber-labels">
-                    { tabs.map((tab,index) => {
-                      if (tab.buttonType === 'inline'){
+                    { CalendarTabs.map((tab,index) => {
+                      if (tab.buttonType === 'inline')
                         return ( 
-                        <div 
-                          className={`tabber-tab text-[18px] ${tab.element == tabs[activeTab]?.element ? 'active': ""}`} 
-                          key={index} 
-                          onClick={() => setActiveTab(index)}> 
+                        <div className={`tabber-tab text-[18px] ${tab.element == CalendarTabs[activeTab]?.element && 'active'}`} key={index} onClick={() => setActiveTab(index)}> 
                             <div className="icon">{tab.icon}</div>
                             <div className="tool-tip">{tab.label}</div> 
                           </div>)
-                      }})
+                      })
                     }
                   </div>
               </div>
@@ -67,13 +62,7 @@ const Calendar = () => {
             </div>
             
             <TimerProvider>
-              <TabModal> 
-                { 
-                  tabs[activeTab].element({
-                    currentMonth:month,
-                  }) 
-                }
-              </TabModal>
+              <div className="tabber-modals">{CalendarTabs[activeTab].element()}</div>
             </TimerProvider>
           </div>
         </>

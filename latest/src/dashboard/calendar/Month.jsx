@@ -21,19 +21,12 @@ export const Month = () => {
   const togglePrev = () => setMonth(currentMonth - 1)
   const toggleCurrent = () => setMonth(thisMonth)
 
-  const updateBirthdaysThisMonth = () => {
-    const update = async () => setActiveBirthdays(await birthdays.getByMonth(currentMonth)) 
-    update();
-  }
-
-  useEffect(updateBirthdaysThisMonth,[currentMonth])
-
   return (
       <div className="cal-month">
         <div className="cal-month-header">
           <CalendarCursor currentMonth={ DateTime.month(currentMonth) } next={toggleNext} prev={togglePrev} reset={toggleCurrent}/>
         </div>
-          <Days activeBirthdays={activeBirthdays} month={month} year={year} />
+          <Days month={month} year={year} />
       </div>
   )
 }

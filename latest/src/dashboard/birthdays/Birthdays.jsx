@@ -4,10 +4,17 @@ import { CreateForm } from "./CreateBirthdayForm";
 import { NamedList} from './NameList';
 import { BtnAdd } from "./AddButton";
 import { CloseIcon } from "icons";
+import { useAppState } from "../../context";
 
-export const Birthdays = ({ birthdays, add , update , remove , currentMonth}) => {
+export const Birthdays = () => {
+  const state = useAppState();
+  const { currentMonth } = state;
+  const [birthdays,setBirthdays] = useState([]);
   const [formActive,setFormActive] = useState(false);
-  useEffect(update,[birthdays])
+  useEffect(() => {
+    const update = async () => setBirthdays(await state.birthdays.getData())
+    update();
+  },[])
   return (
     <div className='interface-modal birthdays'>
       <div className="interface-header">
@@ -17,9 +24,9 @@ export const Birthdays = ({ birthdays, add , update , remove , currentMonth}) =>
           <div className="icon"><CloseIcon/></div>
         </div>
       </div>
-      <CreateForm add={add} isActive={formActive} setActive={setFormActive}/>
+      <CreateForm add={state.birthdays.add} isActive={formActive} setActive={setFormActive}/>
       <BtnAdd onClick={() => setFormActive(!formActive)}/>
-      <NamedList currentMonth={currentMonth} birthdays={birthdays} onDelete={remove}/>
+      <NamedList currentMonth={currentMonth} birthdays={birthdays} onDelete={state.birthdays.destroy}/>
     </div>
   )
 }
