@@ -5,11 +5,12 @@ import { DateTime } from 'utils';
 export const createAppModel = () => {
   const date = new Date();
   return createObservable({
+    
     name:'My first app',
-
     currentMonth: date.getMonth(),
     currentDay: date.getDate(),
     currentDow: date.getDay(),
+
     today: {
       month: date.getMonth(), 
       year: date.getFullYear(),
@@ -51,6 +52,7 @@ export const createAppModel = () => {
     events: {
       ...createStore('/api/events'),
     },
+
     async getDay(day = this.currentDay , month = this.currentMonth){
       const birthdaysToday = await this.birthdays.getByDate({month,day})
       const birthdaysThisMonth = await this.birthdays.getByMonth(month)
@@ -64,4 +66,5 @@ export const createAppModel = () => {
 
     monthName:(monthIndex) => DateTime.month(monthIndex)
   })
+  
 }

@@ -1,4 +1,4 @@
-import { DateTime } from "../utils/DateTime";
+import { DateTime } from "./DateTime";
 import { useState,useEffect } from "react";
 
 export function useClock(){

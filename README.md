@@ -2,7 +2,7 @@
 
 this is pet project for managing birthdays, tasks, and timers inside of a web ui.
 
-changes persisted mongo db 'birthdays' && 'timers' && 'dates' for use with multiple workspaces
+changes persisted mongo db 'birthdays','Timers','events' for use with multiple workspaces
 
 ## Bring Your Own Cluster
 

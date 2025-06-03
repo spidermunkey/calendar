@@ -3,8 +3,8 @@ const router = express.Router();
 
 
 const  { MongoClient } = require('mongodb');
-const { CONNECTION_STRING } = require('../.config/env');
-
+// const { CONNECTION_STRING } = require('../.config/env');
+const CONNECTION_STRING = 'mongodb://localhost:27017'
 
 router.get('/:id', function getEvent(){
 

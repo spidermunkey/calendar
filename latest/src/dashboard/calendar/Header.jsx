@@ -1,6 +1,4 @@
-import { DateTime } from "../../utils/DateTime";
-import { useEffect, useState } from "react"
-import { useClock } from "../../hooks/useClock";
+import { useClock } from "../../utils/useClock";
 export const Header = () => {
   const time = useClock()
   const {dow,month,date,hour,context,minute} = time;
