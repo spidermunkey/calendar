@@ -10,7 +10,7 @@ import { PlusIcon } from "../../assets/icons/plus"
 import { useAppState } from "../../context"
 import { useEffect, useState } from "react"
 
-export const EventModal = () => {
+export const Events = () => {
   const {events} = useAppState();
   const [template,setTemplate] = useState({});
   const [today,setToday] = useState([])

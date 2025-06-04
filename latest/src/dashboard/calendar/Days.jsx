@@ -13,7 +13,7 @@ function forEachNumber(number,cb){
 export const Days = () => {
   const state = useAppState();
   const { setActiveTab } = useTabState();
-  const { day, setDay, month, year } = useCalendarState()
+  const { day, setDay, month, year } = useCalendarState();
   const { birthdays, events } = state;
 
   const [activeBirthdays,setActiveBirthdays] = useState([]);
@@ -26,8 +26,8 @@ export const Days = () => {
     daysFromSaturday 
   } = monthData(year,month);
   
-  const isBday = (day) => activeBirthdays.find(bday => bday.day == day)
-  const isEvent = (day) => activeEvents.find(event => event?.date?.slice(8,10) == day)
+  const isBday = (day) => activeBirthdays.find(bday => bday.day == day);
+  const isEvent = (day) => activeEvents.find(event => event?.date?.slice(8,10) == day);
   const today = new Date();
 
   const handleClick = (event) => {
@@ -42,12 +42,12 @@ export const Days = () => {
   useEffect(() => {
     const update = async () => {
       const activeBirthdays = await birthdays.getByMonth(month);
-      const activeEvents = await events.findByMonth(month, await events.data)
+      const activeEvents = await events.findByMonth(month, await events.data);
       setActiveBirthdays(activeBirthdays);
       setActiveEvents(activeEvents);
     }
     update();
-  },[month,year,birthdays,events])
+  },[month,year,birthdays,events]);
   
   return (
   <div className="cal-month" onClick={handleClick}>
