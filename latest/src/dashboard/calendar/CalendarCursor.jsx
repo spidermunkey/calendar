@@ -7,7 +7,7 @@ import { useState, useRef } from "react";
 
 export const CalendarCursor = () => {
 
-  const { month, setMonth, year, setYear, today} = useCalendarState();
+  const { month, setMonth, year, setYear, setDay, today} = useCalendarState();
 
   const updateCurrentMonth = (month) => {
     if (month > 11){
@@ -19,13 +19,18 @@ export const CalendarCursor = () => {
     }
     setMonth(month);
   }
+  const reset = () => {
+    setDay(today.getDate());
+    setMonth(today.getMonth());
+    setYear(today.getYear());
+  }
   const toggleNext = () => updateCurrentMonth(month + 1)
   const togglePrev = () => updateCurrentMonth(month - 1)
   const toggleCurrent = () => updateCurrentMonth(today.getMonth())
 
   return (<div className="this-month flex">
             <div className="prev-month px-4 cursor-pointer" onClick={togglePrev}>{cursorLeft}</div>
-              <div className="month-name px-4" onClick={toggleCurrent}>{DateTime.month(month)}</div>
+              <div className="month-name px-4" onClick={reset}>{DateTime.month(month)}</div>
             <div className="next-month px-4 cursor-pointer" onClick={toggleNext}>{cursorRight}</div>
           </div>)
 }
