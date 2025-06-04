@@ -34,7 +34,7 @@ export const Days = () => {
     const dayElement = event.target.closest('.day');
     if (dayElement) {
       const day = dayElement.getAttribute('day');
-      setActiveTab(3);
+      setActiveTab(4);
       setDay(day);
    }
   }
