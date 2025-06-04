@@ -1,46 +1,40 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAppState } from "../../context";
+import { useAppState, useCalendarState } from "context";
 
 export const DayModal  = () => {
-  const state = useAppState()
-  const [currentDay,setCurrentDay] = useState(state.currentDay)
-  const [currentMonth,setCurrentMonth] = useState(state.currentMonth)
-  const unsubCurrentDay = state.observe('currentDay', setCurrentDay);
-  const unsubCurrentMonth = state.observe('currentMonth',setCurrentMonth)
 
-  const [dayData,setDayData] = useState({ birthdays : {
-    today:[],
-    thisMonth:[],
-  }, events:[]})
+  const state = useAppState()
+  const { day, month } = useCalendarState();
+  const [ dayData, setDayData ] = useState({ 
+    birthdays : {
+      today:[],
+      thisMonth:[],
+    }, 
+    events:[]
+  })
 
   const birthdaysToday = useCallback(() => dayData.birthdays.today.map(bday => <span className="bullet">  {bday.name}'s birthday </span>),[dayData])
   const birthdaysThisMonth = useCallback(() => dayData.birthdays.thisMonth.map(bday => (<span className="bullet">  {bday.name}  </span>)),[dayData])
   const eventsToday = useCallback(() => dayData.events,[dayData])
-  const monthName = state.monthName(currentMonth)
+  const monthName = state.monthName(month)
   const namesToday = birthdaysToday();
-  const namesThisMonth = birthdaysThisMonth();
   const events = eventsToday();
+
   useEffect(() => {
     const getData = async () => {
-      const dayData = await state.getDay(currentDay,currentMonth)
-      console.log('yo',dayData.events)
+      const dayData = await state.getDay(day,month)
       setDayData(dayData)
     }
     getData();
-    return () => {
-      unsubCurrentDay();
-      unsubCurrentMonth();
-    }
-  },[currentDay,currentMonth])
+  },[day,month])
   
-
     return (
       <div className="interface-modal dayView">
         <div className="interface-header">
           <div className="interface-title">Summary</div>
         </div>
         <div className="section today">
-          <div className="day-data">{monthName}  {currentDay}</div>
+          <div className="day-data">{monthName}  {day}</div>
         </div>
 
         <div className="section daily">

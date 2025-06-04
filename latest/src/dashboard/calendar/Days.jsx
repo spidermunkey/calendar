@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { monthData } from "../../utils/today"
+import { monthData } from "utils"
 import { Day } from "./Day";
 import { useAppState,useTabState,useCalendarState } from "context";
 
@@ -13,7 +13,7 @@ function forEachNumber(number,cb){
 export const Days = () => {
   const state = useAppState();
   const { setActiveTab } = useTabState();
-  const { day, setDay, month, setMonth, year, setYear } = useCalendarState()
+  const { day, setDay, month, year } = useCalendarState()
   const { birthdays, events } = state;
 
   const [activeBirthdays,setActiveBirthdays] = useState([]);
@@ -30,7 +30,7 @@ export const Days = () => {
   const isEvent = (day) => activeEvents.find(event => event?.date?.slice(8,10) == day)
   const today = new Date();
 
-  const handleDashboardClick = (event) => {
+  const handleClick = (event) => {
     const dayElement = event.target.closest('.day');
     if (dayElement) {
       const day = dayElement.getAttribute('day');
@@ -50,7 +50,7 @@ export const Days = () => {
   },[month,year,birthdays,events])
   
   return (
-  <div className="cal-month" onClick={handleDashboardClick}>
+  <div className="cal-month" onClick={handleClick}>
     <div className="days">
       {/* fill in previous days of month */}
       {forEachNumber(daysFromSunday, index => {

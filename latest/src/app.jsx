@@ -20,7 +20,7 @@ export const createAppModel = () => {
       date: getDate(date),
     },
 
-    calendar: createObservable({
+    calendar: {
       month: date.getMonth(),
       day: date.getDate(),
       dow: date.getDay(),
@@ -31,11 +31,11 @@ export const createAppModel = () => {
       get date() {
         return `${this.year}-${this.month.padStart(2,0)}-${this.day.padStart(2,0)}`
       },
-    }),
+    },
 
     birthdays: {
       ...createStore('api/birthdays'),
-
+      
       async isToday(){
         const data = await this.data;
         const today = new Date();
@@ -103,7 +103,7 @@ export const createAppModel = () => {
       },
     },
 
-    async getDay(day = this.currentDay , month = this.currentMonth){
+    async getDay(day = calendar.day , month = calendar.month){
       const birthdaysToday = await this.birthdays.getByDate({month,day})
       const birthdaysThisMonth = await this.birthdays.getByMonth(month)
       const eventsToday = await this.events.findByDay(day,month);
