@@ -207,8 +207,9 @@ export class DateTime {
   static thisMonth() {
     return DateTime.date.months[new Date().getMonth()];
   }
+
   static month(index = new Date().getMonth()){
-    return DateTime.date.months[index]
+    return DateTime.date.months[Number(index)]
   }
 
   static thisYear() {

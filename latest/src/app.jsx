@@ -2,10 +2,12 @@ import { createObservable } from 'utils';
 import { createStore } from 'utils'
 import { DateTime } from 'utils';
 
+const getTime = date => date.toISOString().split('T')[1].slice(0,5);
+const getDate = date => date.toISOString().slice(0,10);
 export const createAppModel = () => {
   const date = new Date();
   return createObservable({
-    
+  
     name:'My first app',
     currentMonth: date.getMonth(),
     currentDay: date.getDate(),
@@ -15,7 +17,21 @@ export const createAppModel = () => {
       month: date.getMonth(), 
       year: date.getFullYear(),
       day: date.getDate(),
+      date: getDate(date),
     },
+
+    calendar: createObservable({
+      month: date.getMonth(),
+      day: date.getDate(),
+      dow: date.getDay(),
+      year: date.getFullYear(),
+      Date(){
+        return new Date(this._year,this._month,this._day)
+      },
+      get date() {
+        return `${this.year}-${this.month.padStart(2,0)}-${this.day.padStart(2,0)}`
+      },
+    }),
 
     birthdays: {
       ...createStore('api/birthdays'),

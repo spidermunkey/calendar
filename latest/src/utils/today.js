@@ -8,6 +8,7 @@ const today = () => {
 }}
 
 const monthData = (year = today.year, month = today.month) => {
+  console.log(year,month)
   const lastDayOfLastMonth = new Date(year,month,0,12).getDate()
   // this month
   const dayOne = new Date(year,month,1,12)

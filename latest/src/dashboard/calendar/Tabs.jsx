@@ -1,79 +1,27 @@
-import { Birthdays } from "../birthdays/Birthdays"
-import { Timers } from "../timer/Timers"
 
-import { DayModal } from "./DayModal"
-import { EventModal } from "./EventModal"
 
-import { useState,useContext,createContext} from "react";
-import { composeElement } from "utils";
-
-const TabContext = createContext(null);
-
-export const useTabState = () => useContext(TimerContext)
-
-export const CalendarTabs = [
-
-  {
-    label: 'events',
-    icon: (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" pid="m917cmn9-004LJM4JO6Z7" height="24" width="24"><g id="Calendar"><path d="M18.44,4.955H16.5V3.545a.5.5,0,0,0-1,0v1.41h-7V3.545a.5.5,0,0,0-1,0v1.41H5.56a2.5,2.5,0,0,0-2.5,2.5v11a2.5,2.5,0,0,0,2.5,2.5H18.44a2.5,2.5,0,0,0,2.5-2.5v-11A2.5,2.5,0,0,0,18.44,4.955Zm1.5,13.5a1.5,1.5,0,0,1-1.5,1.5H5.56a1.5,1.5,0,0,1-1.5-1.5v-8.42H19.94Zm0-9.42H4.06V7.455a1.5,1.5,0,0,1,1.5-1.5H7.5v.59a.5.5,0,0,0,1,0v-.59h7v.59a.5.5,0,1,0,1,0v-.59h1.94a1.5,1.5,0,0,1,1.5,1.5Z" fill="#1e1e23" pid="m917cmn9-01P4X5IV04GW"></path></g></svg>),
-    element: composeElement(EventModal),
-    buttonType: 'inline',
-    id:3,
-  },
-  {
-    label: 'timers',
-    icon: (<svg width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" pid="m91x24ts-01RPRUQ4W0B9"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 5.75C7.99594 5.75 4.75 8.99594 4.75 13C4.75 17.0041 7.99594 20.25 12 20.25C16.0041 20.25 19.25 17.0041 19.25 13C19.25 8.99594 16.0041 5.75 12 5.75ZM3.25 13C3.25 8.16751 7.16751 4.25 12 4.25C16.8325 4.25 20.75 8.16751 20.75 13C20.75 17.8325 16.8325 21.75 12 21.75C7.16751 21.75 3.25 17.8325 3.25 13Z"  pid="m91x24ts-00AYW9WWINP1"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V12.5843L15.3975 14.239C15.7488 14.4585 15.8555 14.9212 15.636 15.2725C15.4165 15.6238 14.9538 15.7305 14.6025 15.511L11.6025 13.636C11.3832 13.4989 11.25 13.2586 11.25 13V8C11.25 7.58579 11.5858 7.25 12 7.25Z"  pid="m91x24ts-014160T3C4W0"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M6.53033 3.46967C6.82322 3.76256 6.82322 4.23744 6.53033 4.53033L4.03033 7.03033C3.73744 7.32322 3.26256 7.32322 2.96967 7.03033C2.67678 6.73744 2.67678 6.26256 2.96967 5.96967L5.46967 3.46967C5.76256 3.17678 6.23744 3.17678 6.53033 3.46967Z"  pid="m91x24ts-01VOZI2E2WOZ"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17.4697 3.46967C17.1768 3.76256 17.1768 4.23744 17.4697 4.53033L19.9697 7.03033C20.2626 7.32322 20.7374 7.32322 21.0303 7.03033C21.3232 6.73744 21.3232 6.26256 21.0303 5.96967L18.5303 3.46967C18.2374 3.17678 17.7626 3.17678 17.4697 3.46967Z"  pid="m91x24ts-00KFPYBRD6R3"></path></svg>),
-    element: composeElement(Timers),
-    buttonType: 'inline',
-    id: 2,
-  }, 
-  {
-    label:'birthdays',
-    icon: (<svg width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" pid="m91x24ts-0044HTEIL87S"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.25 5.5C6.25 3.70507 7.70507 2.25 9.5 2.25C10.5052 2.25 11.4038 2.70637 12 3.42322C12.5962 2.70637 13.4948 2.25 14.5 2.25C16.2949 2.25 17.75 3.70507 17.75 5.5C17.75 6.14432 17.5625 6.74485 17.2391 7.25H18C19.5188 7.25 20.75 8.48122 20.75 10V12C20.75 12.8042 20.2076 13.4816 19.4687 13.6865C19.6128 15.5131 19.5293 17.3517 19.2195 19.1597C19.0345 20.2394 18.1576 21.0665 17.069 21.1881L16.1545 21.2903C13.3934 21.5989 10.6066 21.5989 7.84548 21.2903L6.93101 21.1881C5.84239 21.0665 4.96552 20.2394 4.78052 19.1597C4.47069 17.3517 4.38724 15.5131 4.53131 13.6865C3.7924 13.4816 3.25 12.8042 3.25 12V10C3.25 8.48122 4.48122 7.25 6 7.25H6.76091C6.4375 6.74485 6.25 6.14432 6.25 5.5ZM11.25 5.5C11.25 4.5335 10.4665 3.75 9.5 3.75C8.5335 3.75 7.75 4.5335 7.75 5.5C7.75 6.4665 8.5335 7.25 9.5 7.25C10.4665 7.25 11.25 6.4665 11.25 5.5ZM14.5 7.25C15.4665 7.25 16.25 6.4665 16.25 5.5C16.25 4.5335 15.4665 3.75 14.5 3.75C13.5335 3.75 12.75 4.5335 12.75 5.5C12.75 6.4665 13.5335 7.25 14.5 7.25ZM4.75 10C4.75 9.30964 5.30964 8.75 6 8.75H11.25V12.25H5C4.86193 12.25 4.75 12.1381 4.75 12V10ZM12.75 13.75H17.969C18.1093 15.4706 18.0329 17.203 17.741 18.9064C17.6689 19.3274 17.3269 19.65 16.9024 19.6974L15.9879 19.7996C14.9116 19.9199 13.8312 19.9914 12.75 20.014V13.75ZM12.75 12.25H19C19.1381 12.25 19.25 12.1381 19.25 12V10C19.25 9.30964 18.6904 8.75 18 8.75H12.75V12.25ZM11.25 13.75V20.014C10.1688 19.9914 9.08842 19.9199 8.01209 19.7996L7.09762 19.6974C6.67308 19.65 6.33112 19.3274 6.25897 18.9064C5.96708 17.203 5.89074 15.4706 6.03103 13.75H11.25Z"  pid="m91x24ts-01DFI25N4M2B"></path></svg>),
-    element: composeElement(Birthdays),
-    buttonType: 'inline',
-    id:1,
-  },
-  {
-    label: 'dayview',
-    element: composeElement(DayModal),
-    buttonType: 'floating',
-    index: 4,
-  }
-]
-
-export const TabProvider = ({children}) => {
-  const [activeTab,setActiveTab] = useState(0)
-  const Tabs = CalendarTabs
-  return (
-    <TabContext.Provider value={{ activeTab , setActiveTab, Tabs }}>
-      {children}
-    </TabContext.Provider>
-  )
-}
+import { useTabState } from "context";
 
 export const TabTray = () => {
-  const { Tabs, setActiveTab, activeTab } = useContext(TabContext);
+  const { Tabs, setActiveTab, activeTab } = useTabState();
   return ( 
   <div className="tabber-labels">
-    {
-      Tabs.map(
+    { Tabs.map(
           (tab,index) => {
           if (tab.buttonType === 'inline')
             return ( 
             <div 
-            className={`tabber-tab text-[18px] ${tab.element == Tabs[activeTab]?.element && 'active'}`} 
+            className={`tabber-tab ${ tab.element == Tabs[activeTab]?.element && 'active'}`} 
             key={index} 
             onClick={() => setActiveTab(index)}> 
                 <div className="icon">{tab.icon}</div>
                 <div className="tool-tip">{tab.label}</div> 
               </div>)
-          })
-    }
+      })}
   </div> )
 }
 
 export const TabModal = () => {
-  const {Tabs,activeTab} = useContext(TabContext);
+  const { Tabs, activeTab } = useTabState();
   return (<div className="tabber-modals">{Tabs[activeTab].element()}</div>)
 }
