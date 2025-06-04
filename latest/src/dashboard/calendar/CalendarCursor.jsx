@@ -26,7 +26,6 @@ export const CalendarCursor = () => {
   }
   const toggleNext = () => updateCurrentMonth(month + 1)
   const togglePrev = () => updateCurrentMonth(month - 1)
-  const toggleCurrent = () => updateCurrentMonth(today.getMonth())
 
   return (<div className="this-month flex">
             <div className="prev-month px-4 cursor-pointer" onClick={togglePrev}>{cursorLeft}</div>

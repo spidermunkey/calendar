@@ -4,6 +4,7 @@ import { useTabState } from "context";
 
 export const TabTray = () => {
   const { Tabs, setActiveTab, activeTab } = useTabState();
+  console.log(Tabs)
   return ( 
   <div className="tabber-labels">
     { Tabs.map(

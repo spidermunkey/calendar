@@ -13,6 +13,7 @@
     &.active {
       border-bottom: 1px solid #ddd;
     }
+
   }
 }  
 
@@ -38,6 +39,11 @@
       font-size: 20px;
       opacity: .8;
       letter-spacing: 0.035em;
+    }
+    .tabber-tab {
+      .present {
+        opacity: .8;
+      }
     }
     .btn-close {
       display: flex;
