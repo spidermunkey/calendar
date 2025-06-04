@@ -1,13 +1,48 @@
 import { useEffect, useState } from "react";
+import { DateTime } from "utils";
 
-const milisecondsInDay = 86400000;
+const today = DateTime.midnight(new Date());
 
-const getTime = date => date.toISOString().split('T')[1].slice(0,5);
-const getDate = date => date.toISOString().slice(0,10);
-const midnight = (date) => new Date( getDate(date) + 'T00:00:00');
+export const frequency = {
 
-const today = midnight(new Date());
-const tommorow = midnight(new Date(Date.now() + milisecondsInDay));
+  get monthly() {
+    return {
+      days:Array(7).fill(false),
+      weeks: Array(4).fill(false),
+      months: Array(12).fill(true),
+    }
+  },
+  get yearly() {
+    return {  
+      days:Array(7).fill(false).map((value,index) => {
+        if (today.getDay() === index) 
+          value = true; 
+        return value
+      }),
+      weeks: Array(4).fill(true),
+      months: Array(12).fill(true),
+    }
+  },
+  get daily() {
+    return {
+      days: Array(7).fill(true).map((value,index) => {
+        if (today.getDay() === index) 
+          value = true; 
+        return value
+      }),
+      weeks: Array(4).fill(true),
+      months: Array(12).fill(true),
+    }
+  },
+  get template() {
+    return {
+      days:Array(7).fill(false),
+      weeks: Array(4).fill(false),
+      months: Array(12).fill(false),
+    }
+  },
+
+}
 
 export const frequencyMap = {
   days:Array(7).fill(false),
@@ -28,15 +63,16 @@ export const weeklyFrequency = {
 }
 
 export const dailyFrequency = {
-    days:Array(7).fill(true).map((value,index) => {if (today.getDay() === index) value = true; return value}),
+    days: Array(7).fill(true).map((value,index) => {if (today.getDay() === index) value = true; return value}),
     weeks: Array(4).fill(true),
     months: Array(12).fill(true),
 }
 
-export const EventTemplate = (date = today) => {
-  return {
-    title: 'untitled',
-    description: 'none',
+export const createTemplate = (eventDate) => {
+  const date = today;
+  const template = {
+    title: '',
+    description: '',
     frequencyType: 'once',
     frequency: 'once',
     dynamic_frequency: {
@@ -44,20 +80,15 @@ export const EventTemplate = (date = today) => {
       weeks: Array(4).fill(false),
       months: Array(12).fill(false),
     },
-
     dated_frequency: [date],
     category: 'general',
-    date: getDate(date),
-    time: getTime(date),
+    date: DateTime.getDate(date),
+    time: DateTime.getTime(date),
     duration: '24',
     duration_type: 'hours',
-    dom: getDate(date).slice(-2),
+    dom: DateTime.getDate(date).slice(-2),
     dow: date.getDay(),
   }
-}
-
-export const Template = (eventDate) => {
-  const template = EventTemplate(); 
   const event = {};
   for (const prop in eventDate){
     if (template[prop] && typeof template[prop] === typeof eventDate[prop] ){
@@ -69,17 +100,15 @@ export const Template = (eventDate) => {
     ...event
   }
   return result
+
 }
 
-export const GenericModal = ({ eventDate, handleSubmit}) => {
+export const GenericModal = ({ eventDate, handleSubmit }) => {
   return (
     <div className="event-form-modal custom-modal">
       <div className="modal-header">
         <div className="modal-title">Create Event</div>
-        <div className="close" onClick={() => {
-          const ref = document.querySelector('.interface-modal.events .custom-modal')
-          return ref && ref.classList.remove('active')
-        }}>close</div>
+        <CloseButton selector={'.event-form-modal.custom-modal'}>close</CloseButton>
       </div>
       <div className="modal-content">
         <div className="modal-form">
@@ -90,14 +119,12 @@ export const GenericModal = ({ eventDate, handleSubmit}) => {
   )
 }
 
-export const DailyModal = ({eventDate, handleSubmit }) => {
+export const DailyModal = ({eventDate, handleSubmit}) => {
   return (
     <div className="event-form-modal daily-modal">
       <div className="modal-header">
         <div className="modal-title">{eventDate.frequency} Event</div>
-        <div className="close" onClick={() => {
-          const ref = document.querySelector('.interface-modal.events .daily-modal')
-          return ref && ref.classList.remove('active')}}>close</div>
+        <CloseButton selector={'.event-form-modal.daily-modal'}>close</CloseButton>
       </div>
       <div className="modal-content">
         <div className="modal-form">
@@ -105,12 +132,13 @@ export const DailyModal = ({eventDate, handleSubmit }) => {
         </div>
       </div>
     </div>
-  )
-    
+  ) 
 }
 
-const useEventForm = (eventData) => {
-  const [data,setData] = useState(Template(eventData));
+export const useEventForm = (eventData) => {
+
+  const [data,setData] = useState(createTemplate(eventData));
+
   const onInput =  (e) => {
     const {name,value} = e.target;
     setData(prev => ({
@@ -118,12 +146,14 @@ const useEventForm = (eventData) => {
       [name]: value
     }))
   }
+
   const updateProperty = (name,value) => {
     setData(prev => ({
       ...prev,
       [name]: value,
     }))
   }
+
   const onSubmit = (e) => {
     e.preventDefault()
     const form = e.target;
@@ -144,8 +174,9 @@ const useEventForm = (eventData) => {
     console.log(values)
     return values
   }
+
   useEffect(() => {
-    setData(Template(eventData));
+    setData(createTemplate(eventData));
   }, [eventData]);
 
   return {
@@ -156,13 +187,8 @@ const useEventForm = (eventData) => {
   }
 }
 
-export const EventForm = ({ eventData , handleSubmit, handleChange }) => {
-  const { onInput,updateProperty,onSubmit, data } = useEventForm(eventData)
-  useEffect(() => {
-    if (handleChange){
-      handleChange(data)
-    }
-  },[data])
+export const EventForm = ({ eventData , handleSubmit }) => {
+  const { onInput, updateProperty, onSubmit, data } = useEventForm(eventData)
   return (
       <form onSubmit={(e) => {
       const result = onSubmit(e);
@@ -187,13 +213,8 @@ export const EventForm = ({ eventData , handleSubmit, handleChange }) => {
   )
 }
 
-export const DailyEventForm = ({ eventData, handleSubmit, handleChange }) => {
+export const DailyEventForm = ({ eventData, handleSubmit }) => {
   const { onInput, updateProperty, onSubmit, data } = useEventForm(eventData)
-  useEffect(() => {
-    if (handleChange){
-      handleChange(data)
-    }
-  },[data])
   return (          
     <form onSubmit={(e) => {
       const result = onSubmit(e);
@@ -222,6 +243,16 @@ export const DailyEventForm = ({ eventData, handleSubmit, handleChange }) => {
       </div>
       <input className="btn-submit" type="submit"/>
     </form>)
+}
+
+function CloseButton({selector,children}) {
+  return (        
+    <div className="close" onClick={() => {
+          const ref = document.querySelector(`${selector}`)
+          return ref && ref.classList.remove('active')}}>
+      {children}
+    </div>
+    )
 }
 
 function TitleInput({title,onChange}) {
@@ -507,6 +538,7 @@ function DynamicDatePicker({dom,onChange}){
     </div>
   )
 }
+
 function DynamicDayPicker({dynamicFrequency,handleChange}){
   const [frequency,setFrequency] = useState(dynamicFrequency)
   useEffect(() => {

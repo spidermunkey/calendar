@@ -7,33 +7,39 @@ import {
   frequencyMap } from "./EventForms"
 
 import { PlusIcon } from "../../assets/icons/plus"
-import { useAppState } from "../../context"
 import { useEffect, useState } from "react"
+import { useEventStore } from "context"
 
 export const Events = () => {
-  const {events} = useAppState();
-  const [template,setTemplate] = useState({});
-  const [today,setToday] = useState([])
-  const [thisMonth,setThisMonth] = useState([])
+
+  const { store } = useEventStore();
+
+  const [ template , setTemplate ] = useState({});
+  const [ today, setToday ] = useState([]);
+  const [ thisMonth, setThisMonth ] = useState([]);
+
+  const [ eventListActive, setEventListActive ] = useState(false);
+  const [ eventList, setEventList ] = useState([]);
+
   const handleData = async (formData) => {
     console.log('posting data',formData)
-    const response = await events.add(formData);
+    const response = await store.add(formData);
     const result = await response.json();
     console.log('eventForm response',result);
   }
+
   useEffect(() => {
     const test = async () => {
-      const today = setToday(await events.today());
-      const thisMonth = setThisMonth(await events.thisMonth());
-
-      console.log('total', await events.data)
-      console.log('today', await events.today())
-      console.log('this month', await events.thisMonth())
-      console.log('test date', await events.findByDay(9))
+      const today = setToday(await store.today());
+      const thisMonth = setThisMonth(await store.thisMonth());
+      console.log('total', await store.data)
+      console.log('today', await store.today())
+      console.log('this month', await store.thisMonth())
+      console.log('test date', await store.findByDay(9))
 
     }
     test();
-  },[events])
+  },[])
 
   return (
     <>
@@ -54,14 +60,139 @@ export const Events = () => {
             <div className="label">Add Event</div>
           </div>
         </div>
+        <div className="widget-list">
+            <EventList isActive={eventListActive} label={template.frequency} events={eventList} />
 
+            <div className="section daily">
+              <div className="section-title">Today</div>
+              <div className="section-data">{
+                  today.length === 0 ? 
+                    <div className="bullet">none</div>
+                  : <div className="bullet">
+                    <div className="fab" onClick={() => {
+                      const ref = document.querySelector('.event-list');
+                      if (ref) {
+                        setEventList(today);
+                        ref.classList.add('active')
+                      }
+                      return ref && ref.classList.add('active');
+                    }}>
+                      {today.length} events today
+                    </div>
+                    </div>
+                }
+              </div>
+              <div className="btn-add-event" onClick={() => {
+                setTemplate({
+                  frequencyType:'once',
+                  frequency:'daily',
+                  dynamic_frequency:{...dailyFrequency}
+                })
+                showDailyForm()
+              }}>
+                <div className="text">Daily Event</div>
+                <div className="btn-add-icon" handle="daily">
+                  <PlusIcon/>
+                </div>
+              </div>
+            </div>
+            <div className="section weekly">
+              <div className="section-title">This Week</div>
+              <div className="section-data">
+                <div className="bullet">None this week</div>
+              </div>
+              <div className="btn-add-event" onClick={() => {
+                setTemplate({
+                  frequencyType:'once',
+                  frequency:'weekly',
+                  dynamic_frequency:{...weeklyFrequency}
+                })
+                showDailyForm()
+              }}>
+                <div className="text">Weekly Event</div>
+                <div className="btn-add-icon" handle="daily">
+                  <PlusIcon/>
+                </div>
+              </div>
+            </div>
+            <div className="section monthly">
+              <div className="section-title">This Month</div>
+              <div className="section-data">
+                {
+                  thisMonth.length === 0 ? 
+                    <div className="bullet">none</div>
+                  : <div className="bullet">
+                    <div className="fab" onClick={() => {
+                      const ref = document.querySelector('.event-list');
+                      if (ref){
+                        setEventList(thisMonth);
+                        ref.classList.add('active');
+                      }
+                      return ref && ref.classList.add('active');
+                    }}>
+                      {thisMonth.length} events this month
+                    </div>
+                    </div>
 
-        <div className="section daily">
+                }
+              </div>
+              <div className="btn-add-event" onClick={() => {
+                setTemplate({
+                  frequencyType:'once',
+                  frequency:'monthly',
+                  dynamic_frequency:{...monthlyFrequency}
+                })
+                showDailyForm()
+              }}>
+                <div className="text">Monthly Event</div>
+                <div className="btn-add-icon" handle="daily">
+                  <PlusIcon/>
+                </div>
+              </div>
+            </div>
+        </div> 
+      </div>
+    </>
+)}
+
+function WidgetList(){
+  const { store } = useEventStore();
+  const [ today, setToday ] = useState([]);
+  const [ thisMonth, setThisMonth ] = useState([]);
+  const [ eventListActive, setEventListActive ] = useState(false);
+  const [ eventList, setEventList ] = useState(today);
+  useEffect(() => {
+    const test = async () => {
+      const today = setToday(await store.today());
+      const thisMonth = setThisMonth(await store.thisMonth());
+      console.log('total', await store.data)
+      console.log('today', await store.today())
+      console.log('this month', await store.thisMonth())
+      console.log('test date', await store.findByDay(9))
+
+    }
+    test();
+  },[])
+  return (       
+    <div className="widget-list">
+    <EventList isActive={eventListActive} events={eventList} />
+    <div className="section daily">
           <div className="section-title">Today</div>
           <div className="section-data">{
               today.length === 0 ? 
                 <div className="bullet">none</div>
-              : <div className="bullet">{today.length} events today</div>
+              : <div className="bullet">
+                <div className="fab" onClick={() => {
+                  const ref = document.querySelector('.event-list');
+                  if (ref) {
+                    setEventList(today);
+                    ref.classList.add('active')
+                  }
+                  return ref && ref.classList.add('active');
+                }}>
+                  {today.length} events today
+                </div>
+                </div>
             }
           </div>
           <div className="btn-add-event" onClick={() => {
@@ -103,7 +234,19 @@ export const Events = () => {
             {
               thisMonth.length === 0 ? 
                 <div className="bullet">none</div>
-              : <div className="bullet">{thisMonth.length} events this month</div>
+              : <div className="bullet">
+                <div className="fab" onClick={() => {
+                      const ref = document.querySelector('.event-list');
+                      if (ref){
+                        setEventList(thisMonth);
+                        ref.classList.add('active');
+                      }
+                      return ref && ref.classList.add('active');
+                }}>
+                  {thisMonth.length} events this month
+                </div>
+                </div>
+
             }
           </div>
           <div className="btn-add-event" onClick={() => {
@@ -120,10 +263,28 @@ export const Events = () => {
             </div>
           </div>
         </div>
-      </div>
-    </>
-)}
+    </div> 
+)
+}
 
+function EventList({ events, isActive }) {
+  return (
+    <div className={["event-list", isActive && 'active'].filter(Boolean).join(' ')}>
+            <div className="close" onClick={() => {
+        const ref = document.querySelector('.event-list');
+        return ref && ref.classList.remove('active');
+      }}>
+        close
+      </div>
+      { events.map((event) => <EventListItem event={event}/>)}
+    </div>
+  )
+}
+function EventListItem({event}) {
+  return (
+    <div className="event-list-item">{event.title}</div>
+  )
+}
   function showGenericForm() {
     const ref = document.querySelector('.interface-modal.events .event-form-modal.custom-modal')
     closeDailyForm();
@@ -151,3 +312,22 @@ export const Events = () => {
     return ref && ref.classList.remove('active')
   }
   
+  function FloatingActionButton({selector, children}){
+    return (
+      <div className="fab" onClick={() => {
+        const ref = document.querySelector(selector);
+        return ref && ref.classList.add('active');
+      }}>
+        {children}
+      </div>
+    )
+  }
+
+  function CloseButton({selector, children}) {
+      <div className="close" onClick={() => {
+        const ref = document.querySelector(selector);
+        return ref && ref.classList.remove('active');
+      }}>
+        {children}
+      </div>
+  }

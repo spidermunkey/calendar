@@ -1,6 +1,7 @@
 import { ago } from "./ago";
 import { date } from "./date";
 export class DateTime {
+
   constructor(dateObject) {}
   static mns = 1 / 1000;
   static snm = 1 / 60;
@@ -13,6 +14,7 @@ export class DateTime {
   static msnHour = 3600000;
   static msnDay = 86400000;
   static msnYear = DateTime.msnDay * 365;
+
   static daysIn(month) {
     const abbrv = month.slice(0, 3);
     if (DateTime.monthMap[month]) return DateTime.monthMap[month];
@@ -175,6 +177,10 @@ export class DateTime {
   static getTime(date){
     return date.toISOString().split('T')[1].slice(0,5);
   }
+
+  static midnight = (date) => new Date( DateTime.getDate(date) + 'T00:00:00')
+
+  static tommorow = DateTime.midnight(new Date(Date.now() + DateTime.msnDay))
 
   static now() {
     return new Date();
