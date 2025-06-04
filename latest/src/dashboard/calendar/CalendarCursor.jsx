@@ -7,23 +7,18 @@ import { useState, useRef } from "react";
 
 export const CalendarCursor = () => {
 
-  const {month,setMonth,year,setYear} = useCalendarState();
-  
+  const { month, setMonth, year, setYear, today} = useCalendarState();
+
   const updateCurrentMonth = (month) => {
     if (month > 11){
-      state.calendar.year = year + 1;
       setYear(year + 1)
       month = 0;
     } else if (month < 0) {
-      state.calendar.year = year - 1;
       setYear(year - 1)
       month = 11;
     }
-    state.calendar.month = month;
     setMonth(month);
   }
-
-  const today = useRef((new Date())).current;
   const toggleNext = () => updateCurrentMonth(month + 1)
   const togglePrev = () => updateCurrentMonth(month - 1)
   const toggleCurrent = () => updateCurrentMonth(today.getMonth())
