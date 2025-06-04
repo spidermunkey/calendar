@@ -1,75 +1,80 @@
-import { useEffect, useState } from "react";
-import { monthData } from "utils"
-import { Day } from "./Day";
-import { useAppState,useTabState,useCalendarState } from "context";
+import { useCallback, useEffect, useState } from "react";
+import { useAppState, useCalendarState } from "context";
 
-function spreadNumber(count){
-  return Array(Number(count)).fill()
-}
-function forEachNumber(number,cb){
-  return spreadNumber(number).map((_,i) => cb(i))
-}
+export const Days  = () => {
 
-export const Days = () => {
-  const state = useAppState();
-  const { setActiveTab } = useTabState();
-  const { day, setDay, month, year } = useCalendarState();
-  const { birthdays, events } = state;
+  const state = useAppState()
+  const { day, month } = useCalendarState();
+  const [ dayData, setDayData ] = useState({ 
+    birthdays : {
+      today:[],
+      thisMonth:[],
+    }, 
+    events:[]
+  })
 
-  const [activeBirthdays,setActiveBirthdays] = useState([]);
-  const [activeEvents,setActiveEvents] = useState([]);
-
-  const { 
-    lastDayOfLastMonth,  
-    daysFromSunday,  
-    daysInMonth, 
-    daysFromSaturday 
-  } = monthData(year,month);
-  
-  const isBday = (day) => activeBirthdays.find(bday => bday.day == day);
-  const isEvent = (day) => activeEvents.find(event => event?.date?.slice(8,10) == day);
-  const today = new Date();
-
-  const handleClick = (event) => {
-    const dayElement = event.target.closest('.day');
-    if (dayElement) {
-      const day = dayElement.getAttribute('day');
-      setActiveTab(4);
-      setDay(day);
-   }
-  }
+  const birthdaysToday = useCallback(() => dayData.birthdays.today.map(bday => <span className="bullet">  {bday.name}'s birthday </span>),[dayData])
+  const birthdaysThisMonth = useCallback(() => dayData.birthdays.thisMonth.map(bday => (<span className="bullet">  {bday.name}  </span>)),[dayData])
+  const eventsToday = useCallback(() => dayData.events,[dayData])
+  const monthName = state.monthName(month)
+  const namesToday = birthdaysToday();
+  const events = eventsToday();
 
   useEffect(() => {
-    const update = async () => {
-      const activeBirthdays = await birthdays.getByMonth(month);
-      const activeEvents = await events.findByMonth(month, await events.data);
-      setActiveBirthdays(activeBirthdays);
-      setActiveEvents(activeEvents);
+    const getData = async () => {
+      const dayData = await state.getDay(day,month)
+      setDayData(dayData)
     }
-    update();
-  },[month,year,birthdays,events]);
+    getData();
+  },[day,month])
   
-  return (
-  <div className="cal-month" onClick={handleClick}>
-    <div className="days">
-      {/* fill in previous days of month */}
-      {forEachNumber(daysFromSunday, index => {
-        let dateNum = lastDayOfLastMonth - index;
-        return <Day styles={"day null-day"} day={dateNum} key={`prev-${dateNum}`}/>
-      }).reverse()}
-      {/* Current Day Set */}
-      {forEachNumber(daysInMonth, index => {
-        let dateNum = index + 1
-        let isToday = today.getDate() === dateNum && today.getMonth() === month && 'today';
-        let styles = ['day', isBday(dateNum) && 'bday', isEvent(dateNum) && 'event', isToday, day == dateNum && 'active'].filter(Boolean).join(' ')
-        return <Day isEvent={isEvent(dateNum)} isBday={isBday(dateNum)} styles={styles} day={dateNum} key={dateNum}/>
-        })}
-      {/* fill in first days of next month */}
-      {forEachNumber(daysFromSaturday, index => {
-        let dateNum = index + 1
-        return <Day styles={"day null-day"} day={dateNum}  key={`next-${dateNum}`}></Day>
-      })}
-    </div>
-  </div>
-  )
+    return (
+      <div className="interface-modal dayView">
+        <div className="interface-header">
+          <div className="interface-title">Summary</div>
+        </div>
+        <div className="section today">
+          <div className="day-data">{monthName}  {day}</div>
+        </div>
+
+        <div className="section daily">
+          <div className="section-title">Birthdays</div>
+          <div className="section-data daily">
+            { namesToday.length > 0 ?
+              namesToday.length === 1 ?
+              <div className="bday-list">
+                  {namesToday}
+              </div>
+              : <div className="bday-data">
+              <div className="section-title label"> { namesToday.length } birthday{namesToday.length !== 1 && 's'}</div>
+              <div className="bullet">{ namesToday.length } birthday{namesToday.length !== 1 && 's'}</div>
+                {/* <div className="bday-list">
+                  {namesToday.length > 0 ? namesToday : 'none'}
+                </div> */}
+              </div>
+              : <span className="bullet">none</span>
+            }
+          </div>
+        </div>
+
+        <div className="section monthly">
+          <div className="section-title">Events</div>
+          <div className="section-data monthly">
+            
+            <div className="bullet">{events.length} event{events.length !== 1 && 's'}</div>
+          </div>
+        </div>
+
+        <div className="section todo">
+          <div className="section-title">Todo</div>
+          <div className="section-data todo">
+            <div className="bullet">none</div>
+          </div>
+        </div>
+
+
+      </div>
+    )
+
+
 }

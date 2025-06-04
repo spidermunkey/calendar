@@ -3,9 +3,8 @@ import { cursorRight } from "icons";
 
 import { DateTime } from "utils";
 import { useCalendarState } from "context";
-import { useState, useRef } from "react";
 
-export const CalendarCursor = () => {
+export const Cursor = () => {
 
   const { month, setMonth, year, setYear, setDay, today} = useCalendarState();
 

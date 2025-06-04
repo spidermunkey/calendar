@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { CreateForm } from "./CreateBirthdayForm";
-import { NamedList} from './NameList';
+import { BirthdayForm } from "./BirthdayForm";
+import { BirthdayList } from './BirthdayList';
 import { BtnAdd } from "./AddButton";
 import { CloseIcon } from "icons";
 import { useAppState } from "../../context";
@@ -25,9 +25,9 @@ export const Birthdays = () => {
           <div className="icon"><CloseIcon/></div>
         </div>
       </div>
-      <CreateForm add={state.birthdays.add.bind(state.birthdays)} isActive={formActive} setActive={setFormActive}/>
+      <BirthdayForm add={state.birthdays.add.bind(state.birthdays)} isActive={formActive} setActive={setFormActive}/>
       <BtnAdd onClick={() => setFormActive(!formActive)}/>
-      <NamedList currentMonth={currentMonth} birthdays={birthdays} onDelete={state.birthdays.destroy}/>
+      <BirthdayList  currentMonth={currentMonth} birthdays={birthdays} onDelete={state.birthdays.destroy}/>
     </div>
   )
 }

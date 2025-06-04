@@ -1,5 +1,5 @@
-import { NameElement } from "./NameElement";
-export const NamedList = ({currentMonth,birthdays,onDelete}) =>{
+import { Birthday } from "./Birthday";
+export const BirthdayList = ({currentMonth,birthdays,onDelete}) =>{
   const checkIsThisMonth = month => month == currentMonth + 1
 
  return (
@@ -12,7 +12,7 @@ export const NamedList = ({currentMonth,birthdays,onDelete}) =>{
       if (name) {
         return (
           <div key={index} className={` birthday ${ isThisMonth ? 'active' : ''}`}>
-            <NameElement onDelete={() => {onDelete(data)}} month={month} day={day} name={name} />
+            <Birthday onDelete={() => {onDelete(data)}} month={month} day={day} name={name} />
           </div>
         )
       }

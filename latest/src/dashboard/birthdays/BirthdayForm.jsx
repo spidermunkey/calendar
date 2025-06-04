@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const CreateForm = ({add,isActive, setActive}) => {
+export const BirthdayForm = ({add,isActive, setActive}) => {
   const formData = {
     name: '',
     day: '',

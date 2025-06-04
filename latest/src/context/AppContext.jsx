@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { createAppModel } from "../app";
+import { createAppModel } from "../state";
 
 const AppContext = createContext({});
 export const useAppState = () => useContext(AppContext);

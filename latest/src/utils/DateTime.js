@@ -166,7 +166,15 @@ export class DateTime {
     daysABRV: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", null],
     months: ["January","February","March","April","May","June","July","August","September","October","November","December",null],
     monthsABRV: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Nov","Dec",null],
-  };
+  }
+
+  static getDate(date) {
+    return date.toISOString().slice(0,10);
+  }
+
+  static getTime(date){
+    return date.toISOString().split('T')[1].slice(0,5);
+  }
 
   static now() {
     return new Date();

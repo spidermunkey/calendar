@@ -4,7 +4,7 @@ import {
   dailyFrequency,
   monthlyFrequency, 
   weeklyFrequency,
-  frequencyMap } from "./EventForm"
+  frequencyMap } from "./EventForms"
 
 import { PlusIcon } from "../../assets/icons/plus"
 import { useAppState } from "../../context"

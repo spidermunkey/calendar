@@ -1,5 +1,5 @@
 import { Trash } from "../../assets/icons/trash"
-export const NameElement = ({name,day,month,onDelete}) => {
+export const Birthday = ({name,day,month,onDelete}) => {
 return (
   <>
     <div className="info">
