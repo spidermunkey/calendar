@@ -107,7 +107,10 @@ export const Timers = () => {
 
       <div className="interface-header">
         <div className="interface-title">Timers</div>
-        <div className="btn-add-timer" onClick={() => setCreateTimerModalActive(true)}><div className="icon"><PlusIcon/></div><div className="label">New Timer</div></div>
+        <div className="btn-add-timer" onClick={() => setCreateTimerModalActive(true)}>
+          <div className="icon"><PlusIcon/></div>
+          <div className="label">New Timer</div>
+        </div>
 
       </div>
       {/* <div className="tab-tray" onClick={toggleActiveTab}>

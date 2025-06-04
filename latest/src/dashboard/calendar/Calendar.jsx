@@ -1,8 +1,8 @@
 
-import { CalendarTabs } from './tabs/tab_data';
+import { CalendarTabs } from './Tabs';
 import { Header } from './Header';
 import { DateTime } from "../../utils/DateTime";
-import { useState,useRef, useEffect, createContext , useContext } from "react";
+import { useState,useRef, useEffect } from "react";
 import { CalendarCursor } from "./CalendarCursor";
 import { Days } from "./Days";
 import { useAppState } from "context";
@@ -14,14 +14,12 @@ const Calendar = () => {
   const [ activeTab, setActiveTab ] = useState(0);
   const [ month, setMonth ] = useState(state.currentMonth);
   const [ day, setDay ] = useState(state.currentDay);
-  const [ bdays, setBdays ] = useState([]);
 
   const updateCurrentMonth = (month) => {
     state.currentMonth = month;
     setMonth(month);
   }
   const today = useRef((new Date())).current;
-  const tabs = CalendarTabs;
   const toggleNext = () => updateCurrentMonth(month + 1)
   const togglePrev = () => updateCurrentMonth(month - 1)
   const toggleCurrent = () => updateCurrentMonth(today.getMonth())
@@ -36,6 +34,8 @@ const Calendar = () => {
     }
   }
 
+  state.observe('currentMonth',() => {setMonth(state.currentMonth)})
+
   return (
         <>
           <div className="app">
@@ -43,7 +43,7 @@ const Calendar = () => {
             <div className="calendar">
               <Header></Header>
               <div className="cal-month-header">
-                  <CalendarCursor currentMonth={ DateTime.month(month) } next={toggleNext} prev={togglePrev} reset={toggleCurrent}/>
+                  <CalendarCursor />
                   <div className="tabber-labels">
                     { CalendarTabs.map((tab,index) => {
                       if (tab.buttonType === 'inline')
