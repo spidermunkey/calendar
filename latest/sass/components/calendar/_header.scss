@@ -23,9 +23,9 @@
         .dayPart {
           font-size: 24px;
           font-style: medium;
-          font-family:"Sofia Sans", Arial, Helvetica, sans-serif;
+          font-family:"Quicksand", Arial, Helvetica, sans-serif;
           font-weight: 500;
-          letter-spacing: -0.045em;
+          letter-spacing: 0.005em;
           &.date {
             margin-left: 8px;
             margin-right: 8px;
@@ -63,6 +63,7 @@
         .curtime {
           font-family: 'Quicksand';
           font-weight: 800;
+          letter-spacing: 0.02em;
         }
         & > div {
           height: 100%;
@@ -93,7 +94,7 @@
     color: var(--color-2);
     font-family: var(--font);
     font-weight: 600;
-    letter-spacing: 0.035em;
+    letter-spacing: 0.075em;
     min-width: 14ch;
     text-align: center;
   }

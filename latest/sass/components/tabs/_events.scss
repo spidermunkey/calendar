@@ -50,6 +50,7 @@
       font-size: 18px;
       font-weight: 600;
       color: var(--color-3);
+      letter-spacing: 0.075em;
     }
     .bullet {
         text-transform: capitalize;
@@ -59,6 +60,7 @@
         position: relative;
         margin-left: 24px;
         font-size: 14px;
+        letter-spacing: 0.1em;
         &::after {
           content: "";
           left: -12px;
