@@ -1,8 +1,9 @@
 import { eventMaps } from "utils"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { FloatingActionClose, FloatingActionToggle } from "../../components"
 import { PlusIcon } from "../../assets/icons/plus"
 import { CloseIcon } from "../../assets/icons"
+import { useTodoStore } from "../../context/TodoContext"
 
 export const Todo = () => {
   
@@ -10,16 +11,15 @@ export const Todo = () => {
   <>
     <div className="tabber-modal todo-modal">
       <TodoForm/>
-      <div className="todo-list">
-
-      </div>
+      <TodoList/>
     </div>
   </>
   )
 }
 
 export const TodoForm = () => {
-  
+  const todos = useTodoStore();
+
   const [descriptionActive,setDescriptionActive] = useState(false);
   const [timeActive,setTimeActive] = useState(false);
 
@@ -33,9 +33,12 @@ export const TodoForm = () => {
   const formData = () => Object.fromEntries(new FormData(form()));
   const input = (formField) => formField.querySelector(input);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('NEW TODO',formData())
+    const response = await todos.add(formData())
+    const data = await response.json();
+    console.log(data)
   }
 
   const handleClick = (event) => {
@@ -75,10 +78,35 @@ export const TodoForm = () => {
             <FloatingActionToggle ref={descriptionRef}> <div className="menu-option">descrition</div> </FloatingActionToggle>
             <FloatingActionToggle ref={timeRef}> <div className="menu-option">time</div> </FloatingActionToggle>
           </div>
-          </div>
+        </div>
 
       </form>
     </div>
 
+  )
+}
+
+export const TodoList = () => {
+  const todos = useTodoStore();
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      console.log(todos)
+      const data = await todos.getData();
+      console.log(data)
+      setList(data);
+    }
+    getData();
+  },[])
+  return (
+    <div className="todo-list">
+      {
+        list.length > 0 
+        ? list.map(item => {
+          return <div className="todo-item">{ item.title }</div>
+        })
+        : 'you have no todos'
+      }
+    </div>
   )
 }

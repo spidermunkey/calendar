@@ -16,12 +16,14 @@ app.use(cors());
 
 const timerRouter = require('./routes/timers.js');
 const birthdayRouter = require('./routes/birthdays.js');
-const calendarRouter = require('./routes/calendar.js')
-const eventRouter = require('./routes/events.js')
+const calendarRouter = require('./routes/calendar.js');
+const eventRouter = require('./routes/events.js');
+const todoRouter = require('./routes/todos.js');
 app.use('/timers', timerRouter);
 app.use('/birthdays',birthdayRouter);
 app.use('/calendar',calendarRouter);
 app.use('/events',eventRouter);
+app.use('/todos', todoRouter);
 
 app.get('/', (req,res) => res.json('Hello From The API HOME'));
 app.use((req,res) => {

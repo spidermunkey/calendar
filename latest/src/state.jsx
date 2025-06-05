@@ -5,8 +5,6 @@ import { DateTime } from 'utils';
 const date = new Date();
 
 export const createAppModel = () => {
-
-  
   return createObservable({
   
     name:'My first app',
@@ -59,7 +57,10 @@ export const createAppModel = () => {
         return isThisMonth;
       },
     },
-
+    todos: {
+      ...createStore('api/todos'),
+      test:[],
+    },
     timers: {
       ...createStore('api/timers'),
       activeTimer:null,
@@ -67,7 +68,7 @@ export const createAppModel = () => {
 
     events: {
       ...createStore('/api/events'),
-
+      current:{},
       async today(){
         const data = await this.data;
         return this.findByDate(new Date(),data)
@@ -75,7 +76,6 @@ export const createAppModel = () => {
       async thisMonth() {
         return this.findByMonth( date.getMonth() , await this.data);
       },
-
       match(date,event){
         const isDaily = event.frequency === 'daily' || event.frequency === 'weekly' || event.frequency === 'monthly';
         const isDow = event?.dynamic_frequency?.days[date.getDay()] == true;
@@ -119,5 +119,4 @@ export const createAppModel = () => {
 
     monthName:(monthIndex) => DateTime.month(monthIndex)
   })
-
 }
