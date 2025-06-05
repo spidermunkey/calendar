@@ -1,7 +1,7 @@
 import { Birthdays } from "./birthdays/Birthdays"
 import { Timers } from "./timer/Timers"
 import { Events } from "./events/Events"
-import { Todo } from "./todo/Todo"
+import { Todos } from "./todo/Todo"
 import { Days } from "./calendar/Days"
 
 import { composeElement } from "utils";
@@ -19,7 +19,7 @@ export const CalendarTabs = [
   {
     label: 'notes',
     icon:(<NoteIcon/>),
-    element: composeElement(Todo),
+    element: composeElement(Todos),
     buttonType: 'inline',
     index: 5,
   },

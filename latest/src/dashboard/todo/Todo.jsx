@@ -5,19 +5,39 @@ import { PlusIcon } from "../../assets/icons/plus"
 import { CloseIcon } from "../../assets/icons"
 import { useTodoStore } from "../../context/TodoContext"
 
-export const Todo = () => {
-  
+export const Todos = () => {
+  const todos = useTodoStore();
+  const [list, setList] = useState([]);
+  const [stale, setStale] = useState(true);
+
+  useEffect(() => {
+    const getData = async () => {
+      if (stale){
+        const data = await todos.getData();
+        setList(data);
+        setStale(false);
+        console.log('data',data,1)
+        return data;
+      }
+
+    }
+    getData()
+  },[stale] )
   return (
   <>
     <div className="tabber-modal todo-modal">
-      <TodoForm/>
-      <TodoList/>
+      <TodoForm onSubmit={async (event,form,data) => {
+        if (!data.success || data.success == true){
+          setStale(true);
+        }
+      }}/>
+      <TodoList list={list}/>
     </div>
   </>
   )
 }
 
-export const TodoForm = () => {
+export const TodoForm = ({onSubmit}) => {
   const todos = useTodoStore();
 
   const [descriptionActive,setDescriptionActive] = useState(false);
@@ -36,9 +56,12 @@ export const TodoForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('NEW TODO',formData())
-    const response = await todos.add(formData())
+    const response = await todos.add(formData());
     const data = await response.json();
     console.log(data)
+    if (onSubmit){
+      onSubmit(event,formRef,data)
+    }
   }
 
   const handleClick = (event) => {
@@ -86,18 +109,7 @@ export const TodoForm = () => {
   )
 }
 
-export const TodoList = () => {
-  const todos = useTodoStore();
-  const [list, setList] = useState([]);
-  useEffect(() => {
-    const getData = async () => {
-      console.log(todos)
-      const data = await todos.getData();
-      console.log(data)
-      setList(data);
-    }
-    getData();
-  },[])
+export const TodoList = ({list}) => {
   return (
     <div className="todo-list">
       {
