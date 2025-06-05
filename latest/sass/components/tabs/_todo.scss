@@ -2,15 +2,24 @@
   form {
     position: relative;
   }
+  .container {
+    position: relative;
+    width: fit-content;
+  }
+  .flexbox {
+    display: inline-flex;
+    position: relative;
+  }
   .title-field {
     position: relative;
     display: inline-flex;
+    align-items: flex-start;
 
+    input {
+      padding: 10px;
+    }
   }
   .field-menu {
-    position: absolute;
-    right: -98px;
-    // top: 32px;
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -32,7 +41,15 @@
       stroke: var(--color)
     }
   }
-  .field-menu,
+  .field-menu {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    &.active {
+      opacity: 1;
+    }
+  }
   .opt-field {
     display: none;
     &.active {

@@ -49,28 +49,34 @@ export const TodoForm = () => {
     }
   }
 
-
-
-
   return (
     <div className="todo-form">
       <form ref={formRef} name={'todo'} onSubmit={handleSubmit} onKeyDown={handleShortcuts} onClick={handleClick}>
-        <div className="field title-field">
-          <input name="title" type="text" placeholder="title"/>
-          <FloatingActionToggle ref={menuRef}> <div className="btn-open-menu"><PlusIcon/></div> </FloatingActionToggle>
+        <div className="container">
+          <div className="flexbox column">
+            <div className="flexbox">
+              <div className="field title-field">
+                <input name="title" type="text" placeholder="title"/>
+                <FloatingActionToggle ref={menuRef}> <div className="btn-open-menu"><PlusIcon/></div> </FloatingActionToggle>
+              </div>
+            </div>
+            <div className="flexbox column">
+              <div className="field opt-field description-field" ref={descriptionRef}>
+                <textarea name="description" id=""></textarea>
+                <FloatingActionClose ref={descriptionRef}><CloseIcon/></FloatingActionClose>
+              </div>
+              <div className="field opt-field time-field" ref={timeRef}>
+                <input name="time" type="time" />
+                <FloatingActionClose ref={timeRef}><CloseIcon/></FloatingActionClose>
+              </div>
+            </div>
+          </div>
           <div className="field-menu" ref={menuRef}>
             <FloatingActionToggle ref={descriptionRef}> <div className="menu-option">descrition</div> </FloatingActionToggle>
             <FloatingActionToggle ref={timeRef}> <div className="menu-option">time</div> </FloatingActionToggle>
           </div>
-        </div>
-        <div className="field opt-field description-field" ref={descriptionRef}>
-          <textarea name="description" id=""></textarea>
-          <FloatingActionClose ref={descriptionRef}><CloseIcon/></FloatingActionClose>
-        </div>
-        <div className="field opt-field time-field" ref={timeRef}>
-          <input name="time" type="time" />
-          <FloatingActionClose ref={timeRef}><CloseIcon/></FloatingActionClose>
-        </div>
+          </div>
+
       </form>
     </div>
 
