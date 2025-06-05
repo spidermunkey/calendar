@@ -26,6 +26,8 @@ export const createStore = (endpoint) => {
         return response;
       },
       async remove(id){
+        console.log('herio',id)
+
         const response = await destroy(this.endpoint,id);
         this.stale = true;
         return response;

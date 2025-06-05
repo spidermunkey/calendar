@@ -1,15 +1,25 @@
-import { eventMaps } from "utils"
+import { eventMaps, uuid } from "utils"
 import { useRef, useState, useEffect } from "react"
 import { FloatingActionClose, FloatingActionToggle } from "../../components"
 import { PlusIcon } from "../../assets/icons/plus"
 import { CloseIcon } from "../../assets/icons"
 import { useTodoStore } from "../../context/TodoContext"
 
-export const Todos = () => {
+export const Todos = ({date}) => {
   const todos = useTodoStore();
   const [list, setList] = useState([]);
   const [stale, setStale] = useState(true);
 
+  const onDelete = async (event) => {
+    const id = event.target.closest('.todo-item').getAttribute('id')
+    console.log(id)
+    if (id){
+      const response = await todos.remove(id)
+      console.log('item deletion requested',id,response.json())
+      setStale(true);
+    }
+
+  }
   useEffect(() => {
     const getData = async () => {
       if (stale){
@@ -19,25 +29,24 @@ export const Todos = () => {
         console.log('data',data,1)
         return data;
       }
-
     }
     getData()
   },[stale] )
   return (
   <>
     <div className="tabber-modal todo-modal">
-      <TodoForm onSubmit={async (event,form,data) => {
+      <TodoForm date={date} onSubmit={async (event,form,data) => {
         if (!data.success || data.success == true){
           setStale(true);
         }
       }}/>
-      <TodoList list={list}/>
+      <TodoList onDelete={onDelete} list={list}/>
     </div>
   </>
   )
 }
 
-export const TodoForm = ({onSubmit}) => {
+export const TodoForm = ({date,onSubmit}) => {
   const todos = useTodoStore();
 
   const [descriptionActive,setDescriptionActive] = useState(false);
@@ -56,7 +65,7 @@ export const TodoForm = ({onSubmit}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('NEW TODO',formData())
-    const response = await todos.add(formData());
+    const response = await todos.add({...formData(), date, id:uuid() });
     const data = await response.json();
     console.log(data)
     if (onSubmit){
@@ -109,14 +118,16 @@ export const TodoForm = ({onSubmit}) => {
   )
 }
 
-export const TodoList = ({list}) => {
+export const TodoList = ({list,onDelete}) => {
   return (
     <div className="todo-list">
       {
         list.length > 0 
         ? list.map(item => {
-          return <div className="todo-item">{ item.title }</div>
-        })
+          return item.id && <div className="todo-item" id={item.id}>{ item.title }
+            <div className="destroy" onClick={onDelete}>Delete</div>
+          </div>
+          })
         : 'you have no todos'
       }
     </div>

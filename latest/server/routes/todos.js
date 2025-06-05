@@ -6,8 +6,29 @@ router.get('/:id', function getTodo(){
 
 });
 
-router.delete('/:id', function deleteTodo(){
+router.delete('/:id', async function deleteTodo(request,response){
+  try {
+    const {id} = request.params;
+    if (id){
+      const local_client = await local_connection();
+        if (!local_client){
+          response.json({success: false, message: 'no connection'})
+        }
+      if (!id){
+        response.json({success: false,message:'invalid id'})
+        return;
+      }
+      const db = local_client.db('Todos')
+      const collection = db.collection('all')
+      await collection.deleteOne({id:id})
+    }
+      response.json(data);
 
+  } catch(error){
+    console.log(error)
+    response.json({})
+
+  }
 });
 
 router.put('/:id', async function editTodo(){
