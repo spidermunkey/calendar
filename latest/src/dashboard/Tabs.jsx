@@ -1,6 +1,6 @@
 import { Birthdays } from "./birthdays/Birthdays"
 import { Timers } from "./timer/Timers"
-import { Events } from "./event/Events"
+import { Events } from "./events/Events"
 import { Todo } from "./todo/Todo"
 import { Days } from "./calendar/Days"
 

@@ -1,0 +1,44 @@
+.todo-form {
+  form {
+    position: relative;
+  }
+  .title-field {
+    position: relative;
+    display: inline-flex;
+
+  }
+  .field-menu {
+    position: absolute;
+    right: 0;
+    top: 32px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    background-color: white;
+    .menu-option {
+      margin: 8px 0px;
+    }
+    z-index: 100;
+  }
+  .btn-open-menu {
+    display: inline-flex;
+    height: 32px;
+    width: 32px;
+    border: 1px solid var(--border);
+    align-items: center;
+    justify-content: center;
+    svg {
+      stroke: var(--color)
+    }
+  }
+  .field-menu,
+  .opt-field {
+    display: none;
+    &.active {
+      display: flex;
+    }
+  }
+}
+
+
