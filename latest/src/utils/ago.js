@@ -2,6 +2,7 @@ import { date } from "./date";
 import { getRemainder } from "./getRemainder";
 
 export function ago(msDate) {
+  console.log(msDate)
   const now = Date.now();
   const then = new Date(msDate);
   
@@ -66,33 +67,33 @@ export function ago(msDate) {
           ago.string = `${ago.years} Years ${context}`
   } else if (months < 12 & months >= 1) {
       let rounded = ago.months === 1 && days > 0 ? 2 : 1
-      ago.string = `${rounded} ${rounded === 1 ? 'Month' : 'Months'} ${context}`
+      ago.string = `${rounded} ${rounded === 1 ? 'month' : 'months'} ${context}`
   }
-  else if (ago.weeksAgo < 4 && ago.weeksAgo > 2) {
-      ago.string = `${ago.weeksAgo} Weeks ${context}`
+  else if (ago.weeksAgo <= 4 && ago.weeksAgo > 2) {
+      ago.string = `${ago.weeksAgo} weeks ${context}`
   }
 
-  else if (ago.daysAgo < 14 && ago.daysAgo > 2) {
-      ago.string = `${ago.daysAgo} Days ${context}`
+  else if (ago.daysAgo <= 14 && ago.daysAgo >= 2) {
+      ago.string = `${ago.daysAgo} days ${context}`
   }
   else if (ago.hoursAgo <= 48 && ago.hoursAgo >= 1) {
       if (ago.hoursAgo < 2 && ago.hoursAgo >=1) {
-          ago.string = `${ago.hoursAgo} Hour ${context}`
+          ago.string = `${ago.hoursAgo} hour ${context}`
       } else {
-          ago.string = `${ago.hoursAgo} Hours ${context}`
+          ago.string = `${ago.hoursAgo} hours ${context}`
       }
   }
   else if (ago.minutesAgo < 59 && ago.minutesAgo > 1) {
-      ago.string = `${ago.minutesAgo} Minutes ${context}`
+      ago.string = `${ago.minutesAgo} minutes ${context}`
   }
   else if (ago.secondsAgo < 60 && ago.secondsAgo > 30) {
-      ago.string = `${ago.secondsAgo} Seconds ${ago}`
+      ago.string = `${ago.secondsAgo} seconds ${ago}`
   }
   else if (ago.secondsAgo < 30) {
-      ago.string = `Just Now`
+      ago.string = `few seconds`
   }
   else {
-      return ago;
+      ago.string = '';
   }
   ago.time = ago.string.split(' ')[0];
   ago.suffix = ago.string.split(' ')[1];

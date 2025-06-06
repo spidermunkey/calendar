@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DateTime } from "utils";
+import { DateTime,uuid } from "utils";
 
 const today = DateTime.midnight(new Date());
 
@@ -169,6 +169,7 @@ export const useEventForm = (eventData) => {
       frequency,
       frequencyType,
       dynamic_frequency,
+      id:uuid(),
     }
     console.log(values)
     return values

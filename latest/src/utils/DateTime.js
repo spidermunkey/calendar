@@ -225,6 +225,9 @@ export class DateTime {
   static month(index = new Date().getMonth()){
     return DateTime.date.months[Number(index)]
   }
+  static day(index = new Date().getDay()){
+    return DateTime.date.days[Number(index)]
+  }
 
   static thisYear() {
     return new Date().getFullYear();
@@ -358,7 +361,7 @@ export class DateTime {
   }
 
   static from(since, compare = Date.now()) {
-    console.warn('months ago algorithm is WRONG... Weeks ago too')
+    console.warn('USE AGO MODULE months ago algorithm is WRONG... Weeks ago too')
     const now = compare,
           then = since.getTime(),
           nowDate = new Date(compare),

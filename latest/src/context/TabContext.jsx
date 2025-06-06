@@ -7,9 +7,11 @@ export const useTabState = () => useContext(TabContext)
 
 export const TabProvider = ({children}) => {
   const [activeTab,setActiveTab] = useState(0)
+  const Tabs = CalendarTabs;
   
   return (
-    <TabContext.Provider value={{ activeTab , setActiveTab, Tabs:CalendarTabs, setTab(name){
+    <TabContext.Provider value={{ activeTab , setActiveTab, Tabs, 
+    setTab(name){
       let found = CalendarTabs.find(tab => tab.name === name);
       if (found){
         setActiveTab(CalendarTabs.indexOf(found))
