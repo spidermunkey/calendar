@@ -1,7 +1,6 @@
-import { TabProvider, CalendarProvider, TimerProvider, EventProvider } from 'context';
+import { TabProvider, CalendarProvider, TimerProvider, EventProvider, TodoProvider} from 'context';
 import { Calendar } from "./calendar/Calendar";
 import { Header } from './Header';
-import { TodoProvider } from '../context/TodoContext';
 
 export const Dashboard = () => {
   return (

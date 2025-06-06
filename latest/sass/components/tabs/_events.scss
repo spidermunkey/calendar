@@ -331,7 +331,7 @@
             opacity: 1;
           }
           &.active {
-            color: var(--blue);
+            color: var(--blue-2);
           }
           }
         }
@@ -386,10 +386,10 @@
           opacity: 1;
         }
         &.active {
-          color: var(--blue);
+          color: var(--blue-2);
         }
         &[active="true"]{
-          color: var(--blue);
+          color: var(--blue-2);
         }
           }
         }

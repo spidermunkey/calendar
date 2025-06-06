@@ -7,55 +7,64 @@ import {
   frequencyMap } from "./EventForms"
 
 import { EventList } from "./Event"
-import { PlusIcon } from "../../assets/icons/plus"
+
+import { PlusIcon, CursorLeftIcon } from "icons"
 import { useEffect, useState, useRef } from "react"
 import { useEventStore, useTabState } from "context"
-import { useCalendarState } from "../../context"
-import { CursorLeftIcon } from "../../assets/icons"
 
 export const Events = () => {
 
   const { events } = useEventStore();
-  const { day, month, date } = useCalendarState();
-  
+
   const [ template , setTemplate ] = useState({});
   const [ today, setToday ] = useState([]);
   const [ thisMonth, setThisMonth ] = useState([]);
 
-  const eventListRef = useRef(null)
+  const eventListRef = useRef(null);
+  const genericFormRef = useRef(null);
+  const dailyFormRef = useRef(null);
+
   const [ eventListActive, setEventListActive ] = useState(false);
   const [ eventList, setEventList ] = useState([]);
 
-  const {setActiveTab} = useTabState();
-  const closeModal = () => {
-    setActiveTab(4);
-  }
+  const { setActiveTab} = useTabState();
+
+  const closeModal = () => setActiveTab(4);
 
   const handleData = async (formData) => {
-    console.log('posting data',formData)
     const response = await events.add(formData);
     const result = await response.json();
-    console.log('eventForm response',result);
+    console.log('event added',result);
+  }
+  
+  const showDailyForm = () => {
+    if (dailyFormRef.current){
+      dailyFormRef.current.classList.add('active');
+      console.log(genericFormRef)
+      return genericFormRef.current && genericFormRef.current.classList.remove('active')
+    }
+  }
+
+  const showGenericForm = () => {
+    if (genericFormRef.current){
+      genericFormRef.current.classList.add('active');
+      return dailyFormRef.current && dailyFormRef.current.classList.remove('active')
+    }
   }
 
   useEffect(() => {
-    const test = async () => {
-      const today = setToday(await events.today());
-      const thisMonth = setThisMonth(await events.thisMonth());
-      console.log('total', await events.data)
-      console.log('today', await events.today())
-      console.log('this month', await events.thisMonth())
-      console.log('test date', await events.findByDay(9))
-
+    const refresh = async () => {
+      setToday(await events.today());
+      setThisMonth(await events.thisMonth());
     }
-    test();
+    refresh();
   },[])
 
   return (
     <>
       <div className="interface-modal events">
-        <DailyModal eventDate={template} handleSubmit={handleData}/>
-        <GenericModal eventDate={template} handleSubmit={handleData}/>
+        <DailyModal ref={dailyFormRef} eventDate={template} handleSubmit={handleData}/>
+        <GenericModal ref={genericFormRef} eventDate={template} handleSubmit={handleData}/>
         <div className="interface-header">
           <div className="interface-title" onClick={closeModal}><div className="btn-back"><CursorLeftIcon/></div>Events</div>
           <div className="btn-add-event" onClick={e => {
@@ -64,7 +73,7 @@ export const Events = () => {
               frequency:'once',
               dynamic_frequency:{...frequencyMap},
             })
-            showGenericForm()
+            showGenericForm();
           }}>
             <div className="icon"><PlusIcon/></div>
             <div className="label">Add Event</div>
@@ -163,49 +172,3 @@ export const Events = () => {
     </>
 )}
 
-  function showGenericForm() {
-    const ref = document.querySelector('.interface-modal.events .event-form-modal.custom-modal')
-    closeDailyForm();
-    return ref && ref.classList.add('active');
-  }
-
-  function closeGenericForm() {
-    const ref = document.querySelector('.interface-modal.events .event-form-modal.custom-modal')
-    return ref && ref.classList.remove('active');
-  }
-
-  function showDailyForm() {
-    const ref = document.querySelector('.interface-modal.events .event-form-modal.daily-modal')
-    closeGenericForm();
-    return ref && ref.classList.add('active');
-  }
-
-  function closeDailyForm() {
-    const ref = document.querySelector('.interface-modal.events .event-form-modal.daily-modal')
-    return ref && ref.classList.remove('active')
-  }
-
-  function hideForm() {
-    const ref = document.querySelector('.interface-modal.events .create-modal')
-    return ref && ref.classList.remove('active')
-  }
-  
-  function FloatingActionButton({selector, children}){
-    return (
-      <div className="fab" onClick={() => {
-        const ref = document.querySelector(selector);
-        return ref && ref.classList.add('active');
-      }}>
-        {children}
-      </div>
-    )
-  }
-
-  function CloseButton({selector, children}) {
-      <div className="close" onClick={() => {
-        const ref = document.querySelector(selector);
-        return ref && ref.classList.remove('active');
-      }}>
-        {children}
-      </div>
-  }

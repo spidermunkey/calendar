@@ -102,9 +102,9 @@ export const createTemplate = (eventDate) => {
   return result
 }
 
-export const GenericModal = ({ eventDate, handleSubmit }) => {
+export const GenericModal = ({ eventDate, handleSubmit, ref }) => {
   return (
-    <div className="event-form-modal custom-modal">
+    <div ref={ref} className="event-form-modal custom-modal">
       <div className="modal-header">
         <div className="modal-title">Create Event</div>
         <CloseButton selector={'.event-form-modal.custom-modal'}>close</CloseButton>
@@ -118,9 +118,9 @@ export const GenericModal = ({ eventDate, handleSubmit }) => {
   )
 }
 
-export const DailyModal = ({eventDate, handleSubmit}) => {
+export const DailyModal = ({eventDate, handleSubmit, ref}) => {
   return (
-    <div className="event-form-modal daily-modal">
+    <div ref={ref} className="event-form-modal daily-modal">
       <div className="modal-header">
         <div className="modal-title">{eventDate.frequency} Event</div>
         <CloseButton selector={'.event-form-modal.daily-modal'}>close</CloseButton>

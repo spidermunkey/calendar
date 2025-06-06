@@ -1,4 +1,4 @@
-import { convertSeconds, toSeconds } from "../../utils/Convert"
+import { convertSeconds, toSeconds } from "utils"
 
 // Count down timer
 export const Clock = ({ minutes = 25, hours = 0, seconds = 0 }) => {

@@ -1,13 +1,10 @@
-import { CursorLeftIcon } from "icons";
-import { CursorRightIcon } from "icons";
-
+import { CursorLeftIcon, CursorRightIcon } from "icons";
 import { DateTime } from "utils";
-import { useCalendarState } from "context";
+import { useCalendarStore } from "context";
 
 export const Cursor = () => {
-
-  const { month, setMonth, year, setYear, setDay, today} = useCalendarState();
-
+  const {calendar} = useCalendarStore();
+  const { month, setMonth, year, setYear, setDay, today} = calendar;
   const updateCurrentMonth = (month) => {
     if (month > 11){
       setYear(year + 1)

@@ -1,11 +1,8 @@
-import { useEffect, useRef, useState } from "react"
-import { DateTime } from "../../utils"
-import { ago } from "../../utils"
-import { eventMaps } from "../../utils"
-import { CheckIcon, CloseIcon, CursorLeftIcon } from "../../assets/icons"
-import { PencilIcon } from "../../assets/icons/pencil"
+import { useEventStore } from "context"
 
-import { useEventStore } from "../../context"
+import { useEffect, useRef, useState } from "react"
+import { DateTime, ago, eventMaps } from "utils"
+import { CheckIcon, CloseIcon, CursorLeftIcon, PencilIcon } from "icons"
 
 export const EventListItem = ({event,onSubmit}) => {
   const date = parseDate(event.date);

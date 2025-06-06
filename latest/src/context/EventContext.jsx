@@ -1,12 +1,12 @@
 import { createContext, useContext } from "react";
-import { useAppState } from "./AppContext";
+import { useAppStore } from "./AppContext";
 
 export const EventContext = createContext({});
 
 export const useEventStore = () => useContext(EventContext);
 
 export const EventProvider = ({children}) => {
-  const { events } = useAppState();
+  const { events } = useAppStore();
   return (
     <EventContext.Provider value={{events}}>{children}</EventContext.Provider>
   )

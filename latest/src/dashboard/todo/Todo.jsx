@@ -1,13 +1,7 @@
 import { eventMaps, uuid } from "utils"
 import { useRef, useState, useEffect } from "react"
-import { FloatingActionClose, FloatingActionToggle } from "../../components"
-import { PlusIcon } from "../../assets/icons/plus"
-import { CheckIcon, CloseIcon, CloseIcon2 } from "../../assets/icons"
-import { useTodoStore } from "../../context/TodoContext"
-import { PencilIcon } from "../../assets/icons/pencil"
-import { useCalendarState } from "../../context"
-import { useTabState } from "../../context/TabContext"
-import { CursorLeftIcon } from "../../assets/icons"
+import { PlusIcon, CheckIcon, CloseIcon2, PencilIcon, CursorLeftIcon  } from "icons"
+import { useTodoStore, useCalendarStore, useTabState } from "context"
 
 export const Todo = ({item, onComplete, onDelete}) => {
   return (
@@ -34,12 +28,12 @@ export const Todo = ({item, onComplete, onDelete}) => {
 }
 export const Todos = () => {
   const todos = useTodoStore();
-  const calendar = useCalendarState();
-  const {setActiveTab} = useTabState();
+  const { calendar } = useCalendarStore();
   const {month,day,year} = calendar;
   const [list, setList] = useState([]);
   const [stale, setStale] = useState(true);
 
+  const {setActiveTab} = useTabState();
   const closeModal = () => {
     setActiveTab(4);
   }
@@ -105,7 +99,7 @@ export const Todos = () => {
 
 export const TodoForm = ({onSubmit}) => {
   const todos = useTodoStore();
-  const calendar = useCalendarState();
+  const { calendar } = useCalendarStore();
   const [title, setTitle] = useState('');
   const formRef = useRef(null);
 

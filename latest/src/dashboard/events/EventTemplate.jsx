@@ -1,6 +1,6 @@
-const date = new Date();
-
 export const EventTemplate = (eventDate) => {
+  const date = new Date();
+
   const template = {
     title: '',
     description: '',
@@ -22,15 +22,15 @@ export const EventTemplate = (eventDate) => {
     dom: DateTime.getDate(date).slice(-2),
     dow: date.getDay(),
   }
-    const validProps = {}
-    for (const prop in eventDate){
-      if (template[prop] && typeof template[prop] === typeof eventDate[prop] ){
-        validProps[prop] = eventDate[prop]
-      }
+  const validProps = {}
+  for (const prop in eventDate){
+    if (template[prop] && typeof template[prop] === typeof eventDate[prop] ){
+      validProps[prop] = eventDate[prop]
     }
-    const result = {
-      ...template,
-      ...validProps
-    }
-    return result
+  }
+  const result = {
+    ...template,
+    ...validProps
+  }
+  return result
 }

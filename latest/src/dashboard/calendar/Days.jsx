@@ -1,14 +1,10 @@
 import { useCallback, useEffect, useState, useRef } from "react";
-import { useAppState, useCalendarState } from "context";
-import { useTodoStore } from "../../context/TodoContext";
-import { useTabState } from "../../context/TabContext";
-
+import { useAppStore, useCalendarStore, useTodoStore, useTabState } from "context";
 import { EventList } from "../events/Event";
 
 export const Days  = () => {
-
-  const state = useAppState();
-  const calendar = useCalendarState();
+  const state = useAppStore();
+  const { calendar } = useCalendarStore();
   const todos = useTodoStore();
 
   const { setTab } = useTabState();
@@ -22,11 +18,7 @@ export const Days  = () => {
   })
 
   const [ todo, setTodo ] = useState([])
-  
-
   const monthName = state.monthName(month)
-
-  const birthdaysThisMonth = useCallback(() => dayData.birthdays.thisMonth.map(bday => (<span className="bullet">  {bday.name}  </span>)),[dayData])
   const birthdaysToday = useCallback(() => dayData.birthdays.today.map(bday => <span className="bullet">  {bday.name}'s birthday </span>),[dayData])
   const namesToday = birthdaysToday();
   
@@ -53,44 +45,44 @@ export const Days  = () => {
           <div className="section today">
             <div className="day-data">{monthName}  {day}</div>
           </div>
- <div className="interface-content">
-          <EventList isActive={eventListActive} setActive={setEventListActive} ref={eventListRef} events={events}/>
-          <div className="section daily">
-            <div className="section-title">Birthdays</div>
-            <div className="section-data daily">
-              { namesToday.length > 0 ?
-                namesToday.length === 1 ?
-                <div className="bday-list">
-                    {namesToday}
-                </div>
-                : <div className="bday-data">
-                <div className="section-title label"> { namesToday.length } birthday{namesToday.length !== 1 && 's'}</div>
-                <div className="bullet">{ namesToday.length } birthday{namesToday.length !== 1 && 's'}</div>
-                </div>
-                : <span className="bullet">none</span>
+          <div className="interface-content">
+            <EventList isActive={eventListActive} setActive={setEventListActive} ref={eventListRef} events={events}/>
+            <div className="section daily">
+              <div className="section-title">Birthdays</div>
+              <div className="section-data daily">
+                { namesToday.length > 0 ?
+                  namesToday.length === 1 ?
+                  <div className="bday-list">
+                      {namesToday}
+                  </div>
+                  : <div className="bday-data">
+                  <div className="section-title label"> { namesToday.length } birthday{namesToday.length !== 1 && 's'}</div>
+                  <div className="bullet">{ namesToday.length } birthday{namesToday.length !== 1 && 's'}</div>
+                  </div>
+                  : <span className="bullet">none</span>
+                }
+              </div>
+            </div>
+
+            <div className="section daily-events">
+              <div className="section-title">Events</div>
+              <div className="section-data daily-events">
+                <div className="bullet" onClick={(event) => {
+                  setEventListActive(true);
+                }}>{events.length} event{events.length !== 1 && 's'}</div>
+              </div>
+            </div>
+
+            <div className="section todo">
+              <div className="section-title">Todo</div>
+              <div className="section-data todo">
+              {
+                todo.length > 0
+                  ? <div className="bullet" onClick={() => setTab('todos')}>{todo.length} todo item{todo.length !== 1 && 's' }</div>
+                  : <div className="bullet" onClick={() => setTab('todos')}>none</div>
               }
+              </div>
             </div>
-          </div>
-
-          <div className="section daily-events">
-            <div className="section-title">Events</div>
-            <div className="section-data daily-events">
-              <div className="bullet" onClick={(event) => {
-                setEventListActive(true);
-              }}>{events.length} event{events.length !== 1 && 's'}</div>
-            </div>
-          </div>
-
-          <div className="section todo">
-            <div className="section-title">Todo</div>
-            <div className="section-data todo">
-            {
-              todo.length > 0
-                ? <div className="bullet" onClick={() => setTab('todos')}>{todo.length} todo item{todo.length !== 1 && 's' }</div>
-                : <div className="bullet" onClick={() => setTab('todos')}>none</div>
-            }
-            </div>
-          </div>
 
         </div>
 

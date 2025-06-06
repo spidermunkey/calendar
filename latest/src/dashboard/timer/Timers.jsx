@@ -1,44 +1,19 @@
-import { Timer } from './Timer'
-import { BtnAdd } from './AddButton'
+import { useState, useEffect } from 'react'
 import { useTimerState, useTabState } from 'context'
+import { Timer } from './Timer'
 import { uuid } from 'utils'
-
-import { useCallback, useState, useEffect } from 'react'
-import { PlusIcon } from '../../assets/icons/plus'
-import { CursorLeftIcon } from '../../assets/icons'
+import { PlusIcon, CursorLeftIcon } from 'icons'
   
-const FavoriteTimerTemplate = () => {
-  return (
-    <div className="favorite-timer favorite">
-    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" pid="m91x24ts-01LWS811JV39">
-      <path d="M12 17V7" stroke="black" stroke-width="1.5" stroke-linecap="round" pid="m91x24ts-00PZJJP4KRQZ"></path>
-      <path d="M7 12L17 12" stroke="black" stroke-width="1.5" stroke-linecap="round" pid="m91x24ts-01D8ZJNF6NYJ"></path>
-    </svg>
-    </div>
-  )
-}
-
 export const Timers = () => {
-  const timers = useTimerState();
-  
+  const { timers } = useTimerState();
   const [currentTab,setTab] = useState('timers');
   const [currentTimers,setCurrentTimers] = useState([]);
   const [createTimerModalActive,setCreateTimerModalActive] = useState(false);
   const {setActiveTab} = useTabState();
-    const closeModal = () => {
-      setActiveTab(4);
-    }
-  const toggleActiveTab = useCallback((event) => {
-    const selected = event.target.closest('.tab')
-    if (selected){
-      const tabTray = event.target.closest('.tab-tray');
-      const tabs = tabTray.querySelectorAll('.tab');
-      tabs.forEach(tab => tab.classList.remove('active'));
-      selected.classList.add('active');
-      setTab(selected.getAttribute('tab'));
-    }
-  },[]);
+  const closeModal = () => setActiveTab(4);
+
   const parseTimers = timers => timers.map((timer,index) => <Timer key={timer.id} props={timer}/>);
+  
   const handleForm = (event) => {
     const form = event.target.closest('form');
     if (form){
@@ -105,7 +80,10 @@ export const Timers = () => {
               <div className="label">Sessions</div>
               <input name="sessions" type="number"/>
             </div>
-            <BtnAdd onClick={handleForm}/>
+              <div className="btn-toggle-form" onClick={handleForm}>
+                <div className="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" pid="m91curqy-023IJ77B0GWW" height="18px" width="18px"><path d="M11 9h4v2h-4v4H9v-4H5V9h4V5h2v4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" fill="#000" pid="m91curqy-00EU1KK6E105"></path></svg></div>
+                <div className="label">Add Timer</div>
+              </div>
           </form>
         </div>
     </div>
@@ -119,20 +97,6 @@ export const Timers = () => {
         </div>
 
       </div>
-      {/* <div className="tab-tray" onClick={toggleActiveTab}>
-        <div className={`tab ${currentTab === 'timers' ? 'active' : ''}`} tab="timers">timers</div>
-        <div className={`tab ${currentTab === 'trackers' ? 'active' : ''}`} tab="trackers">trackers</div>
-      </div> */}
-      {/* <div className="favorites">
-        <div className="section-title">Favorites</div>
-        <div className="favorite-tray">
-          <FavoriteTimerTemplate/>
-          <FavoriteTimerTemplate/>
-          <FavoriteTimerTemplate/>
-          <FavoriteTimerTemplate/>
-          <FavoriteTimerTemplate/>
-        </div>
-      </div> */}
       <div className="most-recent">
         <div className="section-title">
           Most Recent

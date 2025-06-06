@@ -1,13 +1,13 @@
 import { useContext, createContext, useState, useRef } from "react";
-import { useAppState } from "./AppContext";
+import { useAppStore } from "./AppContext";
 
 export const CalendarContext = createContext({});
 
-export const useCalendarState = () => useContext(CalendarContext);
+export const useCalendarStore = () => useContext(CalendarContext);
 
 export const CalendarProvider = ({children}) => {
 
-  const {calendar} = useAppState();
+  const {calendar} = useAppStore();
   const [day, updateDay] = useState(calendar.day)
   const [month,updateMonth] = useState(calendar.month)
   const [year,updateYear] = useState(calendar.year)
@@ -28,14 +28,16 @@ export const CalendarProvider = ({children}) => {
   }
   return (
     <CalendarContext.Provider value={{
-      day,setDay,
-      month,setMonth,
-      year,setYear,
-      today,
-      get date() {
-        console.log(month)
-        return `${String(year)}-${String(month).padStart(2,0)}-${String(day).padStart(2,0)}`
-      },
+      calendar:{
+        day,setDay,
+        month,setMonth,
+        year,setYear,
+        today,
+        get date() {
+          console.log(month)
+          return `${String(year)}-${String(month).padStart(2,0)}-${String(day).padStart(2,0)}`
+        }
+      }
     }}>
       {children}
     </CalendarContext.Provider>

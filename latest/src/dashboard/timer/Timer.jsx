@@ -1,11 +1,11 @@
 import { useTimer } from './useTimer';
-import { useTimerState } from '../../context';
-import { Play } from '../../assets/icons/play';
-import { Pause } from '../../assets/icons/pause';
+import { useTimerState } from 'context';
+import { Play, Pause } from 'icons';
+
 export const Timer = ({ props }) => {
   const { state, play, stop, currentTitle, timer } = useTimer(props);
   const { hours, minutes, seconds } = timer.current;
-  const timers = useTimerState();
+  const { timers } = useTimerState();
   return (
     <div className="timer tracker-element">
       {state === 'running' && <div className="activity-sensor"></div>}
@@ -21,9 +21,9 @@ export const Timer = ({ props }) => {
       <div className="stopwatch-controls" >
       { state === 'stopped' || state === 'complete' 
         ? <div className="btn-control play" onClick={() => {
-          play();
-          timers.updateActiveTimer(props);
-          console.log(props,timers.activeTimer,timers.updateActiveTimer);
+            play();
+            timers.updateActiveTimer(props);
+            console.log(props,timers.activeTimer,timers.updateActiveTimer);
         }}><Play/></div>
         : <div className="btn-control pause" onClick={stop}><Pause/></div>
         }

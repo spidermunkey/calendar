@@ -1,7 +1,6 @@
 
 
 import { useTabState } from "context";
-import { useState } from "react";
 
 export const TabTray = () => {
   const { Tabs, setActiveTab, activeTab } = useTabState();

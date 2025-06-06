@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { monthData, forEachNumber } from "utils"
 import { Day } from "./Day";
-import { useAppState, useTabState, useCalendarState } from "context";
+import { monthData, forEachNumber } from "utils"
+import { useAppStore, useCalendarStore } from "context";
 
 export const Month = () => {
-  const state = useAppState();
-  const { setActiveTab } = useTabState();
-  const { day, setDay, month, year } = useCalendarState();
+  const state = useAppStore();
+  const {calendar} = useCalendarStore();
+  const { day, setDay, month, year } = calendar;
   const { birthdays, events } = state;
 
   const [activeBirthdays,setActiveBirthdays] = useState([]);
@@ -18,7 +18,7 @@ export const Month = () => {
     daysInMonth, 
     daysFromSaturday 
   } = monthData(year,month);
-  
+  console.log(year,month)
   const isBday = (day) => activeBirthdays.find(bday => bday.day == day);
   const eventsByDay = (day) => activeEvents.filter(event => event?.date?.slice(8,10) == day);
   const parseEvents = (day) => {
@@ -66,7 +66,6 @@ export const Month = () => {
       }).reverse()}
       {/* Current Day Set */}
       {forEachNumber(daysInMonth, index => {
-      
         let dateNum = index + 1
         let isToday = today.getDate() === dateNum && today.getMonth() === month && 'today';
         let events = parseEvents(dateNum);
