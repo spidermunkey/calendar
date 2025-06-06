@@ -1,5 +1,4 @@
 export const Day = (props) => {
-  console.log(props.events,props.day,props.styles)
   return (
     <div key={props.key} day={props.day} className={props.styles}>
     <div className="markers">

@@ -1,10 +1,11 @@
 import { Timer } from './Timer'
 import { BtnAdd } from './AddButton'
-import { useTimerState } from 'context'
+import { useTimerState, useTabState } from 'context'
 import { uuid } from 'utils'
 
 import { useCallback, useState, useEffect } from 'react'
 import { PlusIcon } from '../../assets/icons/plus'
+import { CursorLeftIcon } from '../../assets/icons'
   
 const FavoriteTimerTemplate = () => {
   return (
@@ -19,9 +20,14 @@ const FavoriteTimerTemplate = () => {
 
 export const Timers = () => {
   const timers = useTimerState();
+  
   const [currentTab,setTab] = useState('timers');
   const [currentTimers,setCurrentTimers] = useState([]);
   const [createTimerModalActive,setCreateTimerModalActive] = useState(false);
+  const {setActiveTab} = useTabState();
+    const closeModal = () => {
+      setActiveTab(4);
+    }
   const toggleActiveTab = useCallback((event) => {
     const selected = event.target.closest('.tab')
     if (selected){
@@ -106,7 +112,7 @@ export const Timers = () => {
     <div className="interface-modal timers flex-col p-12">
 
       <div className="interface-header">
-        <div className="interface-title">Timers</div>
+         <div className="interface-title" onClick={closeModal}><div className="btn-back"><CursorLeftIcon/></div>Timers</div>
         <div className="btn-add-timer" onClick={() => setCreateTimerModalActive(true)}>
           <div className="icon"><PlusIcon/></div>
           <div className="label">New Timer</div>

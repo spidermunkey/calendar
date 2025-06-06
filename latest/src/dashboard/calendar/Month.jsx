@@ -42,7 +42,6 @@ export const Month = () => {
     const dayElement = event.target.closest('.day');
     if (dayElement) {
       const day = dayElement.getAttribute('day');
-      setActiveTab(4);
       setDay(day);
    }
   }
@@ -71,8 +70,6 @@ export const Month = () => {
         let dateNum = index + 1
         let isToday = today.getDate() === dateNum && today.getMonth() === month && 'today';
         let events = parseEvents(dateNum);
-        console.log(events)
-        console.log(dateNum)
         let styles = ['day', isToday, day == dateNum && 'active'].filter(Boolean).join(' ')
         return <Day isBday={isBday(dateNum)} events={events} styles={styles} day={dateNum} key={dateNum}/>
         })}

@@ -1,5 +1,5 @@
-import { cursorLeft } from "icons";
-import { cursorRight } from "icons";
+import { CursorLeftIcon } from "icons";
+import { CursorRightIcon } from "icons";
 
 import { DateTime } from "utils";
 import { useCalendarState } from "context";
@@ -27,8 +27,8 @@ export const Cursor = () => {
   const togglePrev = () => updateCurrentMonth(month - 1)
 
   return (<div className="this-month flex">
-            <div className="prev-month px-4 cursor-pointer" onClick={togglePrev}>{cursorLeft}</div>
+            <div className="prev-month px-4 cursor-pointer" onClick={togglePrev}><CursorLeftIcon/></div>
               <div className="month-name px-4" onClick={reset}>{DateTime.month(month)}</div>
-            <div className="next-month px-4 cursor-pointer" onClick={toggleNext}>{cursorRight}</div>
+            <div className="next-month px-4 cursor-pointer" onClick={toggleNext}>{CursorRightIcon}</div>
           </div>)
 }

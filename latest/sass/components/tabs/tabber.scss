@@ -29,16 +29,20 @@
     // overflow: hidden;
 
     .interface-header {
-      display: flex;
+      display: inline-flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px;
       font-weight: 600;
+      width: 300px;
     }
     .interface-title {
+      display: inline-flex;
+      justify-content: flex-start;
       font-size: 20px;
       opacity: .8;
       letter-spacing: 0.035em;
+      cursor: pointer;
     }
     .btn-close {
       display: flex;
@@ -59,4 +63,5 @@
         padding-top: 2px;
       }
     }
+
 }

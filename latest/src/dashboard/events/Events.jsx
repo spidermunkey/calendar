@@ -9,8 +9,9 @@ import {
 import { EventList } from "./Event"
 import { PlusIcon } from "../../assets/icons/plus"
 import { useEffect, useState, useRef } from "react"
-import { useEventStore } from "context"
+import { useEventStore, useTabState } from "context"
 import { useCalendarState } from "../../context"
+import { CursorLeftIcon } from "../../assets/icons"
 
 export const Events = () => {
 
@@ -24,6 +25,11 @@ export const Events = () => {
   const eventListRef = useRef(null)
   const [ eventListActive, setEventListActive ] = useState(false);
   const [ eventList, setEventList ] = useState([]);
+
+  const {setActiveTab} = useTabState();
+  const closeModal = () => {
+    setActiveTab(4);
+  }
 
   const handleData = async (formData) => {
     console.log('posting data',formData)
@@ -51,7 +57,7 @@ export const Events = () => {
         <DailyModal eventDate={template} handleSubmit={handleData}/>
         <GenericModal eventDate={template} handleSubmit={handleData}/>
         <div className="interface-header">
-          <div className="interface-title">Events</div>
+          <div className="interface-title" onClick={closeModal}><div className="btn-back"><CursorLeftIcon/></div>Events</div>
           <div className="btn-add-event" onClick={e => {
             setTemplate({
               frequencyType:'custom',

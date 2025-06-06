@@ -1,20 +1,27 @@
 
 
 import { useTabState } from "context";
+import { useState } from "react";
 
 export const TabTray = () => {
   const { Tabs, setActiveTab, activeTab } = useTabState();
-  console.log(Tabs)
   return ( 
   <div className="tabber-labels">
     { Tabs.map(
-          (tab,index) => {
+          (tab,i) => {
           if (tab.buttonType === 'inline')
             return ( 
             <div 
             className={`tabber-tab ${ tab.element == Tabs[activeTab]?.element && 'active'}`} 
-            key={index} 
-            onClick={() => setActiveTab(index)}> 
+            key={i} 
+            onClick={() => {
+              if(activeTab !== i) {
+                setActiveTab(i)
+              }else {
+                setActiveTab(4)
+              }
+
+            }}> 
                 <div className="icon">{tab.icon}</div>
                 <div className="tool-tip">{tab.label}</div> 
               </div>)

@@ -6,6 +6,8 @@ import { CheckIcon, CloseIcon, CloseIcon2 } from "../../assets/icons"
 import { useTodoStore } from "../../context/TodoContext"
 import { PencilIcon } from "../../assets/icons/pencil"
 import { useCalendarState } from "../../context"
+import { useTabState } from "../../context/TabContext"
+import { CursorLeftIcon } from "../../assets/icons"
 
 export const Todo = ({item, onComplete, onDelete}) => {
   return (
@@ -33,10 +35,14 @@ export const Todo = ({item, onComplete, onDelete}) => {
 export const Todos = () => {
   const todos = useTodoStore();
   const calendar = useCalendarState();
+  const {setActiveTab} = useTabState();
   const {month,day,year} = calendar;
   const [list, setList] = useState([]);
   const [stale, setStale] = useState(true);
 
+  const closeModal = () => {
+    setActiveTab(4);
+  }
   const onDelete = async (event) => {
     const id = event.target.closest('.todo-item').getAttribute('id')
     console.log(id)
@@ -60,6 +66,9 @@ export const Todos = () => {
     }
   }
   useEffect(() => {
+    setStale(true)
+  },[day,month,year])
+  useEffect(() => {
     const getData = async () => {
       if (stale){
         const todosByCurrentDate = await todos.fetch(calendar.date);
@@ -69,12 +78,13 @@ export const Todos = () => {
       }
     }
     getData()
-  },[stale,month,day,year] )
+  },[stale] )
   return (
   <>
     <div className="interface-modal todos">
       <div className="interface-header">
-      <div className="interface-title">Todo</div>
+        
+        <div className="interface-title" onClick={closeModal}><div className="btn-back"><CursorLeftIcon/></div>Todo</div>
       </div>
       <TodoForm onSubmit={async (event,form,data) => {
         if (!data.success || data.success == true){
