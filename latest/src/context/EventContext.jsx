@@ -8,6 +8,6 @@ export const useEventStore = () => useContext(EventContext);
 export const EventProvider = ({children}) => {
   const { events } = useAppState();
   return (
-    <EventContext.Provider value={{store:events}}>{children}</EventContext.Provider>
+    <EventContext.Provider value={{events}}>{children}</EventContext.Provider>
   )
 }

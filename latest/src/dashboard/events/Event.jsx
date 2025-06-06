@@ -4,14 +4,11 @@ export const EventListItem = ({event}) => {
   )
 }
 
-export const EventList = ({ events, isActive }) => {
+export const EventList = ({ ref, events, isActive, setActive }) => {
   const style = ["event-list", isActive && 'active'].filter(Boolean).join(' ')
   return (
-    <div className={style}>
-        <div className="close" onClick={() => {
-        const ref = document.querySelector('.event-list');
-        return ref && ref.classList.remove('active');
-      }}>
+    <div ref={ref} className={style}>
+        <div className="close" onClick={() => setActive(false)}>
         close
       </div>
       { events.map((event) => <EventListItem event={event}/>)}

@@ -1,17 +1,18 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { useAppState, useCalendarState } from "context";
 import { useTodoStore } from "../../context/TodoContext";
 import { useTabState } from "../../context/TabContext";
+
+import { EventList } from "../events/Event";
 
 export const Days  = () => {
 
   const state = useAppState();
   const calendar = useCalendarState();
   const todos = useTodoStore();
+
   const { setTab } = useTabState();
-
   const { day, month } = calendar;
-
   const [ dayData, setDayData ] = useState({ 
     birthdays : {
       today:[],
@@ -19,13 +20,19 @@ export const Days  = () => {
     }, 
     events:[]
   })
-  const [ todo, setTodo ] = useState([])
 
-  const birthdaysToday = useCallback(() => dayData.birthdays.today.map(bday => <span className="bullet">  {bday.name}'s birthday </span>),[dayData])
-  const birthdaysThisMonth = useCallback(() => dayData.birthdays.thisMonth.map(bday => (<span className="bullet">  {bday.name}  </span>)),[dayData])
-  const eventsToday = useCallback(() => dayData.events,[dayData])
+  const [ todo, setTodo ] = useState([])
+  
+
   const monthName = state.monthName(month)
+
+  const birthdaysThisMonth = useCallback(() => dayData.birthdays.thisMonth.map(bday => (<span className="bullet">  {bday.name}  </span>)),[dayData])
+  const birthdaysToday = useCallback(() => dayData.birthdays.today.map(bday => <span className="bullet">  {bday.name}'s birthday </span>),[dayData])
   const namesToday = birthdaysToday();
+  
+  const [eventListActive,setEventListActive] = useState(false);
+  const eventsToday = useCallback(() => dayData.events,[dayData])
+  const eventListRef = useRef(null)
   const events = eventsToday();
 
   useEffect(() => {
@@ -43,6 +50,7 @@ export const Days  = () => {
         <div className="interface-header">
           <div className="interface-title">Summary</div>
         </div>
+        <EventList isActive={eventListActive} setActive={setEventListActive} ref={eventListRef} events={events}/>
         <div className="section today">
           <div className="day-data">{monthName}  {day}</div>
         </div>
@@ -67,7 +75,9 @@ export const Days  = () => {
         <div className="section daily-events">
           <div className="section-title">Events</div>
           <div className="section-data daily-events">
-            <div className="bullet">{events.length} event{events.length !== 1 && 's'}</div>
+            <div className="bullet" onClick={(event) => {
+              setEventListActive(true);
+            }}>{events.length} event{events.length !== 1 && 's'}</div>
           </div>
         </div>
 

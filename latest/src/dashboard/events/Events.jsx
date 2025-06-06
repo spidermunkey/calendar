@@ -8,35 +8,38 @@ import {
 
 import { EventList } from "./Event"
 import { PlusIcon } from "../../assets/icons/plus"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useEventStore } from "context"
+import { useCalendarState } from "../../context"
 
 export const Events = () => {
 
-  const { store } = useEventStore();
-
+  const { events } = useEventStore();
+  const { day, month, date } = useCalendarState();
+  
   const [ template , setTemplate ] = useState({});
   const [ today, setToday ] = useState([]);
   const [ thisMonth, setThisMonth ] = useState([]);
 
+  const eventListRef = useRef(null)
   const [ eventListActive, setEventListActive ] = useState(false);
   const [ eventList, setEventList ] = useState([]);
 
   const handleData = async (formData) => {
     console.log('posting data',formData)
-    const response = await store.add(formData);
+    const response = await events.add(formData);
     const result = await response.json();
     console.log('eventForm response',result);
   }
 
   useEffect(() => {
     const test = async () => {
-      const today = setToday(await store.today());
-      const thisMonth = setThisMonth(await store.thisMonth());
-      console.log('total', await store.data)
-      console.log('today', await store.today())
-      console.log('this month', await store.thisMonth())
-      console.log('test date', await store.findByDay(9))
+      const today = setToday(await events.findByDay(day,month));
+      const thisMonth = setThisMonth(await events.thisMonth());
+      console.log('total', await events.data)
+      console.log('today', await events.today())
+      console.log('this month', await events.thisMonth())
+      console.log('test date', await events.findByDay(9))
 
     }
     test();
@@ -62,7 +65,7 @@ export const Events = () => {
           </div>
         </div>
         <div className="widget-list">
-            <EventList isActive={eventListActive} label={template.frequency} events={eventList} />
+            <EventList ref={eventListRef} setActive={setEventListActive} isActive={eventListActive} label={template.frequency} events={eventList} />
 
             <div className="section daily">
               <div className="section-title">Today</div>
@@ -124,10 +127,10 @@ export const Events = () => {
                     <div className="bullet">none</div>
                   : <div className="bullet">
                     <div className="fab" onClick={() => {
-                      const ref = document.querySelector('.event-list');
+                      const ref = eventListRef.current;
                       if (ref){
                         setEventList(thisMonth);
-                        ref.classList.add('active');
+                        setEventListActive(true);
                       }
                       return ref && ref.classList.add('active');
                     }}>
