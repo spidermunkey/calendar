@@ -8,10 +8,20 @@ import { PencilIcon } from "../../assets/icons/pencil"
 
 export const Todo = ({item, onComplete, onDelete}) => {
   return (
-    <div className="todo-item" id={item.id}>
-      <div className="item-text">{item.title}</div>
+    <div className={[`todo-item`,item.status === 'complete' && 'complete'].filter(Boolean).join(' ')} id={item.id}>
+      <div className="item-text">{item.title}
+      {
+        item.status === 'complete' ? 
+          item.title.length > 60 
+            ? <><div className="marker complete-marker-1"></div> <div className="marker complete-marker-2"></div> <div className="marker complete-marker-3"></div></>
+            : item.title.length > 20 
+              ? <><div className="marker complete-marker-1"></div> <div className="marker complete-marker-3"></div> </>
+            : <div className="complete-marker marker"></div> : false
+      }
+      </div>
+
       <div className="item-control">
-        <div className="complete" onClick={onComplete}><div className="icon"><CheckIcon/></div></div>
+        <div className="complete" onClick={() => onComplete(item)}><div className="icon"><CheckIcon/></div></div>
         <div className="destroy" onClick={onDelete}><div className="icon"><CloseIcon2/></div></div>
         <div className="edit"><div className="icon"><PencilIcon/></div></div>
       
@@ -32,7 +42,19 @@ export const Todos = () => {
       console.log('item deletion requested',id,response.json())
       setStale(true);
     }
-
+  }
+  const onComplete = async (item) => {
+    console.log(item)
+    if (item){
+      const response = await todos.update({
+        ...item,
+        status: 'complete',
+        completed_at: Date.now(),
+      })
+      const result = await response.json();
+      console.log('item edit requested', result)
+      setStale(true);
+    }
   }
   useEffect(() => {
     const getData = async () => {
@@ -57,7 +79,13 @@ export const Todos = () => {
           setStale(true);
         }
       }}/>
-      <TodoList onDelete={onDelete} list={list}/>
+      <div className="todo-list">
+        {
+          list.filter(item => item.id).length > 0 
+          ? list.map((item,index) => item.id && <Todo key={index} item={item} onComplete={onComplete} onDelete={onDelete} />)
+          : 'you have no todos'
+        }
+      </div>
     </div>
   </>
   )
@@ -137,14 +165,3 @@ export const TodoForm = ({onSubmit}) => {
   )
 }
 
-export const TodoList = ({list, onDelete, onComplete}) => {
-  return (
-    <div className="todo-list">
-      {
-        list.length > 0 
-        ? list.map(item => item.id && <Todo item={item} onComplete={onComplete} onDelete={onDelete} />)
-        : 'you have no todos'
-      }
-    </div>
-  )
-}
