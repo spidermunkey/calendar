@@ -68,12 +68,13 @@ export const TodoForm = ({onSubmit}) => {
 
   const [descriptionActive,setDescriptionActive] = useState(false);
   const [timeActive,setTimeActive] = useState(false);
-
+  const [title, setTitle] = useState('')
   const cosms = useRef([]);
   const formRef = useRef(null);
   const menuRef = useRef(null); 
   const descriptionRef = useRef(null);
   const timeRef = useRef(null);
+
 
   const form = () => formRef.current;
   const formData = () => Object.fromEntries(new FormData(form()));
@@ -88,6 +89,7 @@ export const TodoForm = ({onSubmit}) => {
     if (onSubmit){
       onSubmit(event,formRef,data)
     }
+    setTitle('')
   }
 
   const handleClick = (event) => {
@@ -108,7 +110,7 @@ export const TodoForm = ({onSubmit}) => {
           <div className="flexbox column">
             <div className="flexbox">
               <div className="field title-field">
-                <input name="title" type="text" placeholder="enter a new item..."/>
+                <input name="title" type="text"  onChange={e => setTitle(e.target.value)} value={title} placeholder="enter a new item..." required />
                 <div className="btn-submit"><PlusIcon/></div>
               </div>
             </div>
