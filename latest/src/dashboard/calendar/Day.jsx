@@ -1,11 +1,13 @@
 export const Day = (props) => {
+  console.log(props.events,props.day,props.styles)
   return (
-    <div key={props.key} 
-        day={props.day} 
-        className={props.styles}>
+    <div key={props.key} day={props.day} className={props.styles}>
     <div className="markers">
-      { props.isBday && <div className="bday-marker marker"></div> }
-      { props.isEvent && <div className="event-marker marker"></div> }
+      { ( props.events && props.events.isBirthday || props.isBday ) && <div className="bday-marker marker"></div> }
+      { props.events && props.events.isEvent && <div className="event-marker marker"></div> }
+      { props.events && props.events.isBill && <div className="bill-marker marker"></div> }
+      { props.events && props.events.isDeposit && <div className="deposit-marker marker"></div> }
+      { props.events && props.events.isDeadline && <div className="deadline-marker marker"></div> }
     </div>
 
     <div className="daynum">{props.day}</div>

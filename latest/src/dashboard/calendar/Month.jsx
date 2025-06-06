@@ -20,7 +20,22 @@ export const Month = () => {
   } = monthData(year,month);
   
   const isBday = (day) => activeBirthdays.find(bday => bday.day == day);
-  const isEvent = (day) => activeEvents.find(event => event?.date?.slice(8,10) == day);
+  const eventsByDay = (day) => activeEvents.filter(event => event?.date?.slice(8,10) == day);
+  const parseEvents = (day) => {
+    const events = eventsByDay(day);
+    const isEvent = events.length > 0;
+    const isDeadline = isEvent && events.find(event => event.category === 'deadline')
+    const isBirthday = isEvent && events.find(event => event.category === 'birthday')
+    const isBill = isEvent && events.find(event => event.category === 'bill')
+    const isDeposit = isEvent && events.find(event => event.category === 'deposit')
+    return {
+      isEvent,
+      isDeadline,
+      isBirthday,
+      isBill,
+      isDeposit
+    }
+  }
   const today = new Date();
 
   const handleClick = (event) => {
@@ -52,10 +67,14 @@ export const Month = () => {
       }).reverse()}
       {/* Current Day Set */}
       {forEachNumber(daysInMonth, index => {
+      
         let dateNum = index + 1
         let isToday = today.getDate() === dateNum && today.getMonth() === month && 'today';
-        let styles = ['day', isBday(dateNum) && 'bday', isEvent(dateNum) && 'event', isToday, day == dateNum && 'active'].filter(Boolean).join(' ')
-        return <Day isEvent={isEvent(dateNum)} isBday={isBday(dateNum)} styles={styles} day={dateNum} key={dateNum}/>
+        let events = parseEvents(dateNum);
+        console.log(events)
+        console.log(dateNum)
+        let styles = ['day', isToday, day == dateNum && 'active'].filter(Boolean).join(' ')
+        return <Day isBday={isBday(dateNum)} events={events} styles={styles} day={dateNum} key={dateNum}/>
         })}
       {/* fill in first days of next month */}
       {forEachNumber(daysFromSaturday, index => {
