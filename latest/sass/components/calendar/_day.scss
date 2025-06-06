@@ -53,7 +53,7 @@
     }
     &.active {
       border: 1px solid var(--border);
-      background-color: #efefef;
+      background-color: #f9f9f9;
     }
     &:hover::after{
       opacity: 1;
@@ -79,7 +79,7 @@
     }
 
     &.today .daynum {
-      background:var(--blue-2);
+      background: #0095ffe3;
       color: white;
       opacity:.82;
       transform: translateY(2px) translateX(2px);
@@ -99,5 +99,23 @@
       justify-content: center;
       border-radius: 100%;
     }
+
+    // &.today {
+    //   position: relative;
+    //   overflow: hidden;
+    //   .daynum {
+    //     color: #010b0eda;
+    //     font-weight: 800;
+    //   }
+    //   &:after {
+    //     position: absolute;
+    //     top: calc(100% - 18px);
+    //     height: 18px;
+    //     left: -50%;
+    //     width: 200%;
+    //     content: "";
+    //     background-color: #10b8f0da;
+    //   }
+    // }
 
 }

@@ -10,6 +10,7 @@ import { CalendarIcon, NoteIcon, ClockIcon, PresentIcon } from "icons";
 
 export const CalendarTabs = [
   {
+    name: 'events',
     label: 'events',
     icon: (<CalendarIcon/>),
     element: composeElement(Events),
@@ -17,13 +18,15 @@ export const CalendarTabs = [
     id:3,
   },
   {
-    label: 'notes',
+    name: 'todos',
+    label: 'todos',
     icon:(<NoteIcon/>),
     element: composeElement(Todos),
     buttonType: 'inline',
     index: 5,
   },
   {
+    name: 'timers',
     label: 'timers',
     icon: (<ClockIcon/>),
     element: composeElement(Timers),
@@ -31,6 +34,7 @@ export const CalendarTabs = [
     id: 2,
   }, 
   {
+    name: 'birthdays',
     label:'birthdays',
     icon: (<PresentIcon/>),
     element: composeElement(Birthdays),
@@ -38,6 +42,7 @@ export const CalendarTabs = [
     id:1,
   },
   {
+    name: 'dayview',
     label: 'dayview',
     element: composeElement(Days),
     buttonType: 'floating',

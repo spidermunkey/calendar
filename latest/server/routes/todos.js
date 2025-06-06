@@ -3,8 +3,15 @@ const router = express.Router();
 const { connection, local_connection } = require('../db/connect');
 const { ReturnDocument } = require('mongodb');
 
-router.get('/:id', function getTodo(){
-
+router.get('/:date', async function getTodosByDate(request,response){
+  const local_client = await local_connection();
+  if (!local_client){
+    response.json({success:false})
+  }
+  const db = local_client.db('Todos')
+  const collection = db.collection('all')
+  const todos = await collection.find({date:request.params.date}).toArray();
+  response.json(todos)
 });
 
 router.delete('/:id', async function deleteTodo(request,response){

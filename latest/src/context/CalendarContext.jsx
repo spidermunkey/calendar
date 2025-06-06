@@ -6,7 +6,7 @@ export const CalendarContext = createContext({});
 export const useCalendarState = () => useContext(CalendarContext);
 
 export const CalendarProvider = ({children}) => {
-  
+
   const {calendar} = useAppState();
   const [day, updateDay] = useState(calendar.day)
   const [month,updateMonth] = useState(calendar.month)
@@ -32,6 +32,10 @@ export const CalendarProvider = ({children}) => {
       month,setMonth,
       year,setYear,
       today,
+      get date() {
+        console.log(month)
+        return `${String(year)}-${String(month).padStart(2,0)}-${String(day).padStart(2,0)}`
+      },
     }}>
       {children}
     </CalendarContext.Provider>

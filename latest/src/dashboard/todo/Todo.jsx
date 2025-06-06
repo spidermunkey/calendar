@@ -5,6 +5,7 @@ import { PlusIcon } from "../../assets/icons/plus"
 import { CheckIcon, CloseIcon, CloseIcon2 } from "../../assets/icons"
 import { useTodoStore } from "../../context/TodoContext"
 import { PencilIcon } from "../../assets/icons/pencil"
+import { useCalendarState } from "../../context"
 
 export const Todo = ({item, onComplete, onDelete}) => {
   return (
@@ -23,7 +24,7 @@ export const Todo = ({item, onComplete, onDelete}) => {
       <div className="item-control">
         <div className="complete" onClick={() => onComplete(item)}><div className="icon"><CheckIcon/></div></div>
         <div className="destroy" onClick={onDelete}><div className="icon"><CloseIcon2/></div></div>
-        <div className="edit"><div className="icon"><PencilIcon/></div></div>
+        {/* <div className="edit"><div className="icon"><PencilIcon/></div></div> */}
       
       </div>
     </div>
@@ -31,6 +32,8 @@ export const Todo = ({item, onComplete, onDelete}) => {
 }
 export const Todos = () => {
   const todos = useTodoStore();
+  const calendar = useCalendarState();
+  const {month,day,year} = calendar;
   const [list, setList] = useState([]);
   const [stale, setStale] = useState(true);
 
@@ -59,15 +62,14 @@ export const Todos = () => {
   useEffect(() => {
     const getData = async () => {
       if (stale){
-        const data = await todos.getData();
-        setList(data);
+        const todosByCurrentDate = await todos.fetch(calendar.date);
+        setList(todosByCurrentDate);
         setStale(false);
-        console.log('data',data,1)
-        return data;
+        return todosByCurrentDate;
       }
     }
     getData()
-  },[stale] )
+  },[stale,month,day,year] )
   return (
   <>
     <div className="interface-modal todos">
@@ -93,16 +95,9 @@ export const Todos = () => {
 
 export const TodoForm = ({onSubmit}) => {
   const todos = useTodoStore();
-
-  const [descriptionActive,setDescriptionActive] = useState(false);
-  const [timeActive,setTimeActive] = useState(false);
-  const [title, setTitle] = useState('')
-  const cosms = useRef([]);
+  const calendar = useCalendarState();
+  const [title, setTitle] = useState('');
   const formRef = useRef(null);
-  const menuRef = useRef(null); 
-  const descriptionRef = useRef(null);
-  const timeRef = useRef(null);
-
 
   const form = () => formRef.current;
   const formData = () => Object.fromEntries(new FormData(form()));
@@ -111,7 +106,7 @@ export const TodoForm = ({onSubmit}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('NEW TODO',formData())
-    const response = await todos.add({...formData(), id:uuid() });
+    const response = await todos.add({...formData(), date: calendar.date, id:uuid() });
     const data = await response.json();
     console.log(data)
     if (onSubmit){
@@ -142,23 +137,8 @@ export const TodoForm = ({onSubmit}) => {
                 <div className="btn-submit"><PlusIcon/></div>
               </div>
             </div>
-            {/* <div className="flexbox column">
-              <div className="field opt-field description-field" ref={descriptionRef}>
-                <textarea name="description" id=""></textarea>
-                <FloatingActionClose ref={descriptionRef}><CloseIcon/></FloatingActionClose>
-              </div>
-              <div className="field opt-field time-field" ref={timeRef}>
-                <input name="time" type="time" />
-                <FloatingActionClose ref={timeRef}><CloseIcon/></FloatingActionClose>
-              </div>
-            </div> */}
           </div>
-          {/* <div className="field-menu" ref={menuRef}>
-            <FloatingActionToggle ref={descriptionRef}> <div className="menu-option">descrition</div> </FloatingActionToggle>
-            <FloatingActionToggle ref={timeRef}> <div className="menu-option">time</div> </FloatingActionToggle>
-          </div> */}
         </div>
-
       </form>
     </div>
 

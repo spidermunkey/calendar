@@ -20,14 +20,17 @@ export const createStore = (endpoint) => {
           return this._data;
         }
       },
+      async fetch(resource){
+        const response = await get(`${this.endpoint}/${resource}`);
+        this.stale = true;
+        return response;
+      },
       async add(data) {
         const response = await add(this.endpoint,data);
         this.stale = true;
         return response;
       },
       async remove(id){
-        console.log('herio',id)
-
         const response = await destroy(this.endpoint,id);
         this.stale = true;
         return response;
