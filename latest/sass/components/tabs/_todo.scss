@@ -1,3 +1,8 @@
+.interface-modal.todos {
+  .interface-header {
+    margin-bottom: 28px;
+  }
+}
 .todo-form {
   form {
     position: relative;
@@ -14,9 +19,47 @@
     position: relative;
     display: inline-flex;
     align-items: flex-start;
+    justify-content: space-between;
+    width: 300px;
+    border: 1px solid var(--border);
+    border-radius: .5rem;
+    overflow: hidden;
+    padding-left: 8px;
+    overflow: hidden;
+    .btn-submit {
+      height: 100%;
+      display: inline-flex;
+      width: 64px;
+      border-left: 1px solid var(--border);
+      align-items: center;
+      justify-content: center;
 
+      cursor: pointer;
+      // box-shadow: -4px 0px 6px -2px rgba(190, 190, 190, 0.432),
+      //             -10px 0px 20px 0px rgba(109, 109, 109, 0.086);
+      svg {
+        stroke: var(--color-2)
+      }
+    }
     input {
       padding: 10px;
+      border: none;
+      outline: none;
+      font-size: 20px;
+      color: var(--color-2);
+      width: 75%;
+      display: inline-flex;
+      cursor: pointer;
+      &:focus {
+        cursor: text;
+      }
+      &:hover::placeholder {
+        opacity: 1;
+        color: var(--color-2);
+      }
+      &::placeholder {
+        color: var(--color-3);
+      }
     }
   }
   .field-menu {
@@ -31,15 +74,7 @@
     z-index: 100;
   }
   .btn-open-menu {
-    display: inline-flex;
-    height: 32px;
-    width: 32px;
-    border: 1px solid var(--border);
-    align-items: center;
-    justify-content: center;
-    svg {
-      stroke: var(--color)
-    }
+
   }
   .field-menu {
     opacity: 0;
@@ -59,9 +94,75 @@
 }
 
 .todo-list {
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  margin-top: 34px;
+  padding-left: 20px;
+  padding-top: 30px;
+  width: 500px;
+  overflow-y: scroll;
+  overflow-x: hidden;
   .todo-item {
     margin: 12px 0px;
     padding: 0px 8px;
     font-size: 20px;
+    display: flex;
+    font-size: 16px;
+    display: inline-flex;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+    .item-text {
+      width: 200px;
+      line-height: 1.4rem;
+      letter-spacing: 0.1rem;
+      font-weight: 600;
+      color: var(--color-3);
+      transition: 180ms ease;
+      &:hover {
+        color: var(--color);
+      }
+
+    }
+    &:hover {
+      .item-control {
+        opacity: .2;
+        transform: translateY(0);
+      }
+    }
+    .item-control {
+      // position: absolute;
+      // left: 90%;
+      display: flex;
+      transform: translateY(-6px);
+      transition: 200ms ease;
+      opacity: 0;
+      &:hover {
+        opacity: 1;
+      }
+      .icon {
+        &:hover svg {
+          transform: scale(1.2) translateY(-8px);
+          &.pencil {
+            stroke: var(--blue-2);
+            fill: var(--blue-2);
+          }
+          &.close {
+            stroke: red;
+            fill: red;
+          }
+          &.check {
+            stroke: var(--success-green);
+            fill: var(--success-green);
+          }
+        }
+        svg {
+          transition: transform 280ms ease, scale 300ms ease;
+          scale: .7;
+        }
+
+      }
+
+    }
   }
 }

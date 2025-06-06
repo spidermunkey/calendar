@@ -2,10 +2,24 @@ import { eventMaps, uuid } from "utils"
 import { useRef, useState, useEffect } from "react"
 import { FloatingActionClose, FloatingActionToggle } from "../../components"
 import { PlusIcon } from "../../assets/icons/plus"
-import { CloseIcon } from "../../assets/icons"
+import { CheckIcon, CloseIcon, CloseIcon2 } from "../../assets/icons"
 import { useTodoStore } from "../../context/TodoContext"
+import { PencilIcon } from "../../assets/icons/pencil"
 
-export const Todos = ({date}) => {
+export const Todo = ({item, onComplete, onDelete}) => {
+  return (
+    <div className="todo-item" id={item.id}>
+      <div className="item-text">{item.title}</div>
+      <div className="item-control">
+        <div className="complete" onClick={onComplete}><div className="icon"><CheckIcon/></div></div>
+        <div className="destroy" onClick={onDelete}><div className="icon"><CloseIcon2/></div></div>
+        <div className="edit"><div className="icon"><PencilIcon/></div></div>
+      
+      </div>
+    </div>
+  )
+}
+export const Todos = () => {
   const todos = useTodoStore();
   const [list, setList] = useState([]);
   const [stale, setStale] = useState(true);
@@ -34,8 +48,11 @@ export const Todos = ({date}) => {
   },[stale] )
   return (
   <>
-    <div className="tabber-modal todo-modal">
-      <TodoForm date={date} onSubmit={async (event,form,data) => {
+    <div className="interface-modal todos">
+      <div className="interface-header">
+      <div className="interface-title">Todo</div>
+      </div>
+      <TodoForm onSubmit={async (event,form,data) => {
         if (!data.success || data.success == true){
           setStale(true);
         }
@@ -46,7 +63,7 @@ export const Todos = ({date}) => {
   )
 }
 
-export const TodoForm = ({date,onSubmit}) => {
+export const TodoForm = ({onSubmit}) => {
   const todos = useTodoStore();
 
   const [descriptionActive,setDescriptionActive] = useState(false);
@@ -65,7 +82,7 @@ export const TodoForm = ({date,onSubmit}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('NEW TODO',formData())
-    const response = await todos.add({...formData(), date, id:uuid() });
+    const response = await todos.add({...formData(), id:uuid() });
     const data = await response.json();
     console.log(data)
     if (onSubmit){
@@ -91,11 +108,11 @@ export const TodoForm = ({date,onSubmit}) => {
           <div className="flexbox column">
             <div className="flexbox">
               <div className="field title-field">
-                <input name="title" type="text" placeholder="title"/>
-                <FloatingActionToggle ref={menuRef}> <div className="btn-open-menu"><PlusIcon/></div> </FloatingActionToggle>
+                <input name="title" type="text" placeholder="enter a new item..."/>
+                <div className="btn-submit"><PlusIcon/></div>
               </div>
             </div>
-            <div className="flexbox column">
+            {/* <div className="flexbox column">
               <div className="field opt-field description-field" ref={descriptionRef}>
                 <textarea name="description" id=""></textarea>
                 <FloatingActionClose ref={descriptionRef}><CloseIcon/></FloatingActionClose>
@@ -104,12 +121,12 @@ export const TodoForm = ({date,onSubmit}) => {
                 <input name="time" type="time" />
                 <FloatingActionClose ref={timeRef}><CloseIcon/></FloatingActionClose>
               </div>
-            </div>
+            </div> */}
           </div>
-          <div className="field-menu" ref={menuRef}>
+          {/* <div className="field-menu" ref={menuRef}>
             <FloatingActionToggle ref={descriptionRef}> <div className="menu-option">descrition</div> </FloatingActionToggle>
             <FloatingActionToggle ref={timeRef}> <div className="menu-option">time</div> </FloatingActionToggle>
-          </div>
+          </div> */}
         </div>
 
       </form>
@@ -118,16 +135,12 @@ export const TodoForm = ({date,onSubmit}) => {
   )
 }
 
-export const TodoList = ({list,onDelete}) => {
+export const TodoList = ({list, onDelete, onComplete}) => {
   return (
     <div className="todo-list">
       {
         list.length > 0 
-        ? list.map(item => {
-          return item.id && <div className="todo-item" id={item.id}>{ item.title }
-            <div className="destroy" onClick={onDelete}>Delete</div>
-          </div>
-          })
+        ? list.map(item => item.id && <Todo item={item} onComplete={onComplete} onDelete={onDelete} />)
         : 'you have no todos'
       }
     </div>

@@ -22,12 +22,11 @@ router.delete('/:id', async function deleteTodo(request,response){
       const collection = db.collection('all')
       await collection.deleteOne({id:id})
     }
-      response.json(data);
+    response.json(data);
 
   } catch(error){
     console.log(error)
-    response.json({})
-
+    response.json({success:false})
   }
 });
 

@@ -79,7 +79,7 @@
     }
 
     &.today .daynum {
-      background:#1ab0de ;
+      background:var(--blue-2);
       color: white;
       opacity:.82;
       transform: translateY(2px) translateX(2px);
