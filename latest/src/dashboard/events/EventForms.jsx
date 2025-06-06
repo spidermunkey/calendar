@@ -189,14 +189,16 @@ export const useEventForm = (eventData) => {
 export const EventForm = ({ eventData , handleSubmit }) => {
   const { onInput, updateProperty, onSubmit, data } = useEventForm(eventData)
   const handleCategoryChange = (event) => {
-    const {name,value} = event.target;
+    const {value} = event.target;
     if (value === 'bill' || value === 'deposit'){
       updateProperty('frequency','monthly')
+      updateProperty('frequencyType','once')
     }
-    else if (value === 'general' || value === 'birthday'){
+    else if (value === 'general' || value === 'birthday' || value === 'deadline'){
       updateProperty('frequency','once')
       updateProperty('frequencyType','once')
     }
+
     return onInput(event)
   }
   return (
@@ -217,11 +219,11 @@ export const EventForm = ({ eventData , handleSubmit }) => {
           <TimeForm/>
           <FrequencyForm data={data} handleChange={updateProperty}/>
         </>
-        : data.category === 'bill' || data.category === 'deposit' ?
+        : data.category === 'bill' || data.category === 'deposit' || data.category === 'deadline' ?
         <>
         <div className="modal-form-section frequency">
           <div className="frequency-modal">
-            <FrequencyPicker isActive={true} frequency={'monthly'} handleChange={updateProperty}/>
+            <FrequencyPicker isActive={true} frequency={data.frequency} handleChange={updateProperty}/>
           </div>
         </div>
 
