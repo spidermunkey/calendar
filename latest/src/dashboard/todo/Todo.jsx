@@ -2,25 +2,84 @@ import { eventMaps, uuid } from "utils"
 import { useRef, useState, useEffect } from "react"
 import { PlusIcon, CheckIcon, CloseIcon2, PencilIcon, CursorLeftIcon  } from "icons"
 import { useTodoStore, useCalendarStore, useTabState } from "context"
+import { update } from "../../utils/api"
 
 export const Todo = ({item, onComplete, onDelete}) => {
+  const todos = useTodoStore();
+  const inputRef = useRef(null);
+  const controlRef = useRef(null);
+
+  const [title,setTitle] = useState(item.title)
+  const [stale,setStale] = useState(false)
+
+  const updateTitle = () => {
+    setStale(true);
+    console.log('here')
+    inputRef.current.classList.remove('active');
+    console.log(controlRef.current)
+    controlRef.current.classList.remove('disabled')
+  }
+  useEffect(() => {
+    const update = async () => {
+      console.log(todos)
+      const response = await todos.update({
+        ...item,
+        title: title,
+      })
+      const result = await response.json();
+      console.log('update submited',result);
+    }
+    update();
+  },[stale])
   return (
     <div className={[`todo-item`,item.status === 'complete' && 'complete'].filter(Boolean).join(' ')} id={item.id}>
-      <div className="item-text">{item.title}
-      {
-        item.status === 'complete' ? 
+      <div className="item-text">
+        {title}
+        { item.status === 'complete' ? 
           item.title.length > 60 
             ? <><div className="marker complete-marker-1"></div> <div className="marker complete-marker-2"></div> <div className="marker complete-marker-3"></div></>
             : item.title.length > 20 
               ? <><div className="marker complete-marker-1"></div> <div className="marker complete-marker-3"></div> </>
             : <div className="complete-marker marker"></div> : false
-      }
+        }
+        <div ref={inputRef} className="edit-input" onKeyDown={(e) => {
+          if (eventMaps.enter(e)){
+            updateTitle();
+          }
+        }}>
+          <div className="flexbox column">
+            <div className="complete" onClick={ updateTitle }>
+              <div className="icon" ><CheckIcon/></div>
+            </div>
+
+          </div>
+
+          <textarea name="title" placeholder="update title..." onChange={(e) => setTitle(e.target.value)} value={title} spellCheck='false'></textarea>
+          <div className="item-control">
+                        <div className="destroy" onClick={() => {
+              console.log('here')
+              inputRef.current.classList.remove('active');
+              console.log(controlRef.current)
+              controlRef.current.classList.remove('disabled')
+            }} > 
+            <div className="icon"><CloseIcon2/></div>
+          </div>
+          </div>
+        </div>
       </div>
 
-      <div className="item-control">
+      <div ref={controlRef} className="item-control">
         <div className="complete" onClick={() => onComplete(item)}><div className="icon"><CheckIcon/></div></div>
-        <div className="destroy" onClick={onDelete}><div className="icon"><CloseIcon2/></div></div>
-        {/* <div className="edit"><div className="icon"><PencilIcon/></div></div> */}
+        <div className="destroy" onClick={(event) => onDelete(event,item)}><div className="icon"><CloseIcon2/></div></div>
+        { item.status !== 'complete' && <div className="edit" onClick={
+          () => {
+          if (inputRef.current){
+            inputRef.current.classList.toggle('active');
+            inputRef.current.querySelector('textarea').focus();
+            console.log(controlRef.current)
+            controlRef.current.classList.add('disabled')
+          }
+        }}><div className="icon"><PencilIcon/></div></div> }
       
       </div>
     </div>
@@ -42,8 +101,9 @@ export const Todos = () => {
     console.log(id)
     if (id){
       const response = await todos.remove(id)
-      console.log('item deletion requested',id,response.json())
-      setStale(true);
+      console.log('item deletion requested',id)
+      console.log('herio', stale)
+      setStale(1);
     }
   }
   const onComplete = async (item) => {
@@ -56,20 +116,19 @@ export const Todos = () => {
       })
       const result = await response.json();
       console.log('item edit requested', result)
-      setStale(true);
+      setStale(!stale);
     }
   }
   useEffect(() => {
     setStale(true)
   },[day,month,year])
+
   useEffect(() => {
+    console.log('stale')
     const getData = async () => {
-      if (stale){
         const todosByCurrentDate = await todos.fetch(calendar.date);
         setList(todosByCurrentDate);
-        setStale(false);
         return todosByCurrentDate;
-      }
     }
     getData()
   },[stale] )
@@ -82,7 +141,7 @@ export const Todos = () => {
       </div>
       <TodoForm onSubmit={async (event,form,data) => {
         if (!data.success || data.success == true){
-          setStale(true);
+          setStale(!stale);
         }
       }}/>
       <div className="todo-list">
@@ -113,6 +172,7 @@ export const TodoForm = ({onSubmit}) => {
     const response = await todos.add({...formData(), date: calendar.date, id:uuid() });
     const data = await response.json();
     console.log(data)
+    console.log(onSubmit)
     if (onSubmit){
       onSubmit(event,formRef,data)
     }
@@ -127,6 +187,7 @@ export const TodoForm = ({onSubmit}) => {
   const handleShortcuts = (event) => {
     if (eventMaps.enter(event)){
       console.log('TODO SUBMISSION REQUESTED', formData() );
+      handleSubmit(event);
     }
   }
 

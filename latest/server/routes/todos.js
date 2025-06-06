@@ -53,8 +53,8 @@ router.put('/:id', async function editTodo(request,response){
       }
       const db = local_client.db('Todos')
       const collection = db.collection('all')
-      const result = await collection.findOneAndReplace({id:data.id},data,{ReturnDocument:true})
-      response.json(result);
+      const result = await collection.findOneAndReplace({id:data.id},data,{returnDocument:'after',ReturnNewDocument:true})
+      response.json(result.value);
       return;
     }
       response.json(data);
