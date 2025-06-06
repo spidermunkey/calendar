@@ -34,7 +34,7 @@ export const Events = () => {
 
   useEffect(() => {
     const test = async () => {
-      const today = setToday(await events.findByDay(day,month));
+      const today = setToday(await events.today());
       const thisMonth = setThisMonth(await events.thisMonth());
       console.log('total', await events.data)
       console.log('today', await events.today())
@@ -77,9 +77,8 @@ export const Events = () => {
                       const ref = document.querySelector('.event-list');
                       if (ref) {
                         setEventList(today);
-                        ref.classList.add('active')
+                        setEventListActive(true);
                       }
-                      return ref && ref.classList.add('active');
                     }}>
                       {today.length} events today
                     </div>
@@ -132,7 +131,6 @@ export const Events = () => {
                         setEventList(thisMonth);
                         setEventListActive(true);
                       }
-                      return ref && ref.classList.add('active');
                     }}>
                       {thisMonth.length} events this month
                     </div>

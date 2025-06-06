@@ -100,7 +100,6 @@ export const createTemplate = (eventDate) => {
     ...event
   }
   return result
-
 }
 
 export const GenericModal = ({ eventDate, handleSubmit }) => {
@@ -189,6 +188,17 @@ export const useEventForm = (eventData) => {
 
 export const EventForm = ({ eventData , handleSubmit }) => {
   const { onInput, updateProperty, onSubmit, data } = useEventForm(eventData)
+  const handleCategoryChange = (event) => {
+    const {name,value} = event.target;
+    if (value === 'bill' || value === 'deposit'){
+      updateProperty('frequency','monthly')
+    }
+    else if (value === 'general' || value === 'birthday'){
+      updateProperty('frequency','once')
+      updateProperty('frequencyType','once')
+    }
+    return onInput(event)
+  }
   return (
       <form onSubmit={(e) => {
       const result = onSubmit(e);
@@ -200,13 +210,23 @@ export const EventForm = ({ eventData , handleSubmit }) => {
         </div>
         <div className="flexbox row-2">
           <DescriptionInput description={data.description} onChange={onInput}/>
-          <CategorySelectInput category={data.category} onChange={onInput} categories={["general","bill","deadline","birthday","deposit"]}/>
+          <CategorySelectInput category={data.category} onChange={handleCategoryChange} categories={["general","bill","deadline","birthday","deposit"]}/>
         </div>
-        {data.category === 'general' && 
+        {data.category === 'general' ? 
         <>
           <TimeForm/>
           <FrequencyForm data={data} handleChange={updateProperty}/>
         </>
+        : data.category === 'bill' || data.category === 'deposit' ?
+        <>
+        <div className="modal-form-section frequency">
+          <div className="frequency-modal">
+            <FrequencyPicker isActive={true} frequency={'monthly'} handleChange={updateProperty}/>
+          </div>
+        </div>
+
+        </>
+        : null
         }
         <input className="btn-submit" type="submit"/>
       </form>
@@ -517,6 +537,30 @@ function FrequencyForm({data,handleChange}){
   )
 }
 
+function FrequencyPicker({isActive,frequency,handleChange}){
+    const [ current, setCurrent ] = useState(frequency);
+
+    return (
+    <div className={ isActive ? 'active once option-modal' : 'option-modal'}
+        onClick={(event) => {
+          const option = event.target.closest('.opt');
+          if (option){
+            const input = option.querySelector('input')
+            const siblings = Array.from(document.querySelectorAll(`input[name="${input.name}"][type="radio"]`));
+            const value = input.getAttribute('frequency')
+            siblings.forEach(sib => sib.parentElement.classList.remove('active'))
+            option.classList.add('active')
+            handleChange('frequency', value )
+            setCurrent(value)
+          }
+        }}>
+          <div className={["fm-list-item opt once",frequency === 'once' && 'active'].filter(Boolean).join(' ')}><input name="once" type="radio" frequency="once" value={current === 'once'} />once</div>
+          <div className={["fm-list-item opt daily",frequency === 'daily' && 'active'].filter(Boolean).join(' ')}><input name="once" type="radio" frequency="daily" value={current === 'daily'}/>daily</div>
+          <div className={["fm-list-item opt weekly",frequency === 'weekly' && 'active'].filter(Boolean).join(' ')}><input name="once" type="radio" frequency="weekly" value={current === 'weekly'}/>weekly</div>
+          <div className={["fm-list-item opt monthly",frequency === 'monthly' && 'active'].filter(Boolean).join(' ')}><input name="once" type="radio" frequency="monthly" value={current === 'monthly'}/>monthly</div>
+        </div>
+      )
+}
 function DynamicDatePicker({dom,onChange}){
   const [context,setContext] = useState(dom)
   useEffect(() => {
